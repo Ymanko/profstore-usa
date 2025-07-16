@@ -1,10 +1,11 @@
-import { CartProvider } from 'components/cart/cart-context';
-import { Navbar } from 'components/layout/navbar';
-import { WelcomeToast } from 'components/welcome-toast';
+import { ReactNode } from 'react';
 import { GeistSans } from 'geist/font/sans';
 import { Toaster } from 'sonner';
+import Header from '@/components/Header';
+import Footer from '@/components/layout/footer';
 import './globals.css';
-import { baseUrl } from 'lib/utils';
+import { baseUrl } from '@/lib/utils';
+import { CartProviderWrapper } from '@/components/cart/cart-provider-wrapper'; // 👈 додай цей імпорт
 
 const { SITE_NAME } = process.env;
 
@@ -20,24 +21,24 @@ export const metadata = {
   }
 };
 
-export default async function RootLayout({
-  children
-}: {
-  children: ReactNode;
-}) {
-  // Don't await the fetch, pass the Promise to the context provider
-  const cart = getCart();
-
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={GeistSans.variable}>
-      <body className="bg-neutral-50 text-black selection:bg-teal-300 dark:bg-neutral-900 dark:text-white dark:selection:bg-pink-500 dark:selection:text-white">
-        <CartProvider cartPromise={cart}>
-          <Navbar />
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+        />
+      </head>
+      <body className="bg-white text-black dark:bg-black dark:text-white">
+        <CartProviderWrapper>
+          <Header />
           <main>
             {children}
             <Toaster closeButton />
           </main>
-        </CartProvider>
+          <Footer />
+        </CartProviderWrapper>
       </body>
     </html>
   );

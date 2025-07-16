@@ -1,71 +1,72 @@
+'use client';
+
 import Link from 'next/link';
 
-import FooterMenu from 'components/layout/footer-menu';
-import LogoSquare from 'components/logo-square';
-import { getMenu } from 'lib/shopify';
-import { Suspense } from 'react';
-
-const { COMPANY_NAME, SITE_NAME } = process.env;
-
-export default async function Footer() {
-  const currentYear = new Date().getFullYear();
-  const copyrightDate = 2023 + (currentYear > 2023 ? `-${currentYear}` : '');
-  const skeleton = 'w-full h-6 animate-pulse rounded-sm bg-neutral-200 dark:bg-neutral-700';
-  const menu = await getMenu('next-js-frontend-footer-menu');
-  const copyrightName = COMPANY_NAME || SITE_NAME || '';
-
+const Footer = () => {
   return (
-    <footer className="text-sm text-neutral-500 dark:text-neutral-400">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 border-t border-neutral-200 px-6 py-12 text-sm md:flex-row md:gap-12 md:px-4 min-[1320px]:px-0 dark:border-neutral-700">
-        <div>
-          <Link className="flex items-center gap-2 text-black md:pt-1 dark:text-white" href="/">
-            <LogoSquare size="sm" />
-            <span className="uppercase">{SITE_NAME}</span>
-          </Link>
-        </div>
-        <Suspense
-          fallback={
-            <div className="flex h-[188px] w-[200px] flex-col gap-2">
-              <div className={skeleton} />
-              <div className={skeleton} />
-              <div className={skeleton} />
-              <div className={skeleton} />
-              <div className={skeleton} />
-              <div className={skeleton} />
+    <footer style={{ backgroundColor: '#378410' }} className="text-white pt-5 pb-4 mt-auto">
+      <div className="container">
+        <div className="row">
+          {/* Left block with logo and description */}
+          <div className="col-md-4 mb-4">
+            <img src="/icons/logo.svg" alt="Profstore" style={{ maxWidth: '160px' }} />
+            <div className="d-flex gap-3 mt-3">
+              <a href="#"><i className="bi bi-facebook text-white fs-5"></i></a>
+              <a href="#"><i className="bi bi-instagram text-white fs-5"></i></a>
+              <a href="#"><i className="bi bi-youtube text-white fs-5"></i></a>
+              <a href="#"><i className="bi bi-telegram text-white fs-5"></i></a>
             </div>
-          }
-        >
-          <FooterMenu menu={menu} />
-        </Suspense>
-        <div className="md:ml-auto">
-          <a
-            className="flex h-8 w-max flex-none items-center justify-center rounded-md border border-neutral-200 bg-white text-xs text-black dark:border-neutral-700 dark:bg-black dark:text-white"
-            aria-label="Deploy on Vercel"
-            href="https://vercel.com/templates/next.js/nextjs-commerce"
-          >
-            <span className="px-3">▲</span>
-            <hr className="h-full border-r border-neutral-200 dark:border-neutral-700" />
-            <span className="px-3">Deploy</span>
-          </a>
+          </div>
+
+          {/* Services */}
+          <div className="col-md-2 mb-3">
+            <h6 className="fw-bold">Services</h6>
+            <ul className="list-unstyled">
+              <li><a href="#" className="text-white text-decoration-none">Warranty</a></li>
+              <li><a href="#" className="text-white text-decoration-none">Shipping</a></li>
+              <li><a href="#" className="text-white text-decoration-none">Payment</a></li>
+            </ul>
+          </div>
+
+          {/* Resources */}
+          <div className="col-md-2 mb-3">
+            <h6 className="fw-bold">Resources</h6>
+            <ul className="list-unstyled">
+              <li><a href="#" className="text-white text-decoration-none">Blog</a></li>
+              <li><a href="#" className="text-white text-decoration-none">Deals</a></li>
+              <li><a href="#" className="text-white text-decoration-none">Video Reviews</a></li>
+            </ul>
+          </div>
+
+          {/* About */}
+          <div className="col-md-2 mb-3">
+            <h6 className="fw-bold">About</h6>
+            <ul className="list-unstyled">
+              <li><a href="#" className="text-white text-decoration-none">Team</a></li>
+              <li><a href="#" className="text-white text-decoration-none">Careers</a></li>
+              <li><a href="#" className="text-white text-decoration-none">Contact Us</a></li>
+            </ul>
+          </div>
+
+          {/* Support */}
+          <div className="col-md-2 mb-3">
+            <h6 className="fw-bold">Support</h6>
+            <ul className="list-unstyled">
+              <li><a href="#" className="text-white text-decoration-none">Live Chat</a></li>
+              <li><a href="#" className="text-white text-decoration-none">My Account</a></li>
+              <li><a href="#" className="text-white text-decoration-none">Returns</a></li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <div className="border-t border-neutral-200 py-6 text-sm dark:border-neutral-700">
-        <div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-1 px-4 md:flex-row md:gap-0 md:px-4 min-[1320px]:px-0">
-          <p>
-            &copy; {copyrightDate} {copyrightName}
-            {copyrightName.length && !copyrightName.endsWith('.') ? '.' : ''} All rights reserved.
-          </p>
-          <hr className="mx-4 hidden h-4 w-[1px] border-l border-neutral-400 md:inline-block" />
-          <p>
-            <a href="https://github.com/vercel/commerce">View the source</a>
-          </p>
-          <p className="md:ml-auto">
-            <a href="https://vercel.com" className="text-black dark:text-white">
-              Created by ▲ Vercel
-            </a>
-          </p>
+
+        <hr className="border-top border-white opacity-50" />
+
+        <div className="text-center small">
+          &copy; {new Date().getFullYear()} Profstore. All rights reserved.
         </div>
       </div>
     </footer>
   );
-}
+};
+
+export default Footer;

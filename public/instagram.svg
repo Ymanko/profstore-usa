@@ -1,0 +1,27 @@
+import React from "react";
+
+const InstagramIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 120 120">
+    <defs>
+      <radialGradient id="instagram-gradient" cx="0" cy="0" fx="0" fy="0" r="261.83"
+        gradientTransform="matrix(0.707107, -0.707107, 0.707107, 0.707107, 60, 60)" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stopColor="rgb(242,153,74)" />
+        <stop offset="1" stopColor="rgb(233,89,80)" />
+      </radialGradient>
+    </defs>
+
+    {/* Зовнішня рамка */}
+    <rect x="10" y="10" width="100" height="100" rx="20" ry="20" fill="url(#instagram-gradient)" />
+
+    {/* Внутрішня біла зона */}
+    <rect x="18" y="18" width="84" height="84" rx="16" ry="16" fill="white" />
+
+    {/* Центральне коло (камера) */}
+    <circle cx="60" cy="60" r="20" fill="url(#instagram-gradient)" />
+
+    {/* Маленьке коло (спалах) */}
+    <circle cx="80" cy="42" r="6" fill="url(#instagram-gradient)" />
+  </svg>
+);
+
+export InstagramIcon;

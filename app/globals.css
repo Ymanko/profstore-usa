@@ -1,8 +1,15 @@
-@import 'tailwindcss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@plugin "@tailwindcss/container-queries";
-@plugin "@tailwindcss/typography";
+/* 🌙 Dark mode */
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
 
+/* 🧼 Базовые сбросы */
 @layer base {
   *,
   ::after,
@@ -11,22 +18,80 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
   }
-}
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
-
-@supports (font: -apple-system-body) and (-webkit-appearance: none) {
   img[loading='lazy'] {
     clip-path: inset(0.6px);
   }
+
+  a,
+  input,
+  button {
+    @apply focus-visible:outline-none ring-2 ring-offset-2 ring-offset-white dark:ring-offset-gray-900;
+  }
+
+  /* 💡 Цвет ринга вручную */
+  :root {
+    --tw-ring-color: #cbd5e0;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --tw-ring-color: #4a5568;
+    }
+  }
 }
 
-a,
-input,
-button {
-  @apply focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-50 dark:focus-visible:ring-neutral-600 dark:focus-visible:ring-offset-neutral-900;
+/* 🔗 Footer */
+footer a {
+  @apply text-white no-underline;
+}
+
+footer a:hover {
+  @apply underline;
+}
+
+footer p {
+  margin-bottom: 0.5rem;
+}
+
+/* 📱 Autocomplete dropdown — мобайл */
+@media (max-width: 576px) {
+  .autocomplete-dropdown {
+    position: fixed;
+    top: 160px;
+    left: 10px;
+    right: 10px;
+    max-height: 60vh;
+    overflow-y: auto;
+    z-index: 9999;
+    background-color: white;
+    border-radius: 10px;
+    padding: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .autocomplete-item {
+    font-size: 14px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .autocomplete-item img {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+  }
+}
+
+/* 📏 Width helpers */
+@media (min-width: 768px) {
+  .w-md-30 {
+    width: 30% !important;
+  }
+
+  .w-md-70 {
+    width: 70% !important;
+  }
 }

@@ -1,57 +1,98 @@
-import CartModal from 'components/cart/modal';
-import LogoSquare from 'components/logo-square';
-import MobileMenu from './mobile-menu';
-import Search, { SearchSkeleton } from './search';
+'use client'
 
-const { SITE_NAME } = process.env;
+import { useEffect, useState, Suspense } from 'react'
+import Link from 'next/link'
+import {
+  Navbar,
+  Container,
+  Row,
+  Col,
+  InputGroup,
+  Form,
+  Button
+} from 'react-bootstrap'
 
-export async function Navbar() {
-  const menu = await getMenu('next-js-frontend-header-menu');
+import LogoSquare from '@/components/logo-square'
+import Search, { SearchSkeleton } from './search'
+import CartModal from '@/components/cart/modal'
+import MobileMenu from './mobile-menu'
+import CatalogButton from '@/components/catalog-button'
+import type { Collection } from '@/lib/shopify/types'
+
+const { SITE_NAME } = process.env
+
+export default function MainNavbar() {
+  const [collections, setCollections] = useState<Collection[]>([])
+
+  useEffect(() => {
+    fetch('/api/collections')
+      .then((res) => res.json())
+      .then((data) => setCollections(data))
+      .catch((err) => console.error('❌ Collections fetch error:', err))
+  }, [])
+
+  const buildTree = (
+    items: Collection[]
+  ): Array<Collection & { children: Collection[] }> => {
+    const map = new Map<string, Collection & { children: Collection[] }>()
+    items.forEach(item => map.set(item.id, { ...item, children: [] }))
+    items.forEach(item => {
+      const node = map.get(item.id)!
+      if (item.parentId && map.has(item.parentId)) {
+        map.get(item.parentId)!.children.push(node)
+      }
+    })
+    return Array.from(map.values()).filter(node => node.parentId === null)
+  }
+
+  const tree = buildTree(collections)
 
   return (
-    <nav className="relative flex items-center justify-between p-4 lg:px-6">
-      <div className="block flex-none md:hidden">
-        <Suspense fallback={null}>
-          <MobileMenu menu={menu} />
-        </Suspense>
-      </div>
-      <div className="flex w-full items-center">
-        <div className="flex w-full md:w-1/3">
-          <Link
-            href="/"
-            prefetch={true}
-            className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6"
-          >
-            <LogoSquare />
-            <div className="ml-2 flex-none text-sm font-medium uppercase md:hidden lg:block">
-              {SITE_NAME}
-            </div>
-          </Link>
-          {menu.length ? (
-            <ul className="hidden gap-6 text-sm md:flex md:items-center">
-              {menu.map((item: Menu) => (
-                <li key={item.title}>
-                  <Link
-                    href={item.path}
-                    prefetch={true}
-                    className="text-neutral-500 underline-offset-4 hover:text-black hover:underline dark:text-neutral-400 dark:hover:text-neutral-300"
-                  >
-                    {item.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          ) : null}
-        </div>
-        <div className="hidden justify-center md:flex md:w-1/3">
-          <Suspense fallback={<SearchSkeleton />}>
-            <Search />
+    <Navbar expand="md" bg="white" className="py-3 border-bottom shadow-sm z-50">
+      <Container fluid>
+        <Row className="align-items-center w-100">
+          {/* 🔰 Логотип */}
+          <Col xs={12} md={2} className="text-center text-md-start mb-3 mb-md-0">
+            <Link href="/" passHref legacyBehavior>
+              <Navbar.Brand className="d-flex align-items-center gap-2">
+                <LogoSquare />
+                <span className="text-uppercase fw-bold d-none d-lg-block">{SITE_NAME}</span>
+              </Navbar.Brand>
+            </Link>
+          </Col>
+
+          {/* 🧭 Навигация: Каталог, Поиск, Корзина */}
+          <Col xs={12} md={10}>
+            <Row className="align-items-center gy-3">
+              {/* 📂 Каталог */}
+              <Col xs={12} md={3}>
+                <CatalogButton />
+              </Col>
+
+              {/* 🔍 Поиск */}
+              <Col xs={12} md={6}>
+                <Suspense fallback={<SearchSkeleton />}>
+                  <Search />
+                </Suspense>
+              </Col>
+
+              {/* 🛒 Корзина */}
+              <Col xs={12} md={3} className="text-end">
+                <CartModal />
+              </Col>
+            </Row>
+
+            {/* 🧼 Удалено: NavDropdown — больше не используется */}
+          </Col>
+        </Row>
+
+        {/* 📱 Мобильное меню */}
+        <Row className="d-md-none mt-3">
+          <Suspense fallback={null}>
+            <MobileMenu menu={tree} />
           </Suspense>
-        </div>
-        <div className="flex justify-end md:w-1/3">
-          <CartModal />
-        </div>
-      </div>
-    </nav>
-  );
+        </Row>
+      </Container>
+    </Navbar>
+  )
 }

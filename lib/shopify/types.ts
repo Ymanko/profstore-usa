@@ -1,22 +1,49 @@
+// 🧠 Универсальные типы
 export type Maybe<T> = T | null;
-
-export type Connection<T> = {
-  edges: Array<Edge<T>>;
-};
 
 export type Edge<T> = {
   node: T;
 };
 
-export type Cart = Omit<ShopifyCart, 'lines'> & {
-  lines: CartItem[];
+export type Connection<T> = {
+  edges: Edge<T>[];
 };
 
-export type CartProduct = {
-  id: string;
-  handle: string;
+// 💸 Деньги
+export type Money = {
+  amount: string;
+  currencyCode: string;
+};
+
+// 📈 SEO
+export type SEO = {
   title: string;
-  featuredImage: Image;
+  description: string;
+};
+
+// 🖼️ Картинка
+export type Image = {
+  url: string;
+  altText: string;
+  width: number;
+  height: number;
+};
+
+// 🛒 Корзина
+export type ShopifyCart = {
+  id: string | undefined;
+  checkoutUrl: string;
+  cost: {
+    subtotalAmount: Money;
+    totalAmount: Money;
+    totalTaxAmount: Money;
+  };
+  lines: Connection<CartItem>;
+  totalQuantity: number;
+};
+
+export type Cart = Omit<ShopifyCart, 'lines'> & {
+  lines: CartItem[];
 };
 
 export type CartItem = {
@@ -36,42 +63,55 @@ export type CartItem = {
   };
 };
 
-export type Collection = ShopifyCollection & {
-  path: string;
-};
-
-export type Image = {
-  url: string;
-  altText: string;
-  width: number;
-  height: number;
-};
-
-export type Menu = {
-  title: string;
-  path: string;
-};
-
-export type Money = {
-  amount: string;
-  currencyCode: string;
-};
-
-export type Page = {
+export type CartProduct = {
   id: string;
   handle: string;
-  body: string;
-  bodySummary: string;
-  seo?: SEO;
-  createdAt: string;
+  title: string;
+  featuredImage: Image;
+};
+
+// 📁 Коллекции
+// 📁 Базовый тип коллекции из Shopify
+
+export type ShopifyCollection = {
+  id: string;
+  handle: string;
+  title: string;
+  description: string;
+  seo: SEO;
   updatedAt: string;
+  metafields?: Connection<Metafield>;
 };
 
-export type Product = Omit<ShopifyProduct, 'variants' | 'images'> & {
-  variants: ProductVariant[];
-  images: Image[];
+// 📎 Метаполя (custom fields)
+export type Metafield = {
+  namespace: string;
+  key: string;
+  value: string;
+  type?: string;
+  reference?: {
+    id: string;
+    handle: string;
+    title: string;
+  };
 };
 
+// 📦 Тип Collection для фронтенда / API
+export type Collection = {
+  id: string;
+  handle: string;
+  title: string;
+  description: string;
+  seo: SEO;
+  updatedAt: string;
+  metafields: Metafield[];           // ✅ уже преобразовано из Connection<>
+  path: string;                      // ✅ для маршрутизации: /collections/:handle
+  parentId?: string | null;          // ✅ для построения дерева
+  parentHandle?: string | null;      // ✅ используется в breadcrumbs или меню
+  image?: string;                    // ✅ URL картинки, если есть
+};
+
+// 📦 Продукты
 export type ProductOption = {
   id: string;
   name: string;
@@ -109,13 +149,32 @@ export type ShopifyProduct = {
   updatedAt: string;
 };
 
+export type Product = Omit<ShopifyProduct, 'variants' | 'images'> & {
+  variants: ProductVariant[];
+  images: Image[];
+};
+
+// 📄 Страницы и меню
+export type Page = {
+  id: string;
+  title: string;
+  handle: string;
+  body: string;
+  bodySummary: string;
+  seo?: SEO;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type Menu = {
+  title: string;
+  path: string;
+};
+
+// 🧩 Операции GraphQL
 export type ShopifyCartOperation = {
-  data: {
-    cart: ShopifyCart;
-  };
-  variables: {
-    cartId: string;
-  };
+  data: { cart: ShopifyCart };
+  variables: { cartId: string };
 };
 
 export type ShopifyCreateCartOperation = {
@@ -123,63 +182,37 @@ export type ShopifyCreateCartOperation = {
 };
 
 export type ShopifyAddToCartOperation = {
-  data: {
-    cartLinesAdd: {
-      cart: ShopifyCart;
-    };
-  };
+  data: { cartLinesAdd: { cart: ShopifyCart } };
   variables: {
     cartId: string;
-    lines: {
-      merchandiseId: string;
-      quantity: number;
-    }[];
+    lines: { merchandiseId: string; quantity: number }[];
   };
 };
 
 export type ShopifyRemoveFromCartOperation = {
-  data: {
-    cartLinesRemove: {
-      cart: ShopifyCart;
-    };
-  };
-  variables: {
-    cartId: string;
-    lineIds: string[];
-  };
+  data: { cartLinesRemove: { cart: ShopifyCart } };
+  variables: { cartId: string; lineIds: string[] };
 };
 
 export type ShopifyUpdateCartOperation = {
-  data: {
-    cartLinesUpdate: {
-      cart: ShopifyCart;
-    };
-  };
+  data: { cartLinesUpdate: { cart: ShopifyCart } };
   variables: {
     cartId: string;
-    lines: {
-      id: string;
-      merchandiseId: string;
-      quantity: number;
-    }[];
+    lines: { id: string; merchandiseId: string; quantity: number }[];
   };
 };
 
 export type ShopifyCollectionOperation = {
-  data: {
-    collection: ShopifyCollection;
-  };
-  variables: {
-    handle: string;
-  };
+  data: { collection: ShopifyCollection };
+  variables: { handle: string };
+};
+
+export type ShopifyCollectionsOperation = {
+  data: { collections: Connection<ShopifyCollection> };
 };
 
 export type ShopifyCollectionProductsOperation = {
-  data: {
-    collection: {
-      products: Connection<ShopifyProduct>;
-    };
-  };
+  data: { collection: { products: Connection<ShopifyProduct> } };
   variables: {
     handle: string;
     reverse?: boolean;
@@ -187,24 +220,23 @@ export type ShopifyCollectionProductsOperation = {
   };
 };
 
-export type ShopifyCollectionsOperation = {
-  data: {
-    collections: Connection<ShopifyCollection>;
+export type ShopifyProductOperation = {
+  data: { product: ShopifyProduct };
+  variables: { handle: string };
+};
+
+export type ShopifyProductsOperation = {
+  data: { products: Connection<ShopifyProduct> };
+  variables: {
+    query?: string;
+    reverse?: boolean;
+    sortKey?: string;
   };
 };
 
-export type ShopifyMenuOperation = {
-  data: {
-    menu?: {
-      items: {
-        title: string;
-        url: string;
-      }[];
-    };
-  };
-  variables: {
-    handle: string;
-  };
+export type ShopifyProductRecommendationsOperation = {
+  data: { productRecommendations: ShopifyProduct[] };
+  variables: { productId: string };
 };
 
 export type ShopifyPageOperation = {
@@ -213,23 +245,14 @@ export type ShopifyPageOperation = {
 };
 
 export type ShopifyPagesOperation = {
-  data: {
-    pages: Connection<Page>;
-  };
+  data: { pages: Connection<Page> };
 };
 
-export type ShopifyProductOperation = {
-  data: { product: ShopifyProduct };
-  variables: {
-    handle: string;
-  };
-};
-
-export type ShopifyProductRecommendationsOperation = {
+export type ShopifyMenuOperation = {
   data: {
-    productRecommendations: ShopifyProduct[];
+    menu?: {
+      items: { title: string; url: string }[];
+    };
   };
-  variables: {
-    productId: string;
-  };
+  variables: { handle: string };
 };
