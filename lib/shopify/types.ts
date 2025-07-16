@@ -59,7 +59,6 @@ export type Money = {
 
 export type Page = {
   id: string;
-  title: string;
   handle: string;
   body: string;
   bodySummary: string;
@@ -88,31 +87,6 @@ export type ProductVariant = {
     value: string;
   }[];
   price: Money;
-};
-
-export type SEO = {
-  title: string;
-  description: string;
-};
-
-export type ShopifyCart = {
-  id: string | undefined;
-  checkoutUrl: string;
-  cost: {
-    subtotalAmount: Money;
-    totalAmount: Money;
-    totalTaxAmount: Money;
-  };
-  lines: Connection<CartItem>;
-  totalQuantity: number;
-};
-
-export type ShopifyCollection = {
-  handle: string;
-  title: string;
-  description: string;
-  seo: SEO;
-  updatedAt: string;
 };
 
 export type ShopifyProduct = {
@@ -257,16 +231,5 @@ export type ShopifyProductRecommendationsOperation = {
   };
   variables: {
     productId: string;
-  };
-};
-
-export type ShopifyProductsOperation = {
-  data: {
-    products: Connection<ShopifyProduct>;
-  };
-  variables: {
-    query?: string;
-    reverse?: boolean;
-    sortKey?: string;
   };
 };

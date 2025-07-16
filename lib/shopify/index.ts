@@ -5,58 +5,6 @@ import {
 } from 'lib/constants';
 import { isShopifyError } from 'lib/type-guards';
 import { ensureStartsWith } from 'lib/utils';
-import {
-  revalidateTag,
-  unstable_cacheTag as cacheTag,
-  unstable_cacheLife as cacheLife
-} from 'next/cache';
-import { cookies, headers } from 'next/headers';
-import { NextRequest, NextResponse } from 'next/server';
-import {
-  addToCartMutation,
-  createCartMutation,
-  editCartItemsMutation,
-  removeFromCartMutation
-} from './mutations/cart';
-import { getCartQuery } from './queries/cart';
-import {
-  getCollectionProductsQuery,
-  getCollectionQuery,
-  getCollectionsQuery
-} from './queries/collection';
-import { getMenuQuery } from './queries/menu';
-import { getPageQuery, getPagesQuery } from './queries/page';
-import {
-  getProductQuery,
-  getProductRecommendationsQuery,
-  getProductsQuery
-} from './queries/product';
-import {
-  Cart,
-  Collection,
-  Connection,
-  Image,
-  Menu,
-  Page,
-  Product,
-  ShopifyAddToCartOperation,
-  ShopifyCart,
-  ShopifyCartOperation,
-  ShopifyCollection,
-  ShopifyCollectionOperation,
-  ShopifyCollectionProductsOperation,
-  ShopifyCollectionsOperation,
-  ShopifyCreateCartOperation,
-  ShopifyMenuOperation,
-  ShopifyPageOperation,
-  ShopifyPagesOperation,
-  ShopifyProduct,
-  ShopifyProductOperation,
-  ShopifyProductRecommendationsOperation,
-  ShopifyProductsOperation,
-  ShopifyRemoveFromCartOperation,
-  ShopifyUpdateCartOperation
-} from './types';
 
 const domain = process.env.SHOPIFY_STORE_DOMAIN
   ? ensureStartsWith(process.env.SHOPIFY_STORE_DOMAIN, 'https://')
@@ -92,7 +40,6 @@ export async function shopifyFetch<T>({
     });
 
     const body = await result.json();
-
     if (body.errors) {
       throw body.errors[0];
     }
