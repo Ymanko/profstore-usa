@@ -1,12 +1,10 @@
-import {Metadata} from "next";
+import { Metadata } from 'next';
 
-export const metadata:Metadata = {
-    title: 'ProfStore',
-    description: 'Some shop',
+export const metadata: Metadata = {
+  title: 'ProfStore',
+  description: 'Some shop',
 };
 
 export default function HomeSearchPage() {
-    return (
-        <h1>delivery</h1>
-    );
+  return <h1>delivery</h1>;
 }

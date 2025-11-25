@@ -1,12 +1,10 @@
-import {Metadata} from "next";
+import { Metadata } from 'next';
 
-export const metadata:Metadata = {
-    title: 'ProfStore',
-    description: 'Some shop',
+export const metadata: Metadata = {
+  title: 'ProfStore',
+  description: 'Some shop',
 };
 
 export default function HomeContactPage() {
-    return (
-        <h1>contact</h1>
-    );
+  return <h1>contact</h1>;
 }
