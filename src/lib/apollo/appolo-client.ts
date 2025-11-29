@@ -5,7 +5,7 @@ import { ApolloClient, HttpLink, InMemoryCache } from '@apollo/client';
 import { SetContextLink } from '@apollo/client/link/context';
 
 console.warn(
-  'process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN',
+  'process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN test',
   process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN,
 );
 const httpLink = new HttpLink({
