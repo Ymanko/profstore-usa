@@ -1,18 +1,24 @@
 import type { Metadata } from 'next';
 import { ReactNode } from 'react';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Montserrat, Inter } from 'next/font/google';
 
 import './globals.css';
 import { ApolloWrapper } from '@/components/layout/ApolloWrapper';
+import { Header } from './../components/layout/Header/Header';
+import { Footer } from '@/components/layout/Footer/Footer';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const montserratFont = Montserrat({
+  variable: '--font-montserrat',
   subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700', '800'], // Light, Regular, Medium, SemiBold, Bold, ExtraBold
+  display: 'swap'
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const interFont = Inter({
+  variable: '--font-inter',
   subsets: ['latin'],
+  weight: ['400'],
+  display: 'swap'
 });
 
 export const metadata: Metadata = {
@@ -23,8 +29,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <ApolloWrapper>{children}</ApolloWrapper>
+      <body className={`${montserratFont.variable} ${interFont.variable}`}>
+        <Header />
+        <ApolloWrapper>
+          {children}
+        </ApolloWrapper>
+        <Footer />
       </body>
     </html>
   );
