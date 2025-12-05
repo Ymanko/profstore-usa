@@ -3,7 +3,7 @@
 
 .container {
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 15px;
 
   @include useMedia('min-width', $breakpoint-tablet) {
     padding: 0 40px;

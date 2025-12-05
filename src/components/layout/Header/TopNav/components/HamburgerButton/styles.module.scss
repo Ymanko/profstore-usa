@@ -1,0 +1,57 @@
+@import '@/styles/_variables.scss';
+@import '@/styles/_mixins.scss';
+
+.hamburgerButton {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+
+  span {
+    display: block;
+    position: absolute;
+    width: 22px; // хрестик 18px
+    height: 2px;
+    background: $color-white ;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+
+  span:nth-child(1) {
+    top: 5px;
+  }
+
+  span:nth-child(2) {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  span:nth-child(3) {
+    bottom: 5px;
+  }
+
+  &.open {
+    span:nth-child(1) {
+      width: 18px;
+      top: 50%;
+      transform: translateY(-50%) rotate(45deg);
+    }
+
+    span:nth-child(2) {
+      opacity: 0;
+    }
+
+    span:nth-child(3) {
+      width: 18px;
+      top: 50%;
+      transform: translateY(-50%) rotate(-45deg);
+    }
+  }
+}

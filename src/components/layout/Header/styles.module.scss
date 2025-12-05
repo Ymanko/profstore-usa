@@ -8,9 +8,7 @@
   font-family: $font-montserrat;
   color: $color-text-on-green;
 
-  .headerContainer {
-    position: relative;
-  }
+  .headerContainer {}
 
   .headerContent {
     display: flex;
@@ -80,4 +78,33 @@
     }
 
   }
+}
+
+.headerTop {
+  width: 100%;
+  background-color: $color-bg-header;
+  padding: 5px 0;
+}
+
+.headerTopContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.headerTopContent {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.headerMiddle {
+  width: 100%;
+  background-color: $color-bg-main;
+  padding: 10px 0;
 }

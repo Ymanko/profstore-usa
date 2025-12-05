@@ -1,0 +1,14 @@
+@import '@/styles/_variables.scss';
+@import '@/styles/_mixins.scss';
+
+.actionsList {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  list-style: none;
+  padding: 0;
+
+  @include useMedia('min-width', $breakpoint-desktop) {
+    gap: 25px;
+  }
+}

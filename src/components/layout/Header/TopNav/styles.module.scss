@@ -1,0 +1,37 @@
+@import '@/styles/_variables.scss';
+@import '@/styles/_mixins.scss';
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.nav {
+  display: none;
+
+  @include useMedia('min-width', $breakpoint-desktop) {
+    display: block;
+  }
+}
+
+.staffTraining {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: $color-yellow;
+  font-weight: 700;
+  cursor: pointer;
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.phone {
+  display: none;
+}
+
+.mobileUserActionsList {}
