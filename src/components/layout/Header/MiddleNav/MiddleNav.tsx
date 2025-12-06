@@ -132,15 +132,16 @@ export const MiddleNav = () => {
   return (
     <div className={s.headerMiddle}>
       <AppContainer classes={s.headerMiddleContainer}>
-        <Link href={'/catalog'} className={s.logoLink}>
+        <Link href={'/'} className={s.logoLink}>
           <Image
             src={'/img/profstore-logo.png'}
             alt={'Profstore logo'}
             width={141}
             height={66}
+            className={s.logo}
           />
         </Link>
-        <DesktopUserActionsList />
+        <DesktopUserActionsList className={s.userActionList} />
         <div className={s.searchContainer}>
           <button
             className={s.catalogBtn}

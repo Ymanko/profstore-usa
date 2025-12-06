@@ -1,55 +1,48 @@
-// MobileMenu.tsx
 import Link from 'next/link';
-import { FaTelegramPlane, FaViber, FaCommentDots } from 'react-icons/fa';
-
-import { AppContainer } from '@/components/common/AppContainer/AppContainer';
 import s from './styles.module.scss';
-
-const NAV_ITEMS = [
-  { label: 'New', href: '/' },
-  { label: 'Delivery and payment', href: '/delivery' },
-  { label: 'Contacts', href: '/contacts' },
-  { label: 'How to Buy', href: '/how-to-buy' },
-  { label: 'Producers', href: '/producers' },
-  { label: 'Shares', href: '/shares' },
-  { label: 'Warranty and service', href: '/warranty' },
-];
-
-const SOCIAL_ICONS = [
-  { icon: <FaTelegramPlane />, href: 'https://t.me/yourchannel' },
-  { icon: <FaViber />, href: 'viber://chat?number=%2B1234567890' },
-  { icon: <FaCommentDots />, href: '#' },
-];
+import { SocialLinks } from '@/components/common/SocialLinks/SocialLinks';
+import { Icon } from '@/components/ui/Icon/Icon';
+import { NAV_ITEMS } from '@/constants/userMenu';
+import { siteConfig } from '@/constants/siteConfig';
 
 interface MobileMenuProps {
-  isOpen: boolean;
-  onClose: () => void;
+  closeMenu: () => void;
 }
 
-export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
-  if (!isOpen) return null;
-
+export const MobileMenu = ({ closeMenu }: MobileMenuProps) => {
   return (
-    <div className={s.mobileMenuOverlay}>
-      <AppContainer classes={s.mobileMenuContainer}>
-        <nav className={s.mobileNav}>
+    <div className={s.mobileMenu}>
+      <div className={s.content}>
+
+        {/* Блок навігації */}
+        <nav className={s.nav}>
           <ul className={s.navList}>
             {NAV_ITEMS.map((item) => (
               <li key={item.label} className={s.navItem}>
-                <Link href={item.href} onClick={onClose}>{item.label}</Link>
+                <Link
+                  className={s.navLink}
+                  href={item.href}
+                  onClick={closeMenu} // Закриваємо меню після кліку
+                >
+                  {item.label}
+                </Link>
               </li>
             ))}
           </ul>
         </nav>
 
-        <div className={s.mobileSocials}>
-          {SOCIAL_ICONS.map((social, index) => (
-            <a key={index} href={social.href} target="_blank" rel="noopener noreferrer" className={s.socialIcon}>
-              {social.icon}
-            </a>
-          ))}
+        {/* Блок телефону */}
+        <a href={siteConfig.phone_href} className={s.phone} onClick={closeMenu}>
+          <Icon name="callReceive" width="24" height="24" />
+          {siteConfig.phone_number}
+        </a>
+
+        {/* Блок соціальних посилань */}
+        <div className={s.socials}>
+          <SocialLinks />
         </div>
-      </AppContainer>
+
+      </div>
     </div>
   );
 };

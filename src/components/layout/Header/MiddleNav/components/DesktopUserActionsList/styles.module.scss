@@ -17,6 +17,11 @@
   }
 
   @include useMedia('min-width', $breakpoint-desktop) {
+
+    & {
+      gap: 40px;
+    }
+
     & li:not(:first-child) {
       display: unset;
     }

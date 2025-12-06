@@ -26,4 +26,6 @@ export const NAV_ITEMS = [
   { label: 'Producers', href: '/producers' },
   { label: 'Shares', href: '/shares' },
   { label: 'Warranty and service', href: '/warranty' },
-];
+] as const;
+
+export type NavItem = (typeof NAV_ITEMS)[number];

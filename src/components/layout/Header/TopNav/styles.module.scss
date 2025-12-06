@@ -2,6 +2,7 @@
 @use "@/styles/mixins" as *;
 
 .headerTop {
+  // position: relative;
   padding: 13px 0;
 
   @include useMedia('min-width', $breakpoint-tablet) {

@@ -11,21 +11,73 @@
   }
 }
 
+//------------------------------------------
+
 .headerMiddleContainer {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-}
-
-.searchContainer {
-  display: flex;
-  flex-direction: column;
   gap: 20px;
 
+  .logoLink {
+    order: 1;
+    flex: 1;
+  }
+
+  .userActionList {
+    order: 2;
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .searchContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    order: 3;
+    flex: 0 0 100%;
+  }
+
   @include useMedia('min-width', $breakpoint-tablet) {
-    flex-direction: row;
+
+    .logoLink {
+      order: 1;
+      flex: 0 0 auto;
+    }
+
+    .userActionList {
+      order: 3;
+      flex: 0 0 auto;
+      justify-content: flex-end;
+      /* тоже ок */
+    }
+
+    .searchContainer {
+      flex-direction: row;
+      align-items: center;
+      order: 2;
+      flex: 1;
+      /* центр */
+    }
+  }
+
+  @include useMedia('min-width', $breakpoint-desktop) {
+
+    & {
+      gap: 32px;
+    }
+
+    .logo {
+      width: 162px;
+      height: 76px;
+    }
   }
 }
+
+
+//------------------------------------------
 
 .catalogBtn {
   display: flex;
@@ -68,6 +120,14 @@
 
   font-family: Montserrat;
   line-height: 20px;
+
+  @include useMedia('min-width', $breakpoint-tablet) {
+    min-width: 277px;
+  }
+
+  @include useMedia('min-width', $breakpoint-desktop) {
+    min-width: 617px;
+  }
 }
 
 .iconWrap {
