@@ -1,14 +1,25 @@
-@import '@/styles/_variables.scss';
-@import '@/styles/_mixins.scss';
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
 
 .actionsList {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 24px;
   list-style: none;
   padding: 0;
 
-  @include useMedia('min-width', $breakpoint-desktop) {
-    gap: 25px;
+  @include useMedia('min-width', $breakpoint-tablet) {
+    gap: 15px;
+  }
+}
+
+.userMenuIcon {
+  width: 24px;
+  height: 24px;
+  color: $color-white;
+
+  &:hover,
+  &:focus {
+    color: $color-yellow;
   }
 }

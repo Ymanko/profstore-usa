@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import { ReactNode } from 'react';
 import { Montserrat, Inter } from 'next/font/google';
 
-import './globals.css';
+// import './globals.css';
+import "@/styles/globals.scss";
 import { ApolloWrapper } from '@/components/layout/ApolloWrapper';
 import { Header } from './../components/layout/Header/Header';
 import { Footer } from '@/components/layout/Footer/Footer';

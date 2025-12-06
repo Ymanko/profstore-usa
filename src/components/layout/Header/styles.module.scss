@@ -1,9 +1,8 @@
-@import '@/styles/_variables.scss';
-@import '@/styles/_mixins.scss';
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
 
 .header {
   background-color: $color-bg-header;
-  padding: 10px 0;
 
   font-family: $font-montserrat;
   color: $color-text-on-green;

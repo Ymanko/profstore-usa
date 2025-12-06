@@ -1,14 +1,21 @@
 export const HEADER_USER_ACTIONS = [
-  { label: 'Basket', href: '/basket', icon: 'icon-shopping-cart' },
-  { label: 'Comparison', href: '/comparison', icon: 'icon-scales' },
-  { label: 'Favorites', href: '/favorites', icon: 'icon-heart' },
-  { label: 'Sign in', href: '/sign-in', icon: 'icon-log-in' },
+  { label: 'Basket', href: '/basket', icon: 'shoppingCart' },
+  { label: 'Comparison', href: '/comparison', icon: 'scales' },
+  { label: 'Favorites', href: '/favorites', icon: 'heart' },
+  { label: 'Sign in', href: '/sign-in', icon: 'logIn' },
 ] as const;
 
 export const MOBILE_HEADER_USER_ACTIONS = [
-  { href: '/comparison', icon: 'icon-scales' },
-  { href: '/favorites', icon: 'icon-heart' },
-  { href: '/sign-in', icon: 'icon-user' },
+  { href: '/comparison', icon: 'scales' },
+  { href: '/favorites', icon: 'heart' },
+  { href: '/sign-in', icon: 'user' },
+] as const;
+
+export const DESKTOP_HEADER_USER_ACTIONS = [
+  { href: '/basket', icon: 'shoppingCart', label: 'Basket' },
+  { href: '/comparison', icon: 'scales', label: 'Comparison' },
+  { href: '/favorites', icon: 'heart', label: 'Favorites' },
+  { href: '/sign-in', icon: 'user', label: 'Sign in' },
 ] as const;
 
 export const NAV_ITEMS = [

@@ -1,4 +1,4 @@
-@import '_variables.scss';
+@use "./variables" as *;
 
 html,
 body {
@@ -8,9 +8,9 @@ body {
 }
 
 body {
-  color: $color-black;
-  background: $color-clean-white;
-  font-family: $font-outfit, sans-serif;
+  color: $color-text-main;
+  background: $color-bg-main;
+  font-family: $font-inter, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -43,4 +43,17 @@ button {
   display: block;
   padding: 0;
   cursor: pointer;
+}
+
+.visuallyHidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  /* щоб текст не переносився */
+  border: 0;
 }

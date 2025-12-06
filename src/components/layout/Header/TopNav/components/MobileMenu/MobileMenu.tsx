@@ -1,9 +1,9 @@
 // MobileMenu.tsx
+import Link from 'next/link';
+import { FaTelegramPlane, FaViber, FaCommentDots } from 'react-icons/fa';
+
 import { AppContainer } from '@/components/common/AppContainer/AppContainer';
 import s from './styles.module.scss';
-
-import { FaTelegramPlane, FaViber, FaCommentDots } from 'react-icons/fa';
-import Link from 'next/link';
 
 const NAV_ITEMS = [
   { label: 'New', href: '/' },
