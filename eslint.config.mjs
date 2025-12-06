@@ -52,7 +52,7 @@ export default [
       '@next/next/no-img-element': 'warn',
 
       /* General */
-      'no-console': ['warn', { allow: ['warn', 'error'] }],
+      'no-console': ['warn', { allow: ['warn', 'error', 'info'] }],
       'no-debugger': 'error',
     },
   },

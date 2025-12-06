@@ -3,23 +3,23 @@ import { ReactNode } from 'react';
 import { Montserrat, Inter } from 'next/font/google';
 
 // import './globals.css';
-import "@/styles/globals.scss";
+import '@/styles/globals.scss';
 import { ApolloWrapper } from '@/components/layout/ApolloWrapper';
-import { Header } from './../components/layout/Header/Header';
+import { Header } from '@/components/layout/Header/Header';
 import { Footer } from '@/components/layout/Footer/Footer';
 
 const montserratFont = Montserrat({
   variable: '--font-montserrat',
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700', '800'], // Light, Regular, Medium, SemiBold, Bold, ExtraBold
-  display: 'swap'
+  display: 'swap',
 });
 
 const interFont = Inter({
   variable: '--font-inter',
   subsets: ['latin'],
   weight: ['400'],
-  display: 'swap'
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -31,11 +31,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body className={`${montserratFont.variable} ${interFont.variable}`}>
-        <Header />
         <ApolloWrapper>
+          <Header />
           {children}
+          <Footer />
         </ApolloWrapper>
-        <Footer />
       </body>
     </html>
   );
