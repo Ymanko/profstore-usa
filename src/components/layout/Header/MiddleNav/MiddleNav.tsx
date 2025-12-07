@@ -29,7 +29,7 @@ export const MiddleNav = () => {
     setSearchValue(event.target.value);
   };
 
-  const handleCatalogClick = () => {};
+  const handleCatalogClick = () => { };
 
   return (
     <div className={s.headerMiddle}>

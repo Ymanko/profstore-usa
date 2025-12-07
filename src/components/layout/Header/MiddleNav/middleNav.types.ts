@@ -1,4 +1,4 @@
-interface CollectionItem {
+export interface CollectionItem {
   id: string;
   title: string;
   handle: string;

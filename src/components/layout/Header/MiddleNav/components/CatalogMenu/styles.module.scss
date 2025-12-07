@@ -1,0 +1,209 @@
+@import '@/styles/variables'; // Підключіть змінні (кольори, брейкпоінти)
+
+// --- BACKDROP ---
+.backdrop {
+  position: fixed;
+  top: 0; // Покриває весь екран, починаючи з самого верху
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4); // Напівпрозорий
+  z-index: 900; // Менше ніж меню, більше ніж решта сайту
+}
+
+// --- WRAPPER ---
+.catalogWrapper {
+  position: absolute;
+  top: 100%; // Починається рівно під батьківським контейнером (MiddleNav)
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  padding-top: 10px; // Невеликий відступ від хедера
+}
+
+.catalogContainer {
+  background: #fff;
+  border-radius: 4px; // Легке заокруглення
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  display: flex;
+  min-height: 500px; // Висота меню на десктопі
+  overflow: hidden;
+}
+
+// --- SIDEBAR (LEFT) ---
+.sidebar {
+  width: 280px; // Фіксована ширина сайдбара
+  background-color: #f4f6f8; // Світло-сірий фон, як на макеті
+  flex-shrink: 0;
+  border-right: 1px solid #eaeaea;
+  padding: 10px 0;
+  overflow-y: auto;
+
+  // Приховуємо скроллбар для краси
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+  }
+}
+
+.sidebarList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebarItem {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #333;
+  font-weight: 500;
+  font-size: 14px;
+  border-left: 3px solid transparent; // Для зеленої смужки
+
+  .itemIcon {
+    margin-right: 12px;
+    opacity: 0.6;
+    display: flex;
+    align-items: center;
+  }
+
+  .mobileArrow {
+    display: none; // На десктопі стрілки немає
+  }
+
+  &:hover {
+    background-color: darken(#f4f6f8, 3%);
+  }
+
+  // Активний стан (як на скріншоті)
+  &.active {
+    background-color: #ffffff; // Стає білим
+    border-left-color: #8dbd48; // Зелена смужка зліва (колір з логотипу)
+    color: #000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); // Легка тінь
+    position: relative;
+    z-index: 2; // Щоб перекрити бордер справа
+    width: calc(100% + 1px); // Наїжджаємо на лінію розділення
+
+    .itemIcon {
+      opacity: 1;
+      color: #8dbd48;
+    }
+  }
+}
+
+// --- CONTENT (RIGHT) ---
+.contentArea {
+  flex-grow: 1;
+  padding: 30px;
+  position: relative;
+  background-color: #fff;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+// Сітка елементів
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); // Адаптивна сітка
+  gap: 20px;
+}
+
+.gridCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  group: hover; // Для ховер ефектів
+
+  .imageWrapper {
+    width: 100%;
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    transition: transform 0.2s;
+  }
+
+  .cardTitle {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #333;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  &:hover {
+    .imageWrapper {
+      transform: scale(1.05);
+    }
+
+    .cardTitle {
+      color: #8dbd48; // Зелений при ховері
+    }
+  }
+}
+
+// --- MOBILE STYLES ---
+@media (max-width: 991px) {
+  .catalogContainer {
+    flex-direction: column;
+    height: 80vh; // На мобільному менша висота або на весь екран
+    overflow-y: auto;
+  }
+
+  .sidebar {
+    width: 100%;
+    background: #fff; // На мобільному зазвичай білий
+    border-right: none;
+  }
+
+  .contentArea {
+    display: none; // На мобільному показуємо ТІЛЬКИ список категорій першого рівня (згідно ТЗ)
+    // Якщо потрібно показати підкатегорії, це зазвичай робиться через акордеон або перехід на нову сторінку
+  }
+
+  .sidebarItem {
+    border-bottom: 1px solid #f0f0f0;
+    border-left: none;
+    padding: 15px 20px;
+
+    &.active {
+      border-left: none;
+      background-color: #f9f9f9;
+      width: 100%;
+    }
+
+    .mobileArrow {
+      display: block;
+      margin-left: auto; // Притискаємо вправо
+      opacity: 0.4;
+    }
+  }
+
+  .closeBtn {
+    // Можна винести кнопку закриття в заголовок для мобільного
+    display: none;
+  }
+}
