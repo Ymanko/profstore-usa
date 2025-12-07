@@ -1,5 +1,5 @@
-@use "@/styles/variables" as *;
-@use "@/styles/mixins" as *;
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
 
 .hamburgerButton {
   position: relative;
@@ -18,7 +18,7 @@
     position: absolute;
     width: 22px; // хрестик 18px
     height: 2px;
-    background: $color-white ;
+    background: $color-white;
     border-radius: 2px;
     transition: all 0.3s ease;
     transform-origin: center;

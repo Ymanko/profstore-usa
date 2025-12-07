@@ -1,7 +1,6 @@
 import clsx from 'clsx';
-import { Icon } from "@/components/ui/Icon/Icon";
+import { Icon } from '@/components/ui/Icon/Icon';
 import s from './styles.module.scss';
-
 
 export const SOCIAL_ICONS = [
   { href: 'https://t.me/yourchannel', icon: 'socialsTg' },
@@ -14,10 +13,7 @@ interface SocialLinksProps {
   size?: number | string;
 }
 
-export const SocialLinks = ({
-  className,
-  size = 30,
-}: SocialLinksProps) => {
+export const SocialLinks = ({ className, size = 30 }: SocialLinksProps) => {
   return (
     <ul className={clsx(s.socialLinks, className)}>
       {SOCIAL_ICONS.map((social, index) => (

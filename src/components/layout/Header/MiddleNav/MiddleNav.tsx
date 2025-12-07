@@ -14,16 +14,17 @@ import { useGetCollections } from '@/hooks/useGetCollections';
 import { useGetSearchData } from '@/hooks/useGetSearchData';
 
 import s from './styles.module.scss';
+import { SearchResultList } from '@/components/layout/Header/SearchResultList/SearchResultList';
 
 export const MiddleNav = () => {
   const [searchValue, setSearchValue] = useState<string>('');
+  const [isFocus, setIsFocus] = useState<boolean>(false);
   const [value] = useDebounce(searchValue, 300);
 
   const { loadingCollections, collections } = useGetCollections();
   const { loadingSearch, searchData } = useGetSearchData(value);
 
   console.info('collections', collections);
-  console.info('searchData', searchData);
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
@@ -58,7 +59,6 @@ export const MiddleNav = () => {
             <label htmlFor="search" className="visuallyHidden">
               Search products
             </label>
-
             <input
               id="search"
               type="text"
@@ -66,8 +66,10 @@ export const MiddleNav = () => {
               className={s.searchInput}
               onChange={handleSearchChange}
               value={searchValue}
+              onFocus={() => setIsFocus(true)}
+              // eslint-disable-next-line no-undef
+              onBlur={() => setTimeout(() => setIsFocus(false), 100)}
             />
-
             <div className={s.iconWrap}>
               {loadingSearch ? (
                 <span style={{ fontSize: '12px' }}>...</span>
@@ -80,6 +82,7 @@ export const MiddleNav = () => {
                 />
               )}
             </div>
+            <SearchResultList searchData={searchData} isFocus={isFocus} />
           </div>
         </div>
       </AppContainer>

@@ -1,7 +1,11 @@
-interface CollectionItem {
-  id: string;
-  title: string;
-  handle: string;
+interface MoneyV2 {
+  amount: string;
+  currencyCode: string;
+}
+
+interface ProductPriceRange {
+  minVariantPrice: MoneyV2;
+  maxVariantPrice: MoneyV2;
 }
 
 interface ImageNode {
@@ -9,21 +13,41 @@ interface ImageNode {
   altText: string;
 }
 
+interface ImageEdge {
+  node: ImageNode;
+}
+
+interface ImageConnection {
+  edges: ImageEdge[];
+}
+
+interface CollectionItem {
+  id: string;
+  title: string;
+  handle: string;
+  priceRange: ProductPriceRange;
+  images: ImageConnection;
+}
+
 interface ProductNode {
   id: string;
   handle: string;
   title: string;
-  featuredImage?: ImageNode | null;
+  priceRange: ProductPriceRange;
+  images: ImageConnection;
 }
+
 interface CollectionNode {
   id: string;
   handle: string;
   title: string;
   products: { edges: { node: ProductNode }[] };
 }
+
 export interface GetCollectionsData {
   collections: { edges: { node: CollectionNode }[] };
 }
+
 export interface SearchData {
   products: { edges: { node: CollectionItem }[] };
   collections: { edges: { node: CollectionItem }[] };

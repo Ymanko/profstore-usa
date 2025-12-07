@@ -1,5 +1,5 @@
-@use "@/styles/variables" as *;
-@use "@/styles/mixins" as *;
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
 
 .headerTop {
   // position: relative;
@@ -9,7 +9,8 @@
     padding: 10px 0;
   }
 
-  .headerTopContainer {}
+  .headerTopContainer {
+  }
 
   .headerContent {
     display: flex;
@@ -18,7 +19,6 @@
     // gap: 20px;
 
     .hBtn {
-
       @include useMedia('min-width', $breakpoint-desktop) {
         display: none;
       }
@@ -35,7 +35,8 @@
         display: flex;
         gap: 30px;
 
-        .navItem {}
+        .navItem {
+        }
 
         .navLink {
           color: $color-text-on-green;
