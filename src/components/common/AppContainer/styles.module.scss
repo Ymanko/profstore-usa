@@ -1,32 +1,17 @@
-@import '@/styles/_variables.scss';
-@import '@/styles/_mixins.scss';
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
 
 .container {
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 15px;
 
   @include useMedia('min-width', $breakpoint-tablet) {
-    padding: 0 40px;
+    padding: 0 50px;
+    max-width: $content-width-tablet;
   }
 
   @include useMedia('min-width', $breakpoint-desktop) {
-    max-width: 1320px;
+    padding: 0 15px;
+    max-width: $breakpoint-desktop;
   }
 }
-
-
-// @use '@/styles/variables' as v;
-// @use '@/styles/mixins' as m;
-
-// .container {
-//   margin: 0 auto;
-//   padding: 0 20px;
-
-//   @include m.useMedia('min-width', v.$breakpoint-tablet) {
-//     padding: 0 40px;
-//   }
-
-//   @include m.useMedia('min-width', v.$breakpoint-desktop) {
-//     max-width: 1320px;
-//   }
-// }
