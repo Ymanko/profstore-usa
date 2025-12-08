@@ -1,5 +1,5 @@
-@use "@/styles/variables" as *;
-@use "@/styles/mixins" as *;
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
 
 .actionsList {
   display: flex;
@@ -17,7 +17,6 @@
   }
 
   @include useMedia('min-width', $breakpoint-desktop) {
-
     & {
       gap: 40px;
     }
@@ -28,12 +27,12 @@
   }
 }
 
-.actionsList {}
+.actionsList {
+}
 
 .userMenuItem {
   color: $color-black;
 }
-
 
 .userMenuLink {
   display: flex;
@@ -54,7 +53,6 @@
   font-family: Montserrat;
   line-height: 1.25;
   text-align: center;
-  ;
 }
 
 .userMenuIcon {

@@ -1,5 +1,5 @@
-@use "@/styles/variables" as *;
-@use "@/styles/mixins" as *;
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
 
 .header {
   background-color: $color-bg-header;
@@ -7,7 +7,8 @@
   font-family: $font-montserrat;
   color: $color-text-on-green;
 
-  .headerContainer {}
+  .headerContainer {
+  }
 
   .headerContent {
     display: flex;
@@ -75,7 +76,6 @@
       background-color: #2e5c36;
       color: $color-yellow;
     }
-
   }
 }
 

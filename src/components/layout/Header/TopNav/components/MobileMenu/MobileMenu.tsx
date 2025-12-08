@@ -13,7 +13,6 @@ export const MobileMenu = ({ closeMenu }: MobileMenuProps) => {
   return (
     <div className={s.mobileMenu}>
       <div className={s.content}>
-
         {/* Блок навігації */}
         <nav className={s.nav}>
           <ul className={s.navList}>
@@ -41,7 +40,6 @@ export const MobileMenu = ({ closeMenu }: MobileMenuProps) => {
         <div className={s.socials}>
           <SocialLinks />
         </div>
-
       </div>
     </div>
   );
