@@ -1,8 +1,20 @@
-@import '@/styles/variables'; // Підключіть змінні (кольори, брейкпоінти)
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+// Головна обгортка, яка "прилипає" до низу хедера
+.rootOverlay {
+  position: absolute;
+  top: 100%; // Починаємо рівно від нижнього краю батьківського контейнера (HeaderMiddle)
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 100%); // Висота = все що залишилось на екрані
+  z-index: 100;
+  // Важливо: переконайтеся, що у батьківського headerMiddle стоїть position: relative
+}
 
 // --- BACKDROP ---
 .backdrop {
-  position: fixed;
+  position: absolute;
   top: 0; // Покриває весь екран, починаючи з самого верху
   left: 0;
   width: 100vw;
@@ -14,30 +26,52 @@
 // --- WRAPPER ---
 .catalogWrapper {
   position: absolute;
-  top: 100%; // Починається рівно під батьківським контейнером (MiddleNav)
+  top: 0; // Починається рівно під батьківським контейнером (MiddleNav)
   left: 0;
   width: 100%;
   z-index: 1000;
-  padding-top: 10px; // Невеликий відступ від хедера
 }
 
 .catalogContainer {
+  position: relative;
   background: #fff;
-  border-radius: 4px; // Легке заокруглення
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   display: flex;
   min-height: 500px; // Висота меню на десктопі
   overflow: hidden;
+  border-top: 5px solid #579040;
+}
+
+.catalogContainer::after {
+  content: "";
+  position: absolute;
+  z-index: 99999;
+  left: 20px;
+  top: -8px;
+  // transform: translateY(-50%);
+  width: 21px; // ширину svg
+  height: 11px; // висоту svg
+
+  background-color: #579040; // колір іконки
+
+  mask-image: url("data:image/svg+xml;utf8,<svg width='21' height='11' viewBox='0 0 21 11' xmlns='http://www.w3.org/2000/svg'><path d='M4 6H17V7H4V6Z'/><path d='M5 5H16V6H5V5Z'/><path d='M6 4H15V5H6V4Z'/><path d='M7 3H14V4H7V3Z'/><path d='M8 2H13V3H8V2Z'/><path d='M9 1H12V2H9V1Z'/><path d='M10 0H11V1H10V0Z'/><path d='M3 7H18V8H3V7Z'/><path d='M2 8H19V9H2V8Z'/><path d='M1 9H20V10H1V9Z'/><path d='M0 10H21V11H0V10Z'/></svg>");
+
+  mask-repeat: no-repeat;
+  mask-size: contain;
 }
 
 // --- SIDEBAR (LEFT) ---
 .sidebar {
-  width: 280px; // Фіксована ширина сайдбара
-  background-color: #f4f6f8; // Світло-сірий фон, як на макеті
+  width: 312px; // Фіксована ширина сайдбара
+  background-color: $color-bg-aside;
+  box-shadow: inset -10px 0 10px 0 rgba(0, 0, 0, 0.1);
   flex-shrink: 0;
   border-right: 1px solid #eaeaea;
   padding: 10px 0;
   overflow-y: auto;
+
+  @include useMedia('min-width', $breakpoint-desktop) {
+    width: 345px;
+  }
 
   // Приховуємо скроллбар для краси
   &::-webkit-scrollbar {
@@ -56,19 +90,21 @@
 }
 
 .sidebarItem {
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   padding: 12px 20px;
   cursor: pointer;
   transition: all 0.2s ease;
   color: #333;
-  font-weight: 500;
-  font-size: 14px;
-  border-left: 3px solid transparent; // Для зеленої смужки
+  font-weight: 300;
+  font-size: 17px;
+  color: #000;
 
   .itemIcon {
     margin-right: 12px;
-    opacity: 0.6;
+    // opacity: 0.6;
     display: flex;
     align-items: center;
   }
@@ -77,24 +113,29 @@
     display: none; // На десктопі стрілки немає
   }
 
-  &:hover {
-    background-color: darken(#f4f6f8, 3%);
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: transparent;
+    // transition: 0.2s ease;
+    transition: background 0.2s ease;
+    z-index: 0; // фон під контентом
   }
 
-  // Активний стан (як на скріншоті)
-  &.active {
-    background-color: #ffffff; // Стає білим
-    border-left-color: #8dbd48; // Зелена смужка зліва (колір з логотипу)
-    color: #000;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); // Легка тінь
+  // Контент поверх фону
+  * {
     position: relative;
-    z-index: 2; // Щоб перекрити бордер справа
-    width: calc(100% + 1px); // Наїжджаємо на лінію розділення
+    z-index: 1;
+  }
 
-    .itemIcon {
-      opacity: 1;
-      color: #8dbd48;
-    }
+  &.active::before {
+    background: linear-gradient(90deg, $color-sidebar-active 0%, #f9faff 100%);
+    opacity: 0.2; // прозорість ТІЛЬКИ фону
+  }
+
+  &.active {
+    color: $color-sidebar-active;
   }
 }
 

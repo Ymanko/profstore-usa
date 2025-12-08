@@ -21,6 +21,8 @@ import SocialsMessenger from '@/icons-react/SocialsMessenger';
 import Trash from '@/icons-react/Trash';
 import User from '@/icons-react/User';
 import ViewGrid from '@/icons-react/ViewGrid';
+import Equipment from '@/icons-react/Equipment';
+import Vector from '@/icons-react/Vector';
 
 // Мапа іконок
 const ICONS = {
@@ -45,6 +47,8 @@ const ICONS = {
   trash: Trash,
   user: User,
   viewGrid: ViewGrid,
+  equipment: Equipment
+  vector: Vector
 } as const;
 
 export type IconName = keyof typeof ICONS;

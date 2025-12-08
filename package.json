@@ -8,8 +8,7 @@
     "start": "next start",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,scss,md}\"",
-    "svgr": "svgr --typescript --icon --out-dir src/icons-react src/icons",
-    "svgr2": "svgr --template ./scripts/svgr-template.cjs --out-dir src/icons-react src/icons"
+    "svgr": "svgr --typescript --icon --out-dir src/icons-react src/icons"
   },
   "dependencies": {
     "@apollo/client": "^4.0.9",

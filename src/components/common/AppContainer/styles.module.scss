@@ -7,7 +7,7 @@
 
   @include useMedia('min-width', $breakpoint-tablet) {
     padding: 0 50px;
-    max-width: $breakpoint-tablet;
+    max-width: $content-width-tablet;
   }
 
   @include useMedia('min-width', $breakpoint-desktop) {

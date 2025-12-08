@@ -59,64 +59,61 @@ export const CatalogMenu = ({ isOpen, onClose, collections }: CatalogMenuProps) 
 
   return (
     <>
-      {/* Напівпрозорий фон на весь екран */}
-      <div className={s.backdrop} onClick={onClose} />
+      <div className={s.rootOverlay}>
+        <div className={s.backdrop} onClick={onClose} />
+        <div className={s.catalogWrapper}>
+          <AppContainer>
+            <div className={s.catalogContainer}>
+              {/* <Icon className={s.vector} name={"vector"} /> */}
+              {/* --- SIDEBAR (Left part) --- */}
+              <aside className={s.sidebar}>
+                <ul className={s.sidebarList}>
+                  {collections?.map((item) => (
+                    <li
+                      key={item.id}
+                      className={`${s.sidebarItem} ${activeId === item.id ? s.active : ''}`}
+                      onMouseEnter={() => setActiveId(item.id)}
+                      onClick={() => setActiveId(item.id)}
+                    >
+                      <span className={s.itemIcon}>
+                        <Icon name={"equipment"} width={20} height={20} />
+                      </span>
+                      <span className={s.itemTitle}>{item.title}</span>
 
-      <div className={s.catalogWrapper}>
-        <AppContainer>
-          <div className={s.catalogContainer}>
+                      {/* Стрілочка для мобільного (опціонально) */}
+                      <Icon name="close" className={s.mobileArrow} width={16} height={16} />
+                    </li>
+                  ))}
+                </ul>
+              </aside>
 
-            {/* --- SIDEBAR (Ліва частина) --- */}
-            <aside className={s.sidebar}>
-              <ul className={s.sidebarList}>
-                {collections?.map((item) => (
-                  <li
-                    key={item.id}
-                    className={`${s.sidebarItem} ${activeId === item.id ? s.active : ''}`}
-                    onMouseEnter={() => setActiveId(item.id)} // Зміна при наведенні (як на десктопах)
-                    onClick={() => setActiveId(item.id)} // Для тач-скрінів
-                  >
-                    <span className={s.itemIcon}>
-                      {/* Тут має бути динамічна іконка, якщо вона є в API */}
-                      <Icon name={item.iconName || 'oven'} width={20} height={20} />
-                    </span>
-                    <span className={s.itemTitle}>{item.title || item.name}</span>
+              {/* --- CONTENT (Right part) --- */}
+              <main className={s.contentArea}>
+                <button className={s.closeBtn} onClick={onClose}>
+                  <Icon name="close" width={24} height={24} />
+                </button>
 
-                    {/* Стрілочка для мобільного (опціонально) */}
-                    <Icon name="chevronRight" className={s.mobileArrow} width={16} height={16} />
-                  </li>
-                ))}
-              </ul>
-            </aside>
+                <div className={s.gridContainer}>
+                  {subItemsToRender.map((sub) => (
+                    <Link key={sub.id} href={`/catalog/${activeId}/${sub.id}`} className={s.gridCard} onClick={onClose}>
+                      <div className={s.imageWrapper}>
+                        <Image
+                          src={sub.image || '/img/placeholder-oven.png'}
+                          alt={sub.title}
+                          width={100}
+                          height={100}
+                          className={s.cardImage}
+                        />
+                      </div>
+                      <p className={s.cardTitle}>{sub.title}</p>
+                    </Link>
+                  ))}
+                </div>
+              </main>
 
-            {/* --- CONTENT (Права частина) --- */}
-            <main className={s.contentArea}>
-              {/* Кнопка закриття (як на макеті справа зверху) */}
-              <button className={s.closeBtn} onClick={onClose}>
-                <Icon name="close" width={24} height={24} />
-              </button>
-
-              <div className={s.gridContainer}>
-                {subItemsToRender.map((sub) => (
-                  <Link key={sub.id} href={`/catalog/${activeId}/${sub.id}`} className={s.gridCard} onClick={onClose}>
-                    <div className={s.imageWrapper}>
-                      {/* Placeholder зображення, замініть src на реальний */}
-                      <Image
-                        src={sub.image || '/img/placeholder-oven.png'}
-                        alt={sub.title}
-                        width={100}
-                        height={100}
-                        className={s.cardImage}
-                      />
-                    </div>
-                    <p className={s.cardTitle}>{sub.title}</p>
-                  </Link>
-                ))}
-              </div>
-            </main>
-
-          </div>
-        </AppContainer>
+            </div>
+          </AppContainer>
+        </div>
       </div>
     </>
   );

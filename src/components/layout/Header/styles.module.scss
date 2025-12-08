@@ -6,78 +6,78 @@
 
   font-family: $font-montserrat;
   color: $color-text-on-green;
+}
 
-  .headerContainer {
-  }
+.headerContainer {}
 
-  .headerContent {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-  }
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
 
-  .navList {
-    display: flex;
-    list-style: none;
-    gap: 15px;
-    padding: 0;
-    margin: 0;
+.navList {
+  display: flex;
+  list-style: none;
+  gap: 15px;
+  padding: 0;
+  margin: 0;
 
-    .navItem {
-      a {
-        text-decoration: none;
-        font-weight: 500;
-
-        &:hover {
-          color: $color-yellow;
-        }
-      }
-    }
-  }
-
-  .socials {
-    display: flex;
-    gap: 10px;
-
-    .socialIcon {
-      font-size: 20px;
-      color: #000;
+  .navItem {
+    a {
+      text-decoration: none;
+      font-weight: 500;
 
       &:hover {
         color: $color-yellow;
       }
     }
   }
+}
 
-  .staffTraining {
-    font-weight: 500;
-    color: $color-yellow;
-  }
+.socials {
+  display: flex;
+  gap: 10px;
 
-  .phone {
-    font-weight: bold;
-
-    &:hover {
-      color: $color-yellow;
-    }
-  }
-
-  .catalogLink {
-    position: absolute;
-    top: 40px;
-    text-decoration: none;
-    background-color: $color-bg-header;
-    color: $color-text-on-green;
-    padding: 5px 10px;
-    border-radius: 5px;
+  .socialIcon {
+    font-size: 20px;
+    color: #000;
 
     &:hover {
-      background-color: #2e5c36;
       color: $color-yellow;
     }
   }
 }
+
+.staffTraining {
+  font-weight: 500;
+  color: $color-yellow;
+}
+
+.phone {
+  font-weight: bold;
+
+  &:hover {
+    color: $color-yellow;
+  }
+}
+
+.catalogLink {
+  position: absolute;
+  top: 40px;
+  text-decoration: none;
+  background-color: $color-bg-header;
+  color: $color-text-on-green;
+  padding: 5px 10px;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: #2e5c36;
+    color: $color-yellow;
+  }
+}
+
 
 .headerTop {
   width: 100%;

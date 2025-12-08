@@ -15,10 +15,13 @@ import { useGetSearchData } from '@/hooks/useGetSearchData';
 
 import s from './styles.module.scss';
 import { SearchResultList } from '@/components/layout/Header/SearchResultList/SearchResultList';
+import { CatalogMenu } from './components/CatalogMenu/CatalogMenu';
 
 export const MiddleNav = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [isFocus, setIsFocus] = useState<boolean>(false);
+
+  const [isCatalogOpen, setIsCatalogOpen] = useState<boolean>(false);
   const [value] = useDebounce(searchValue, 300);
 
   const { loadingCollections, collections } = useGetCollections();
@@ -31,6 +34,14 @@ export const MiddleNav = () => {
   };
 
   const handleCatalogClick = () => { };
+
+  const toggleCatalog = () => {
+    setIsCatalogOpen((prev) => !prev);
+  };
+
+  const closeCatalog = () => {
+    setIsCatalogOpen(false);
+  };
 
   return (
     <div className={s.headerMiddle}>
@@ -47,11 +58,16 @@ export const MiddleNav = () => {
         <DesktopUserActionsList className={s.userActionList} />
         <div className={s.searchContainer}>
           <button
-            className={s.catalogBtn}
-            onClick={handleCatalogClick}
+            className={`${s.catalogBtn} ${isCatalogOpen ? s.active : ''}`}
+            onClick={toggleCatalog}
             disabled={loadingCollections}
           >
-            <Icon name="viewGrid" width={24} height={24} />
+            {isCatalogOpen ? (
+              <Icon name="close" width={24} height={24} />
+            ) : (
+              <Icon name="viewGrid" width={24} height={24} />
+            )}
+            {/* <Icon name="viewGrid" width={24} height={24} /> */}
             Catalog
           </button>
 
@@ -86,6 +102,15 @@ export const MiddleNav = () => {
           </div>
         </div>
       </AppContainer>
+
+      {/* Рендеримо каталог, якщо він відкритий */}
+      {isCatalogOpen && (
+        <CatalogMenu
+          isOpen={isCatalogOpen}
+          onClose={closeCatalog}
+          collections={collections}
+        />
+      )}
     </div>
   );
 };
