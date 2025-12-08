@@ -1,4 +1,5 @@
 'use client';
+/* @no-recompile */
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
@@ -8,7 +9,6 @@ import { Icon } from '@/components/ui/Icon/Icon'; // Ваша іконка
 import s from './styles.module.scss';
 import { GetCollectionsData } from '../../middleNav.types';
 
-// Типи даних (адаптуйте під ваш реальний API)
 interface SubCategory {
   id: string;
   title: string;
@@ -17,40 +17,36 @@ interface SubCategory {
 
 interface CollectionItem {
   id: string;
-  title: string; // Наприклад: "Steam ovens and stoves"
-  iconName?: string; // Назва іконки для Icon component
-  subcategories?: SubCategory[]; // Діти для правої частини
+  title: string;
+  iconName?: string;
+  subcategories?: SubCategory[];
 }
 
 interface CatalogMenuProps {
   isOpen: boolean;
   onClose: () => void;
-  collections: CollectionItem[]; // Замініть any на ваш тип CollectionItem[]
+  collections: CollectionItem[];
 }
 
 export const CatalogMenu = ({ isOpen, onClose, collections }: CatalogMenuProps) => {
-  // Стейт для активної категорії в сайдбарі
-  const [activeId, setActiveId] = useState<string | null>(null);
 
-  // Встановлюємо першу категорію активною при відкритті
-  useEffect(() => {
-    if (isOpen && collections?.length > 0 && !activeId) {
-      setActiveId(collections[0].id);
-    }
-  }, [isOpen, collections, activeId]);
+  const [activeId, setActiveId] = useState<string | null>(collections?.[0]?.id || null);
 
-  // Знаходимо дані активної колекції для відображення справа
-  // ТУТ ВАЖЛИВО: Адаптуйте це під структуру вашого об'єкта collections
+  // useEffect(() => {
+  //   if (!isOpen) return;
+  //   if (!collections?.length) return;
+
+  //   setActiveId(collections[0].id);
+  // }, [isOpen, collections]);
+
   const activeCollection = collections?.find((c) => c.id === activeId);
 
-  // Мок-дані для демонстрації правої частини (якщо у вас в API ще немає subcategories)
-  // Видаліть це, коли підключите реальні children
   const mockSubcategories: SubCategory[] = [
-    { id: '1', title: 'OVENS AND OVENS', image: '/img/oven-1.png' },
-    { id: '2', title: 'WOOD OVENS FOR PIZZA', image: '/img/oven-2.png' },
-    { id: '3', title: 'CONVECTION OVENS', image: '/img/oven-3.png' },
-    { id: '4', title: 'CABINETS FOR PROOFING', image: '/img/oven-4.png' },
-    { id: '5', title: 'HEARTH STOVES', image: '/img/oven-5.png' },
+    { id: '1', title: 'OVENS AND OVENS', image: 'https://placehold.co/142x110.png' },
+    { id: '2', title: 'WOOD OVENS FOR PIZZA', image: 'https://placehold.co/142x110.png' },
+    { id: '3', title: 'CONVECTION OVENS', image: 'https://placehold.co/142x110.png' },
+    { id: '4', title: 'CABINETS FOR PROOFING', image: 'https://placehold.co/142x110.png' },
+    { id: '5', title: 'HEARTH STOVES', image: 'https://placehold.co/142x110.png' },
   ];
 
   const subItemsToRender = activeCollection?.subcategories || mockSubcategories;
@@ -64,7 +60,7 @@ export const CatalogMenu = ({ isOpen, onClose, collections }: CatalogMenuProps) 
         <div className={s.catalogWrapper}>
           <AppContainer>
             <div className={s.catalogContainer}>
-              {/* <Icon className={s.vector} name={"vector"} /> */}
+              <Icon className={s.vector} name={"vector"} />
               {/* --- SIDEBAR (Left part) --- */}
               <aside className={s.sidebar}>
                 <ul className={s.sidebarList}>
@@ -81,14 +77,14 @@ export const CatalogMenu = ({ isOpen, onClose, collections }: CatalogMenuProps) 
                       <span className={s.itemTitle}>{item.title}</span>
 
                       {/* Стрілочка для мобільного (опціонально) */}
-                      <Icon name="close" className={s.mobileArrow} width={16} height={16} />
+                      <Icon name='arrowDown' className={s.mobileArrow} width={20} height={20} />
                     </li>
                   ))}
                 </ul>
               </aside>
 
               {/* --- CONTENT (Right part) --- */}
-              <main className={s.contentArea}>
+              <div className={s.contentArea}>
                 <button className={s.closeBtn} onClick={onClose}>
                   <Icon name="close" width={24} height={24} />
                 </button>
@@ -109,7 +105,7 @@ export const CatalogMenu = ({ isOpen, onClose, collections }: CatalogMenuProps) 
                     </Link>
                   ))}
                 </div>
-              </main>
+              </div>
 
             </div>
           </AppContainer>

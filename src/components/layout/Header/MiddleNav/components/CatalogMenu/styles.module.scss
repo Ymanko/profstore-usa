@@ -8,7 +8,7 @@
   left: 0;
   width: 100%;
   height: calc(100vh - 100%); // Висота = все що залишилось на екрані
-  z-index: 100;
+  z-index: 5;
   // Важливо: переконайтеся, що у батьківського headerMiddle стоїть position: relative
 }
 
@@ -20,7 +20,7 @@
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.4); // Напівпрозорий
-  z-index: 900; // Менше ніж меню, більше ніж решта сайту
+  z-index: 10; // Менше ніж меню, більше ніж решта сайту
 }
 
 // --- WRAPPER ---
@@ -34,40 +34,59 @@
 
 .catalogContainer {
   position: relative;
-  background: #fff;
+  background: $color-bg-main;
   display: flex;
   min-height: 500px; // Висота меню на десктопі
-  overflow: hidden;
-  border-top: 5px solid #579040;
+  // overflow: hidden;
+  border-top: 5px solid $color-sidebar-active;
 }
 
-.catalogContainer::after {
-  content: "";
+// .catalogContainer::after {
+//   content: "";
+//   position: absolute;
+//   z-index: 99999;
+//   left: 20px;
+//   top: -8px;
+//   // transform: translateY(-50%);
+//   width: 21px; // ширину svg
+//   height: 11px; // висоту svg
+
+//   background-color: $color-sidebar-active; // колір іконки
+
+//   mask-image: url("data:image/svg+xml;utf8,<svg width='21' height='11' viewBox='0 0 21 11' xmlns='http://www.w3.org/2000/svg'><path d='M4 6H17V7H4V6Z'/><path d='M5 5H16V6H5V5Z'/><path d='M6 4H15V5H6V4Z'/><path d='M7 3H14V4H7V3Z'/><path d='M8 2H13V3H8V2Z'/><path d='M9 1H12V2H9V1Z'/><path d='M10 0H11V1H10V0Z'/><path d='M3 7H18V8H3V7Z'/><path d='M2 8H19V9H2V8Z'/><path d='M1 9H20V10H1V9Z'/><path d='M0 10H21V11H0V10Z'/></svg>");
+
+//   mask-repeat: no-repeat;
+//   mask-size: contain;
+// }
+
+.vector {
   position: absolute;
+  top: -11px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 21px;
+  height: 11px;
   z-index: 99999;
-  left: 20px;
-  top: -8px;
-  // transform: translateY(-50%);
-  width: 21px; // ширину svg
-  height: 11px; // висоту svg
 
-  background-color: #579040; // колір іконки
+  @include useMedia('min-width', $breakpoint-tablet) {
+    left: 216px;
+    transform: unset;
+  }
 
-  mask-image: url("data:image/svg+xml;utf8,<svg width='21' height='11' viewBox='0 0 21 11' xmlns='http://www.w3.org/2000/svg'><path d='M4 6H17V7H4V6Z'/><path d='M5 5H16V6H5V5Z'/><path d='M6 4H15V5H6V4Z'/><path d='M7 3H14V4H7V3Z'/><path d='M8 2H13V3H8V2Z'/><path d='M9 1H12V2H9V1Z'/><path d='M10 0H11V1H10V0Z'/><path d='M3 7H18V8H3V7Z'/><path d='M2 8H19V9H2V8Z'/><path d='M1 9H20V10H1V9Z'/><path d='M0 10H21V11H0V10Z'/></svg>");
-
-  mask-repeat: no-repeat;
-  mask-size: contain;
+  @include useMedia('min-width', $breakpoint-desktop) {
+    left: 250px;
+  }
 }
 
 // --- SIDEBAR (LEFT) ---
+
 .sidebar {
   width: 312px; // Фіксована ширина сайдбара
   background-color: $color-bg-aside;
   box-shadow: inset -10px 0 10px 0 rgba(0, 0, 0, 0.1);
   flex-shrink: 0;
   border-right: 1px solid #eaeaea;
-  padding: 10px 0;
-  overflow-y: auto;
+  // overflow-y: auto;
 
   @include useMedia('min-width', $breakpoint-desktop) {
     width: 345px;
@@ -165,7 +184,7 @@
 // Сітка елементів
 .gridContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); // Адаптивна сітка
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 20px;
 }
 
@@ -174,8 +193,10 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  text-decoration: none;
-  group: hover; // Для ховер ефектів
+
+  border: 1px solid #f0f0f0;
+  border-radius: 10px;
+  padding: 20px 10px;
 
   .imageWrapper {
     width: 100%;
@@ -185,6 +206,7 @@
     align-items: center;
     margin-bottom: 10px;
     transition: transform 0.2s;
+    border-bottom: 1px solid #f0f0f0;
   }
 
   .cardTitle {
@@ -201,7 +223,7 @@
     }
 
     .cardTitle {
-      color: #8dbd48; // Зелений при ховері
+      color: #8dbd48;
     }
   }
 }
@@ -210,19 +232,17 @@
 @media (max-width: 991px) {
   .catalogContainer {
     flex-direction: column;
-    height: 80vh; // На мобільному менша висота або на весь екран
-    overflow-y: auto;
+    height: 80vh;
   }
 
   .sidebar {
     width: 100%;
-    background: #fff; // На мобільному зазвичай білий
+    background: #fff;
     border-right: none;
   }
 
   .contentArea {
-    display: none; // На мобільному показуємо ТІЛЬКИ список категорій першого рівня (згідно ТЗ)
-    // Якщо потрібно показати підкатегорії, це зазвичай робиться через акордеон або перехід на нову сторінку
+    display: none;
   }
 
   .sidebarItem {
@@ -231,20 +251,19 @@
     padding: 15px 20px;
 
     &.active {
-      border-left: none;
       background-color: #f9f9f9;
       width: 100%;
+      box-shadow: inset -10px 0 10px 0 rgba(0, 0, 0, 0.1);
     }
 
     .mobileArrow {
       display: block;
-      margin-left: auto; // Притискаємо вправо
+      margin-left: auto;
       opacity: 0.4;
     }
   }
 
   .closeBtn {
-    // Можна винести кнопку закриття в заголовок для мобільного
     display: none;
   }
 }

@@ -47,7 +47,7 @@ const ICONS = {
   trash: Trash,
   user: User,
   viewGrid: ViewGrid,
-  equipment: Equipment
+  equipment: Equipment,
   vector: Vector
 } as const;
 
