@@ -103,7 +103,6 @@ export const MiddleNav = () => {
         </div>
       </AppContainer>
 
-      {/* Рендеримо каталог, якщо він відкритий */}
       {isCatalogOpen && (
         <CatalogMenu
           isOpen={isCatalogOpen}
