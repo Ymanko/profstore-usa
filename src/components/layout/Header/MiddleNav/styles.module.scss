@@ -1,0 +1,139 @@
+@use '@/styles/variables' as *;
+@use '@/styles/mixins' as *;
+
+.headerMiddle {
+  position: relative;
+  padding: 20px 0 30px 0;
+  border-bottom: 1px solid $color-border-light;
+  background-color: $color-white;
+
+  @include useMedia('min-width', $breakpoint-tablet) {
+    padding: 20px 0;
+  }
+}
+
+//------------------------------------------
+
+.headerMiddleContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+
+  .logoLink {
+    order: 1;
+    flex: 1;
+  }
+
+  .userActionList {
+    order: 2;
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .searchContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    order: 3;
+    flex: 0 0 100%;
+  }
+
+  @include useMedia('min-width', $breakpoint-tablet) {
+    .logoLink {
+      order: 1;
+      flex: 0 0 auto;
+    }
+
+    .userActionList {
+      order: 3;
+      flex: 0 0 auto;
+      justify-content: flex-end;
+      /* тоже ок */
+    }
+
+    .searchContainer {
+      flex-direction: row;
+      align-items: center;
+      order: 2;
+      flex: 1;
+      /* центр */
+    }
+  }
+
+  @include useMedia('min-width', $breakpoint-desktop) {
+    & {
+      gap: 32px;
+    }
+
+    .logo {
+      width: 162px;
+      height: 76px;
+    }
+  }
+}
+
+//------------------------------------------
+
+.catalogBtn {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  width: 100%;
+
+  padding: 13px;
+  border: none;
+  border-radius: 10px;
+  background: $color-bg-header;
+
+  color: rgba(255, 255, 255, 1);
+
+  font-family: Montserrat;
+  font-size: 18px;
+  line-height: 1.375;
+
+  @include useMedia('min-width', $breakpoint-tablet) {
+    gap: 12px;
+    width: auto;
+  }
+}
+
+.inputWrap {
+  position: relative;
+  width: 100%;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 15px 40px 15px 20px;
+  background-color: $color-bg-input-filter;
+  border: 1px solid $color-border-light;
+  border-radius: 8px;
+
+  color: $color-text-main;
+
+  font-family: Montserrat;
+  line-height: 20px;
+
+  @include useMedia('min-width', $breakpoint-tablet) {
+    min-width: 277px;
+  }
+
+  @include useMedia('min-width', $breakpoint-desktop) {
+    min-width: 617px;
+  }
+}
+
+.iconWrap {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none; // щоб клік не блокував інпут
+}
+
+.searchIcon {
+  color: $color-text-main;
+}

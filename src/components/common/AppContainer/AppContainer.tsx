@@ -8,7 +8,7 @@ type TAppContainerProps = {
 
 export const AppContainer = ({
   children,
-  classes = ''
+  classes = '',
 }: TAppContainerProps) => {
   return <div className={`${s.container} ${classes}`}>{children}</div>;
 };
