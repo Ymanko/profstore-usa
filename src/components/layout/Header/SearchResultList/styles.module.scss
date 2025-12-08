@@ -67,6 +67,12 @@
   gap: 4px;
 
   padding: 5px;
+
+  &:hover .searchResultListItemTitle, &:focus .searchResultListItemTitle,
+  &:hover .searchResultListItemPrice, &:focus .searchResultListItemPrice{
+    color: $color-bg-header;
+  }
+
 }
 
 .searchResultListItemTitle {
@@ -75,12 +81,17 @@
   color: #000;
   font-weight: 400;
   font-size: 14px;
+
+  transition: color 300ms linear;
 }
 
 .searchResultListItemPrice {
   color: #000;
   font-size: 14px;
   font-weight: 400;
+
+  transition: color 300ms linear;
+
 }
 
 .allResultsLink {
