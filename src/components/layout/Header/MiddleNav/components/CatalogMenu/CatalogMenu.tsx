@@ -10,6 +10,8 @@ import s from './styles.module.scss';
 import { Category, GetCollectionsData } from '../../middleNav.types';
 import MobileCatalogMenu from '../MobileCatalogMenu/MobileCatalogMenu';
 import { parseSubCategoryData } from '@/utils/parsers/parseSubcategoryData';
+import { getLastSegment } from '@/utils/parsers/getLastSegment';
+
 
 interface CatalogMenuProps {
   isOpen: boolean;
@@ -20,15 +22,7 @@ interface CatalogMenuProps {
 export const CatalogMenu = ({ isOpen, onClose, collections }: CatalogMenuProps) => {
 
   const [activeId, setActiveId] = useState<string | null>(null);
-  const [activeSybCategory, setActiveSybCategory] = useState<string | null>(null);
   const [isOpenSubMenu, setIsOpenSubMenu] = useState<boolean>(false);
-
-  // useEffect(() => {
-  //   if (!isOpen) return;
-  //   if (!collections?.length) return;
-
-  //   setActiveId(collections[0].id);
-  // }, [isOpen, collections]);
 
   const activeCollection = collections?.find((c) => c.id === activeId);
 
@@ -77,7 +71,7 @@ export const CatalogMenu = ({ isOpen, onClose, collections }: CatalogMenuProps) 
 
               <div className={s.gridContainer}>
                 {subCategories?.map((sub) => (
-                  <Link key={sub.id} href={`/catalog/${activeId}/${sub.id}`} className={s.gridCard} onClick={onClose}>
+                  <Link key={sub.id} href={`/catalog/${getLastSegment(sub.id)}`} className={s.gridCard} onClick={onClose}>
                     <div className={s.imageWrapper}>
                       <Image
                         src={parseSubCategoryData(sub.title).image || 'https://placehold.co/100x100.png'}

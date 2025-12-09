@@ -7,6 +7,7 @@ import { Category } from '../../middleNav.types';
 import s from './styles.module.scss';
 import { parseSubCategoryData } from '@/utils/parsers/parseSubcategoryData';
 import Image from 'next/image';
+import { getLastSegment } from '@/utils/parsers/getLastSegment';
 
 interface MobileCatalogMenuProps {
   collections: Category[];
@@ -59,7 +60,7 @@ export default function MobileCatalogMenu({
                   {category.items?.map((sub) => (
                     <li className={s.subItem} key={sub.id}>
                       <Link
-                        href={`/catalog/${sub.id}`}
+                        href={`/catalog/${getLastSegment(sub.id)}`}
                         className={s.subCard}
                       ><Image
                           src={parseSubCategoryData(sub.title).image || 'https://placehold.co/100x100.png'}
