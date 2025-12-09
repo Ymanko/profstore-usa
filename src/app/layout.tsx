@@ -33,7 +33,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className={`${montserratFont.variable} ${interFont.variable}`}>
         <ApolloWrapper>
           <Header />
-          {children}
+          <main style={{ height: "100vh" }}>
+            {children}
+          </main>
           <Footer />
         </ApolloWrapper>
       </body>

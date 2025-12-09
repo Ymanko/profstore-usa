@@ -15,6 +15,8 @@ import { useGetSearchData } from '@/hooks/useGetSearchData';
 
 import s from './styles.module.scss';
 import { SearchResultList } from '@/components/layout/Header/SearchResultList/SearchResultList';
+import { Category } from './middleNav.types';
+import { CatalogMenu } from './components/CatalogMenu/CatalogMenu';
 
 export const MiddleNav = () => {
   const [searchValue, setSearchValue] = useState<string>('');
@@ -32,15 +34,18 @@ export const MiddleNav = () => {
     setSearchValue(event.target.value);
   };
 
-  const handleCatalogClick = () => {};
+  const handleCatalogClick = () => { };
 
   const toggleCatalog = () => {
     setIsCatalogOpen((prev) => !prev);
+    setIsFocus(false)
   };
 
   const closeCatalog = () => {
     setIsCatalogOpen(false);
   };
+
+  const categories: Category[] = dataCollections?.menu?.items || [];
 
   return (
     <div className={s.headerMiddle}>
@@ -81,7 +86,10 @@ export const MiddleNav = () => {
               className={s.searchInput}
               onChange={handleSearchChange}
               value={searchValue}
-              onFocus={() => setIsFocus(true)}
+              onFocus={() => {
+                setIsFocus(true)
+                setIsCatalogOpen(false);
+              }}
               // eslint-disable-next-line no-undef
               onBlur={() => setTimeout(() => setIsFocus(false), 100)}
             />
@@ -102,13 +110,14 @@ export const MiddleNav = () => {
         </div>
       </AppContainer>
 
-      {/*{isCatalogOpen && (*/}
-      {/*  <CatalogMenu*/}
-      {/*    isOpen={isCatalogOpen}*/}
-      {/*    onClose={closeCatalog}*/}
-      {/*    collections={dataCollections}*/}
-      {/*  />*/}
-      {/*)}*/}
+      {isCatalogOpen && (
+        <CatalogMenu
+          isOpen={isCatalogOpen}
+          onClose={closeCatalog}
+          collections={categories}
+        />
+      )
+      }
     </div>
   );
 };

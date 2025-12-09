@@ -77,3 +77,14 @@ export interface Menu {
 export interface GetMenuData {
   menu: Menu | null;
 }
+
+export interface SubCategory {
+  id: string;
+  title: string;
+}
+
+export interface Category {
+  id: string;
+  items: SubCategory[];
+  title: string;
+}
