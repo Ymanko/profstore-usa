@@ -10,11 +10,12 @@ import { DesktopUserActionsList } from './components/DesktopUserActionsList/Desk
 
 import { useDebounce } from 'use-debounce';
 
-import { useGetCollections } from '@/hooks/useGetCollections';
+import { useGetMenuItems } from '@/hooks/useGetMenuItems';
 import { useGetSearchData } from '@/hooks/useGetSearchData';
 
 import s from './styles.module.scss';
 import { SearchResultList } from '@/components/layout/Header/SearchResultList/SearchResultList';
+import { Category } from './middleNav.types';
 import { CatalogMenu } from './components/CatalogMenu/CatalogMenu';
 
 export const MiddleNav = () => {
@@ -24,10 +25,10 @@ export const MiddleNav = () => {
   const [isCatalogOpen, setIsCatalogOpen] = useState<boolean>(false);
   const [value] = useDebounce(searchValue, 300);
 
-  const { loadingCollections, collections } = useGetCollections();
+  const { loadingCollections, dataCollections } = useGetMenuItems();
   const { loadingSearch, searchData } = useGetSearchData(value);
 
-  console.info('collections', collections);
+  // console.info('dataCollections', dataCollections);
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
@@ -37,11 +38,14 @@ export const MiddleNav = () => {
 
   const toggleCatalog = () => {
     setIsCatalogOpen((prev) => !prev);
+    setIsFocus(false)
   };
 
   const closeCatalog = () => {
     setIsCatalogOpen(false);
   };
+
+  const categories: Category[] = dataCollections?.menu?.items || [];
 
   return (
     <div className={s.headerMiddle}>
@@ -82,7 +86,10 @@ export const MiddleNav = () => {
               className={s.searchInput}
               onChange={handleSearchChange}
               value={searchValue}
-              onFocus={() => setIsFocus(true)}
+              onFocus={() => {
+                setIsFocus(true)
+                setIsCatalogOpen(false);
+              }}
               // eslint-disable-next-line no-undef
               onBlur={() => setTimeout(() => setIsFocus(false), 100)}
             />
@@ -107,9 +114,10 @@ export const MiddleNav = () => {
         <CatalogMenu
           isOpen={isCatalogOpen}
           onClose={closeCatalog}
-          collections={collections}
+          collections={categories}
         />
-      )}
+      )
+      }
     </div>
   );
 };

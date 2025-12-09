@@ -9,7 +9,6 @@
   width: 100%;
   height: calc(100vh - 100%); // Висота = все що залишилось на екрані
   z-index: 5;
-  // Важливо: переконайтеся, що у батьківського headerMiddle стоїть position: relative
 }
 
 // --- BACKDROP ---
@@ -32,9 +31,14 @@
   z-index: 1000;
 }
 
+.catalogAppContainer {
+  position: relative;
+  display: flex;
+}
+
 .catalogContainer {
   position: relative;
-  background: $color-bg-main;
+  background: transparent;
   display: flex;
   min-height: 500px; // Висота меню на десктопі
   // overflow: hidden;
@@ -61,7 +65,7 @@
 
 .vector {
   position: absolute;
-  top: -11px;
+  top: -16px;
   left: 50%;
   transform: translateX(-50%);
   width: 21px;
@@ -81,11 +85,13 @@
 // --- SIDEBAR (LEFT) ---
 
 .sidebar {
+  position: relative;
   width: 312px; // Фіксована ширина сайдбара
+  flex-shrink: 0;
   background-color: $color-bg-aside;
   box-shadow: inset -10px 0 10px 0 rgba(0, 0, 0, 0.1);
-  flex-shrink: 0;
-  border-right: 1px solid #eaeaea;
+  // border-right: 1px solid #eaeaea;
+  border-top: 5px solid $color-sidebar-active;
   // overflow-y: auto;
 
   @include useMedia('min-width', $breakpoint-desktop) {
@@ -132,6 +138,11 @@
     display: none; // На десктопі стрілки немає
   }
 
+  &:hover,
+  &:focus {
+    color: $color-sidebar-active;
+  }
+
   &::before {
     content: "";
     position: absolute;
@@ -161,9 +172,11 @@
 // --- CONTENT (RIGHT) ---
 .contentArea {
   flex-grow: 1;
-  padding: 30px;
+  padding: 30px 70px;
   position: relative;
-  background-color: #fff;
+  background-color: $color-bg-main;
+
+  border-top: 5px solid $color-sidebar-active;
 }
 
 .closeBtn {
@@ -210,11 +223,12 @@
   }
 
   .cardTitle {
-    font-size: 12px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 300;
+    font-size: 17px;
     text-transform: uppercase;
-    color: #333;
-    font-weight: 600;
-    line-height: 1.4;
+    text-align: center;
+    color: $color-text-main;
   }
 
   &:hover {
@@ -229,7 +243,7 @@
 }
 
 // --- MOBILE STYLES ---
-@media (max-width: 991px) {
+@media (max-width:$breakpoint-tablet) {
   .catalogContainer {
     flex-direction: column;
     height: 80vh;
@@ -264,6 +278,18 @@
   }
 
   .closeBtn {
+    display: none;
+  }
+}
+
+.mobileCatalogMenu {
+  @media (min-width: $breakpoint-tablet) {
+    display: none;
+  }
+}
+
+.sidebar {
+  @media (max-width: $breakpoint-tablet) {
     display: none;
   }
 }

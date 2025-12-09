@@ -57,3 +57,34 @@ export interface SearchResults {
   products: CollectionItem[];
   collections: CollectionItem[];
 }
+
+export interface MenuItem {
+  __typename: 'MenuItem';
+  id: string; // gid://shopify/MenuItem/...
+  title: string; // название пункта меню
+  url: string | null; // ссылка, может быть null если не указано
+  type: string; // тип (COLLECTION, PRODUCT, PAGE, HTTP, etc.)
+  items: MenuItem[]; // дочерние пункты меню
+}
+
+export interface Menu {
+  __typename: 'Menu';
+  id: string; // gid://shopify/Menu/...
+  title: string; // название меню
+  items: MenuItem[]; // root items
+}
+
+export interface GetMenuData {
+  menu: Menu | null;
+}
+
+export interface SubCategory {
+  id: string;
+  title: string;
+}
+
+export interface Category {
+  id: string;
+  items: SubCategory[];
+  title: string;
+}

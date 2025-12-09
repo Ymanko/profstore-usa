@@ -18,12 +18,15 @@
   @supports (-moz-appearance: none) {
     scrollbar-color: $color-border-light transparent;
   }
+
   &::-webkit-scrollbar {
     width: 4px;
   }
+
   &::-webkit-scrollbar-thumb {
     background-color: $color-border-light;
   }
+
   &::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
 
@@ -32,7 +35,7 @@
 
   @include useMedia('min-width', $breakpoint-tablet) {
     left: 0;
-    width: 150%;
+    width: 100%;
     transform: translateX(0);
   }
 
@@ -40,6 +43,7 @@
     width: 100%;
   }
 }
+
 .searchResultTitle {
   margin-top: 20px;
   padding-left: 10px;
@@ -67,6 +71,14 @@
   gap: 4px;
 
   padding: 5px;
+
+  &:hover .searchResultListItemTitle,
+  &:focus .searchResultListItemTitle,
+  &:hover .searchResultListItemPrice,
+  &:focus .searchResultListItemPrice {
+    color: $color-bg-header;
+  }
+
 }
 
 .searchResultListItemTitle {
@@ -75,12 +87,17 @@
   color: #000;
   font-weight: 400;
   font-size: 14px;
+
+  transition: color 300ms linear;
 }
 
 .searchResultListItemPrice {
   color: #000;
   font-size: 14px;
   font-weight: 400;
+
+  transition: color 300ms linear;
+
 }
 
 .allResultsLink {
@@ -91,6 +108,7 @@
   text-align: center;
 
   transition: color 300ms linear;
+
   &:hover,
   &:focus {
     color: $color-bg-header;
