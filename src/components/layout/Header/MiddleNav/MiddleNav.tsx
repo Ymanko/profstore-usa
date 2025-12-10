@@ -28,7 +28,7 @@ export const MiddleNav = () => {
   const { loadingCollections, dataCollections } = useGetMenuItems();
   const { loadingSearch, searchData } = useGetSearchData(value);
 
-  console.info('dataCollections', dataCollections);
+  // console.info('dataCollections', dataCollections);
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
