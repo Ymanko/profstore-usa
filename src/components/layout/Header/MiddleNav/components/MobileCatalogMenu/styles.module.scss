@@ -53,7 +53,7 @@
 
   .vector {
     position: absolute;
-    top: -16px;
+    top: -15px;
     left: 50%;
     transform: translateX(-50%);
     width: 21px;
@@ -74,7 +74,7 @@
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: #ccc;
+      background-color: $color-bg-aside;
     }
 
     /* MOB styles */
@@ -101,6 +101,7 @@
     font-size: 17px;
     color: #000;
     border: none;
+    background-color: $color-bg-main;
 
     .itemIcon {
       margin-right: 12px;
@@ -143,7 +144,6 @@
     /* MOB styles */
     width: 100%;
     padding: 15px 20px;
-    border-bottom: 1px solid #f0f0f0;
 
     &.active {
       background-color: #f9f9f9;
@@ -192,12 +192,12 @@
     flex-direction: column;
   }
 
-  .subCard {
+  .subItem .subCard {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 12px 40px 12px 50px;
-    background-color: $color-bg-aside;
+    padding: 12px 40px;
+    background-color: $color-bg-main;
     font-family: "Montserrat", sans-serif;
     font-weight: 300;
     font-size: 14px;
@@ -212,6 +212,10 @@
       }
     }
   }
+}
+
+.subContainer {
+  background-color: $color-bg-main;
 }
 
 /* Цей стиль потрібен поза медіа */

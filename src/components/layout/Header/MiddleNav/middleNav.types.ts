@@ -81,10 +81,12 @@ export interface GetMenuData {
 export interface SubCategory {
   id: string;
   title: string;
+  url: string | null;
 }
 
 export interface Category {
   id: string;
   items: SubCategory[];
   title: string;
+  url: string | null;
 }
