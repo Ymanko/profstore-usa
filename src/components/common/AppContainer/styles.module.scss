@@ -12,6 +12,6 @@
 
   @include useMedia('min-width', $breakpoint-desktop) {
     padding: 0 15px;
-    max-width: $breakpoint-desktop;
+    max-width: 1466px;
   }
 }
