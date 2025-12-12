@@ -1,8 +1,7 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { LoaderCircle, Search } from 'lucide-react';
 import { useDebounce } from 'use-debounce';
 
 import { AppContainer } from '@/components/common/AppContainer';
@@ -15,35 +14,27 @@ import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { SEARCH_DEBOUNCE_MS } from '@/constants/search';
+import { useSearchState } from '@/hooks/use-search-state';
 import { cn } from '@/lib/utils';
 import { getMenuItemsQueryOptions } from '@/queries/get-menu-items';
 import { searchQueryOptions } from '@/queries/search-query';
 
-import s from './styles.module.scss';
+import s from './MiddleNav/styles.module.scss';
 
 import type { ChangeEvent } from 'react';
 
-export const MiddleNav = () => {
+export const Searchbar = () => {
   const { data: categories, isFetching } = useSuspenseQuery(getMenuItemsQueryOptions);
 
-  const [searchValue, setSearchValue] = useState<string>('');
-  const [isFocus, setIsFocus] = useState<boolean>(false);
+  const { searchValue, setSearchValue, isFocus, isCatalogOpen, handleFocus, handleBlur, toggleCatalog, closeCatalog } =
+    useSearchState();
 
-  const [isCatalogOpen, setIsCatalogOpen] = useState<boolean>(false);
-  const [value] = useDebounce(searchValue, 300);
-  const { data, isFetching: isLoadingSearch } = useQuery(searchQueryOptions(value));
+  const [debouncedValue] = useDebounce(searchValue, SEARCH_DEBOUNCE_MS);
+  const { data, isFetching: isLoadingSearch } = useQuery(searchQueryOptions(debouncedValue.trim()));
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
-  };
-
-  const toggleCatalog = () => {
-    setIsCatalogOpen(prev => !prev);
-    setIsFocus(false);
-  };
-
-  const closeCatalog = () => {
-    setIsCatalogOpen(false);
   };
 
   return (
@@ -74,19 +65,16 @@ export const MiddleNav = () => {
               className={s.searchInput}
               onChange={handleSearchChange}
               value={searchValue}
-              onFocus={() => {
-                setIsFocus(true);
-                setIsCatalogOpen(false);
-              }}
-              onBlur={() => setTimeout(() => setIsFocus(false), 100)}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
             />
+
             <div className={s.iconWrap}>
-              {isLoadingSearch ? (
-                <span style={{ fontSize: '12px' }}>...</span>
-              ) : (
-                <Icon className={s.searchIcon} name='search' width={24} height={24} />
-              )}
+              <Show when={isLoadingSearch} fallback={<Search className='size-6' />}>
+                <LoaderCircle className='size-6 animate-spin' />
+              </Show>
             </div>
+
             <SearchResultList searchData={data ?? null} isFocus={isFocus} />
           </div>
         </div>
