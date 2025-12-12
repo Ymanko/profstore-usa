@@ -1,4 +1,5 @@
-import styles from './page.module.css';
+import { PageWrapper } from '@/components/common/PageWrapper';
+import { Typography } from '@/components/ui/Typography';
 
 import type { Metadata } from 'next';
 
@@ -9,11 +10,11 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <h1>Welcome to ProfStore</h1>
-        <p>Your one-stop shop for all your needs!</p>
-      </main>
-    </div>
+    <PageWrapper>
+      <div className='space-y-5'>
+        <Typography variant='h1'>Welcome to ProfStore</Typography>
+        <Typography variant='body-lg'>Your one-stop shop for all your needs!</Typography>
+      </div>
+    </PageWrapper>
   );
 }

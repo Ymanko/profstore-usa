@@ -4,7 +4,7 @@ import * as Accordion from '@radix-ui/react-accordion';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import { Icon } from '@/components/ui/Icon/Icon';
+import { Icon } from '@/components/ui/Icon';
 import { getPathAfterCom } from '@/utils/parsers/getPathAfterCom';
 import { parseSubCategoryData } from '@/utils/parsers/parseSubcategoryData';
 
@@ -74,8 +74,6 @@ export default function MobileCatalogMenu({ collections, className, onClose }: M
                               if (sub.url) {
                                 router.push(getPathAfterCom(sub.url));
                                 onClose();
-                              } else {
-                                console.warn('SubCategory URL is null');
                               }
                             }}
                           >

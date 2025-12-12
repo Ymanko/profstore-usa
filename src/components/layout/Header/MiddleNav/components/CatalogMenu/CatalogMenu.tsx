@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 
-import { AppContainer } from '@/components/common/AppContainer/AppContainer';
+import { AppContainer } from '@/components/common/AppContainer';
 
 import { CatalogContent } from '../CatalogContent/CatalogContent';
 import { CatalogSidebar } from '../CatalogSidebar/CatalogSidebar';
@@ -33,7 +33,7 @@ export const CatalogMenu = ({ isOpen, onClose, collections }: CatalogMenuProps) 
       <div className={s.backdrop} onClick={onClose} />
 
       <div className={s.catalogWrapper}>
-        <AppContainer classes={s.catalogAppContainer}>
+        <AppContainer className={s.catalogAppContainer}>
           <CatalogSidebar collections={collections} activeId={activeId} onSelect={setActiveId} onClose={onClose} />
 
           <CatalogContent subCategories={activeCollection?.items} onClose={onClose} />

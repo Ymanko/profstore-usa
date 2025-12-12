@@ -1,4 +1,5 @@
 import { CatalogProducts } from '@/components/pages/catalog/CatalogProducts/CatalogProducts';
+import { Typography } from '@/components/ui/Typography';
 
 import s from './catalogPage.module.css';
 
@@ -9,12 +10,12 @@ export const metadata: Metadata = {
   description: 'All products in our shop',
 };
 
-export default async function HomeCatalogPage() {
+export default async function CatalogPage() {
   return (
-    <main className={s.page}>
-      <h1 className={s.title}>Catalog</h1>
+    <section className={s.page}>
+      <Typography variant='h1'>Catalog</Typography>
 
       <CatalogProducts />
-    </main>
+    </section>
   );
 }

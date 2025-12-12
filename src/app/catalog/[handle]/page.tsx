@@ -1,4 +1,4 @@
-import { ProductView } from '@/components/pages/Product/ProductInfo';
+import { ProductView } from '@/components/pages/product/ProductInfo';
 
 type Props = {
   params: Promise<{ handle: string }>;

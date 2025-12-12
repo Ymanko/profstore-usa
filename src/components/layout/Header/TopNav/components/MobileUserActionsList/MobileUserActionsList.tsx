@@ -2,7 +2,7 @@ import clsx from 'clsx';
 // UserMenu.tsx
 import Link from 'next/link';
 
-import { Icon } from '@/components/ui/Icon/Icon';
+import { Icon } from '@/components/ui/Icon';
 import { MOBILE_HEADER_USER_ACTIONS } from '@/constants/userMenu';
 
 import s from './styles.module.scss';

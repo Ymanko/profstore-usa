@@ -1,3 +1,6 @@
+import { PageWrapper } from '@/components/common/PageWrapper';
+import { Typography } from '@/components/ui/Typography';
+
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -5,6 +8,10 @@ export const metadata: Metadata = {
   description: 'Some shop',
 };
 
-export default function HomeContactPage() {
-  return <h1>contact</h1>;
+export default function ContactPage() {
+  return (
+    <PageWrapper>
+      <Typography variant='h1'>Contact Page</Typography>
+    </PageWrapper>
+  );
 }

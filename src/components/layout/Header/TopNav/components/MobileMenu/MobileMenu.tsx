@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import { SocialLinks } from '@/components/common/SocialLinks/SocialLinks';
-import { Icon } from '@/components/ui/Icon/Icon';
+import { Icon } from '@/components/ui/Icon';
 import { siteConfig } from '@/constants/siteConfig';
 import { NAV_ITEMS } from '@/constants/userMenu';
 

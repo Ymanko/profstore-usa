@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-import { Icon } from '@/components/ui/Icon/Icon';
+import { Icon } from '@/components/ui/Icon';
 
 import s from './styles.module.scss';
 

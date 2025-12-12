@@ -5,11 +5,11 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useDebounce } from 'use-debounce';
 
-import { AppContainer } from '@/components/common/AppContainer/AppContainer';
+import { AppContainer } from '@/components/common/AppContainer';
 import { CatalogMenu } from '@/components/layout/Header/MiddleNav/components/CatalogMenu/CatalogMenu';
 import { DesktopUserActionsList } from '@/components/layout/Header/MiddleNav/components/DesktopUserActionsList/DesktopUserActionsList';
 import { SearchResultList } from '@/components/layout/Header/SearchResultList/SearchResultList';
-import { Icon } from '@/components/ui/Icon/Icon';
+import { Icon } from '@/components/ui/Icon';
 import { useGetMenuItems } from '@/hooks/useGetMenuItems';
 import { useGetSearchData } from '@/hooks/useGetSearchData';
 
@@ -45,10 +45,11 @@ export const MiddleNav = () => {
 
   return (
     <div className={s.headerMiddle}>
-      <AppContainer classes={s.headerMiddleContainer}>
+      <AppContainer className={s.headerMiddleContainer}>
         <Link href='/' className={s.logoLink}>
           <Image src='/img/profstore-logo.png' alt='Profstore logo' width={141} height={66} className={s.logo} />
         </Link>
+
         <DesktopUserActionsList className={s.userActionList} />
         <div className={s.searchContainer}>
           <button

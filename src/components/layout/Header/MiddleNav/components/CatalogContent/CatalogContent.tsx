@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { Icon } from '@/components/ui/Icon/Icon';
+import { Icon } from '@/components/ui/Icon';
 import { getLastSegment } from '@/utils/parsers/getLastSegment';
 import { parseSubCategoryData } from '@/utils/parsers/parseSubcategoryData';
 

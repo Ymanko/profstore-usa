@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
-import { Icon } from '@/components/ui/Icon/Icon';
+import { Icon } from '@/components/ui/Icon';
 import { getPathAfterCom } from '@/utils/parsers/getPathAfterCom';
 
 import s from './styles.module.scss';

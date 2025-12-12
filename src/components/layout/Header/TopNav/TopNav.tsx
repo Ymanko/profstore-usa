@@ -3,9 +3,9 @@
 import Link from 'next/link';
 import { useState } from 'react';
 
-import { AppContainer } from '@/components/common/AppContainer/AppContainer';
+import { AppContainer } from '@/components/common/AppContainer';
 import { SocialLinks } from '@/components/common/SocialLinks/SocialLinks';
-import { Icon } from '@/components/ui/Icon/Icon';
+import { Icon } from '@/components/ui/Icon';
 import { NAV_ITEMS } from '@/constants/userMenu';
 
 import { HamburgerButton } from './components/HamburgerButton/HamburgerButton';
@@ -18,7 +18,7 @@ export const TopNav = () => {
 
   return (
     <div className={s.headerTop}>
-      <AppContainer classes={s.headerTopContainer}>
+      <AppContainer className={s.headerTopContainer}>
         <div className={s.headerContent}>
           <HamburgerButton className={s.hBtn} isOpen={isOpenMenu} setIsOpenMenu={() => setIsOpenMenu(prev => !prev)} />
 
@@ -50,6 +50,7 @@ export const TopNav = () => {
           <MobileUserActionsList className={s.mobileUserActionsList} />
         </div>
       </AppContainer>
+
       {isOpenMenu && <MobileMenu closeMenu={() => setIsOpenMenu(false)} />}
     </div>
   );
