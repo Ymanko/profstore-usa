@@ -3,7 +3,7 @@ import clsx from 'clsx';
 import Link from 'next/link';
 
 import { Icon } from '@/components/ui/Icon';
-import { DESKTOP_HEADER_USER_ACTIONS } from '@/constants/userMenu';
+import { DESKTOP_HEADER_USER_ACTIONS } from '@/constants/user-menu';
 
 import s from './styles.module.scss';
 

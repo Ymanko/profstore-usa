@@ -12,6 +12,7 @@
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-dark: var(--primary-dark);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -37,6 +38,7 @@
   /* Primary (Header Green) */
   --primary: #3a6f43;
   --primary-foreground: #ffffff;
+  --primary-dark: #162a19;
 
   /* Secondary (Active Green) */
   --secondary: #579040;

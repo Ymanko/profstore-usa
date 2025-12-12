@@ -1,24 +1,30 @@
 'use client';
 
 import { ApolloProvider } from '@apollo/client/react';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { throttle } from 'nuqs';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
 import { client } from '@/lib/apollo/appolo-client';
+import { getQueryClient } from '@/lib/tanstack/get-query-client';
 
 import type { ReactNode } from 'react';
 
 export default function Providers({ children }: { children: ReactNode }) {
+  const queryClient = getQueryClient();
+
   return (
-    <NuqsAdapter
-      defaultOptions={{
-        shallow: false,
-        scroll: true,
-        clearOnDefault: false,
-        limitUrlUpdates: throttle(250),
-      }}
-    >
-      <ApolloProvider client={client}>{children}</ApolloProvider>
-    </NuqsAdapter>
+    <QueryClientProvider client={queryClient}>
+      <NuqsAdapter
+        defaultOptions={{
+          shallow: false,
+          scroll: true,
+          clearOnDefault: false,
+          limitUrlUpdates: throttle(250),
+        }}
+      >
+        <ApolloProvider client={client}>{children}</ApolloProvider>
+      </NuqsAdapter>
+    </QueryClientProvider>
   );
 }

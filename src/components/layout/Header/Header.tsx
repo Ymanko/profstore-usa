@@ -1,11 +1,10 @@
 import { MiddleNav } from '@/components/layout/Header/MiddleNav/MiddleNav';
-import { TopNav } from '@/components/layout/Header/TopNav/TopNav';
+import { TopBar } from '@/components/layout/Header/TopBar';
 
 export const Header = () => {
   return (
-    // <header className={s.header}>
     <header className='bg-primary'>
-      <TopNav />
+      <TopBar />
       <MiddleNav />
     </header>
   );

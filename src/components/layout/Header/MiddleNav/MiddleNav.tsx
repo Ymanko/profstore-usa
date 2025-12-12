@@ -1,11 +1,10 @@
 'use client';
 
-import Image from 'next/image';
-import Link from 'next/link';
 import { useState } from 'react';
 import { useDebounce } from 'use-debounce';
 
 import { AppContainer } from '@/components/common/AppContainer';
+import { SiteLogo } from '@/components/common/SiteLogo';
 import { CatalogMenu } from '@/components/layout/Header/MiddleNav/components/CatalogMenu/CatalogMenu';
 import { DesktopUserActionsList } from '@/components/layout/Header/MiddleNav/components/DesktopUserActionsList/DesktopUserActionsList';
 import { SearchResultList } from '@/components/layout/Header/SearchResultList/SearchResultList';
@@ -46,10 +45,7 @@ export const MiddleNav = () => {
   return (
     <div className={s.headerMiddle}>
       <AppContainer className={s.headerMiddleContainer}>
-        <Link href='/' className={s.logoLink}>
-          <Image src='/img/profstore-logo.png' alt='Profstore logo' width={141} height={66} className={s.logo} />
-        </Link>
-
+        <SiteLogo />
         <DesktopUserActionsList className={s.userActionList} />
         <div className={s.searchContainer}>
           <button
@@ -62,12 +58,11 @@ export const MiddleNav = () => {
             ) : (
               <Icon name='viewGrid' width={24} height={24} />
             )}
-            {/* <Icon name="viewGrid" width={24} height={24} /> */}
             Catalog
           </button>
 
           <div className={s.inputWrap}>
-            <label htmlFor='search' className='visuallyHidden'>
+            <label htmlFor='search' className='sr-only'>
               Search products
             </label>
             <input

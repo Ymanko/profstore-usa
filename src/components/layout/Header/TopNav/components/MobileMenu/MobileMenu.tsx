@@ -1,9 +1,9 @@
 import Link from 'next/link';
 
-import { SocialLinks } from '@/components/common/SocialLinks/SocialLinks';
+import { SocialLinks } from '@/components/common/SocialLinks';
 import { Icon } from '@/components/ui/Icon';
-import { siteConfig } from '@/constants/siteConfig';
-import { NAV_ITEMS } from '@/constants/userMenu';
+import { siteConfig } from '@/constants/site-config';
+import { NAV_ITEMS } from '@/constants/user-menu';
 
 import s from './styles.module.scss';
 

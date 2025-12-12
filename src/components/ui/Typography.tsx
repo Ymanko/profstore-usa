@@ -4,38 +4,38 @@ import { cn } from '@/lib/utils';
 
 import type * as React from 'react';
 
-const typographyVariants = cva('text-balance', {
+const typographyVariants = cva('text-balance font-montserrat', {
   variants: {
     variant: {
       // Hero Headings (40px desktop, 32px mobile)
-      hero: 'font-montserrat text-[32px] leading-[40px] font-bold md:text-[40px] md:leading-[48px]',
+      hero: 'text-[32px] leading-[40px] font-bold md:text-[40px] md:leading-[48px]',
 
       // Page Titles (32px)
-      h1: 'font-montserrat text-[32px] leading-[40px] font-bold',
+      h1: 'text-[32px] leading-[40px] font-bold',
 
       // Section Titles / Product Titles (18px)
-      h2: 'font-montserrat text-lg font-semibold leading-6',
+      h2: 'text-lg font-semibold leading-6',
 
       // Card Titles (18px)
-      h3: 'font-montserrat text-lg font-semibold',
+      h3: 'text-lg font-semibold',
 
       // Mobile Menu (17px)
-      h4: 'font-montserrat text-[17px] font-light',
+      h4: 'text-[17px] font-light',
 
       // Body Text (default)
       body: 'font-inter text-base leading-6 font-normal',
 
       // Body Large (18px)
-      'body-lg': 'font-inter text-lg leading-8 font-normal',
+      'body-lg': 'text-lg leading-8 font-normal',
 
       // Description / Small Text (14px)
-      small: 'font-inter text-sm leading-5 font-normal',
+      small: 'text-sm leading-5 font-normal',
 
       // Links / Navigation (500 weight)
-      link: 'font-montserrat text-base leading-6 font-medium',
+      link: 'text-base leading-6 font-normal',
 
       // Button Text
-      button: 'font-montserrat text-lg leading-[22px] font-normal',
+      button: 'text-lg leading-[22px] font-normal',
 
       // Muted Text
       muted: 'font-inter text-sm leading-5 font-normal text-muted-foreground',
