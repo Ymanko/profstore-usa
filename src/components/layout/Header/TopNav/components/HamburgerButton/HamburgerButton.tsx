@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+
 import s from './styles.module.scss';
 
 interface HamburgerButtonProps {
@@ -7,11 +8,7 @@ interface HamburgerButtonProps {
   className?: string;
 }
 
-export const HamburgerButton = ({
-  isOpen,
-  setIsOpenMenu,
-  className,
-}: HamburgerButtonProps) => {
+export const HamburgerButton = ({ isOpen, setIsOpenMenu, className }: HamburgerButtonProps) => {
   return (
     <button
       className={clsx(s.hamburgerButton, { [s.open]: isOpen }, className)}

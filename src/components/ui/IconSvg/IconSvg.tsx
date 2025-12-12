@@ -27,12 +27,7 @@ interface IconProps {
   [key: string]: unknown;
 }
 
-export const IconSvg = ({
-  name,
-  className = '',
-  fileName = 'main-svg-icons',
-  ...props
-}: IconProps) => {
+export const IconSvg = ({ name, className = '', fileName = 'main-svg-icons', ...props }: IconProps) => {
   return (
     <svg className={className} {...props}>
       <use href={`/svg/${fileName}.svg#${name}`} />

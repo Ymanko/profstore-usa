@@ -1,5 +1,7 @@
 import clsx from 'clsx';
+
 import { Icon } from '@/components/ui/Icon/Icon';
+
 import s from './styles.module.scss';
 
 export const SOCIAL_ICONS = [
@@ -18,7 +20,7 @@ export const SocialLinks = ({ className, size = 30 }: SocialLinksProps) => {
     <ul className={clsx(s.socialLinks, className)}>
       {SOCIAL_ICONS.map((social, index) => (
         <li key={index}>
-          <a href={social.href} target="_blank" rel="noopener noreferrer">
+          <a href={social.href} target='_blank' rel='noopener noreferrer'>
             <Icon name={social.icon} width={size} height={size} />
           </a>
         </li>

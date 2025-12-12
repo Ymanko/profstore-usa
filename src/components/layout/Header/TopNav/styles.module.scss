@@ -9,7 +9,8 @@
     padding: 10px 0;
   }
 
-  .headerTopContainer {}
+  .headerTopContainer {
+  }
 
   .headerContent {
     display: flex;
@@ -42,8 +43,8 @@
           gap: 30px;
         }
 
-
-        .navItem {}
+        .navItem {
+        }
 
         .navLink {
           color: $color-text-on-green;

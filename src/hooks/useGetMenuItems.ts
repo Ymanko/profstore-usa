@@ -1,6 +1,8 @@
 import { useQuery } from '@apollo/client/react';
-import { GetMenuData } from '@/components/layout/Header/MiddleNav/middleNav.types';
+
 import { GET_MENU_ITEMS } from '@/queries/getMenuItems';
+
+import type { GetMenuData } from '@/components/layout/Header/MiddleNav/middleNav.types';
 
 export const useGetMenuItems = () => {
   const {

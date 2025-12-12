@@ -1,8 +1,8 @@
 'use client';
 
-import Image from 'next/image';
 import { gql } from '@apollo/client';
 import { useQuery } from '@apollo/client/react';
+import Image from 'next/image';
 
 const GET_PRODUCT = gql`
   query GetProduct($handle: String!) {
@@ -43,10 +43,7 @@ type ProductQueryVariables = {
 };
 
 export const ProductView = ({ handle }: { handle: string }) => {
-  const { data, loading, error } = useQuery<
-    ProductQueryResponse,
-    ProductQueryVariables
-  >(GET_PRODUCT, {
+  const { data, loading, error } = useQuery<ProductQueryResponse, ProductQueryVariables>(GET_PRODUCT, {
     variables: { handle },
   });
 

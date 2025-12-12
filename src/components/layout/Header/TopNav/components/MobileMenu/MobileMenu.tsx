@@ -1,9 +1,11 @@
 import Link from 'next/link';
-import s from './styles.module.scss';
+
 import { SocialLinks } from '@/components/common/SocialLinks/SocialLinks';
 import { Icon } from '@/components/ui/Icon/Icon';
-import { NAV_ITEMS } from '@/constants/userMenu';
 import { siteConfig } from '@/constants/siteConfig';
+import { NAV_ITEMS } from '@/constants/userMenu';
+
+import s from './styles.module.scss';
 
 interface MobileMenuProps {
   closeMenu: () => void;
@@ -16,7 +18,7 @@ export const MobileMenu = ({ closeMenu }: MobileMenuProps) => {
         {/* Блок навігації */}
         <nav className={s.nav}>
           <ul className={s.navList}>
-            {NAV_ITEMS.map((item) => (
+            {NAV_ITEMS.map(item => (
               <li key={item.label} className={s.navItem}>
                 <Link
                   className={s.navLink}
@@ -32,7 +34,7 @@ export const MobileMenu = ({ closeMenu }: MobileMenuProps) => {
 
         {/* Блок телефону */}
         <a href={siteConfig.phone_href} className={s.phone} onClick={closeMenu}>
-          <Icon name="callReceive" width="24" height="24" />
+          <Icon name='callReceive' width='24' height='24' />
           {siteConfig.phone_number}
         </a>
 

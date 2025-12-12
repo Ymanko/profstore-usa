@@ -1,5 +1,6 @@
 import { AppContainer } from '@/components/common/AppContainer/AppContainer';
-import { Metadata } from 'next';
+
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Catalog | ProfStore',
@@ -8,8 +9,8 @@ export const metadata: Metadata = {
 
 export default async function CollactionsPage() {
   return (
-    <AppContainer><div style={{ fontSize: "32px", padding: "100px 0" }}>This is a temporary page Collections</div></AppContainer>
+    <AppContainer>
+      <div style={{ fontSize: '32px', padding: '100px 0' }}>This is a temporary page Collections</div>
+    </AppContainer>
   );
 }
-
-

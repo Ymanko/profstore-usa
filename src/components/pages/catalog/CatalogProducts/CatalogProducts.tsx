@@ -1,9 +1,10 @@
 'use client';
 
-import Image from 'next/image';
 import { gql } from '@apollo/client';
-import s from './catalogProducts.module.css';
 import { useQuery } from '@apollo/client/react';
+import Image from 'next/image';
+
+import s from './catalogProducts.module.css';
 
 const GET_PRODUCTS = gql`
   query GetProducts($first: Int!) {
@@ -50,21 +51,18 @@ type ProductsQueryVariables = {
 };
 
 export function CatalogProducts() {
-  const { data, loading, error } = useQuery<
-    ProductsQueryResponse,
-    ProductsQueryVariables
-  >(GET_PRODUCTS, {
+  const { data, loading, error } = useQuery<ProductsQueryResponse, ProductsQueryVariables>(GET_PRODUCTS, {
     variables: { first: 50 },
   });
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error loading products</p>;
 
-  const products = data!.products.edges.map((e) => e.node);
+  const products = data!.products.edges.map(e => e.node);
 
   return (
     <div className={s.container}>
-      {products.map((product) => (
+      {products.map(product => (
         <div key={product.id} className={s.card}>
           {product.featuredImage && (
             <Image

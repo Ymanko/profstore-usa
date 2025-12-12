@@ -144,7 +144,7 @@
   }
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     inset: 0;
     background: transparent;
@@ -223,7 +223,7 @@
   }
 
   .cardTitle {
-    font-family: "Montserrat", sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 300;
     font-size: 17px;
     text-transform: uppercase;
@@ -243,7 +243,7 @@
 }
 
 // --- MOBILE STYLES ---
-@media (max-width:$breakpoint-tablet) {
+@media (max-width: $breakpoint-tablet) {
   .catalogContainer {
     flex-direction: column;
     height: 80vh;

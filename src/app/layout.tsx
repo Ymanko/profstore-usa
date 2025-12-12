@@ -1,12 +1,13 @@
-import type { Metadata } from 'next';
-import { ReactNode } from 'react';
 import { Montserrat, Inter } from 'next/font/google';
 
+import { ApolloWrapper } from '@/components/layout/ApolloWrapper';
+import { Footer } from '@/components/layout/Footer/Footer';
 // import './globals.css';
 import '@/styles/globals.scss';
-import { ApolloWrapper } from '@/components/layout/ApolloWrapper';
 import { Header } from '@/components/layout/Header/Header';
-import { Footer } from '@/components/layout/Footer/Footer';
+
+import type { Metadata } from 'next';
+import type { ReactNode } from 'react';
 
 const montserratFont = Montserrat({
   variable: '--font-montserrat',
@@ -29,13 +30,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang='en'>
       <body className={`${montserratFont.variable} ${interFont.variable}`}>
         <ApolloWrapper>
           <Header />
-          <main style={{ height: "100vh" }}>
-            {children}
-          </main>
+          <main style={{ height: '100vh' }}>{children}</main>
           <Footer />
         </ApolloWrapper>
       </body>

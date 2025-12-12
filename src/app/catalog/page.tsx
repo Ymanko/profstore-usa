@@ -1,6 +1,8 @@
-import { Metadata } from 'next';
-import s from './catalogPage.module.css';
 import { CatalogProducts } from '@/components/pages/catalog/CatalogProducts/CatalogProducts';
+
+import s from './catalogPage.module.css';
+
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Catalog | ProfStore',

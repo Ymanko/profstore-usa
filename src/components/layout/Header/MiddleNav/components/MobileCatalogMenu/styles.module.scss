@@ -2,7 +2,6 @@
 @use '@/styles/mixins' as *;
 
 @media (max-width: 991px) {
-
   .rootOverlay {
     position: absolute;
     top: 100%;
@@ -119,7 +118,7 @@
     }
 
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       inset: 0;
       background: transparent;
@@ -198,7 +197,7 @@
     gap: 8px;
     padding: 12px 40px;
     background-color: $color-bg-main;
-    font-family: "Montserrat", sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 300;
     font-size: 14px;
     text-transform: uppercase;
@@ -206,7 +205,6 @@
     color: $color-text-main;
 
     &:hover {
-
       p {
         color: $color-sidebar-active;
       }

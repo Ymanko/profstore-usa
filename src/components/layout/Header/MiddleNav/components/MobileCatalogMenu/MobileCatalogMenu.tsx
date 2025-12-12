@@ -1,14 +1,16 @@
 'use client';
 
 import * as Accordion from '@radix-ui/react-accordion';
-import { Icon } from '@/components/ui/Icon/Icon';
-import { Category } from '../../middleNav.types';
-import s from './styles.module.scss';
-import { parseSubCategoryData } from '@/utils/parsers/parseSubcategoryData';
 import Image from 'next/image';
-import { getLastSegment } from '@/utils/parsers/getLastSegment';
 import { useRouter } from 'next/navigation';
+
+import { Icon } from '@/components/ui/Icon/Icon';
 import { getPathAfterCom } from '@/utils/parsers/getPathAfterCom';
+import { parseSubCategoryData } from '@/utils/parsers/parseSubcategoryData';
+
+import s from './styles.module.scss';
+
+import type { Category } from '../../middleNav.types';
 
 interface MobileCatalogMenuProps {
   collections: Category[];
@@ -16,44 +18,30 @@ interface MobileCatalogMenuProps {
   onClose: () => void;
 }
 
-export default function MobileCatalogMenu({
-  collections,
-  className,
-  onClose
-}: MobileCatalogMenuProps) {
+export default function MobileCatalogMenu({ collections, className, onClose }: MobileCatalogMenuProps) {
   const router = useRouter();
 
   return (
-    <Accordion.Root
-      type="single"
-      collapsible
-      className={`${s.sidebar} ${className ?? ''}`}
-    >
-      <Icon className={s.vector} name="vector" />
+    <Accordion.Root type='single' collapsible className={`${s.sidebar} ${className ?? ''}`}>
+      <Icon className={s.vector} name='vector' />
 
       <ul className={s.sidebarList}>
-        {collections?.map((category) => {
+        {collections?.map(category => {
           const hasSub = category.items?.length > 0;
 
           return (
             <Accordion.Item key={category.id} value={category.id} asChild>
               <li className={s.sidebarItem}>
-
                 <Accordion.Header>
                   {hasSub ? (
                     <Accordion.Trigger className={s.itemButton}>
                       <span className={s.itemIcon}>
-                        <Icon name="equipment" width={20} height={20} />
+                        <Icon name='equipment' width={20} height={20} />
                       </span>
 
                       <span className={s.itemTitle}>{category.title}</span>
 
-                      {hasSub && <Icon
-                        name="arrowDown"
-                        className={s.mobileArrow}
-                        width={20}
-                        height={20}
-                      />}
+                      {hasSub && <Icon name='arrowDown' className={s.mobileArrow} width={20} height={20} />}
                     </Accordion.Trigger>
                   ) : (
                     // ==== Якщо підкатегорій немає → робимо redirect ====
@@ -62,16 +50,12 @@ export default function MobileCatalogMenu({
                       onClick={() => {
                         if (category.url) {
                           router.push(getPathAfterCom(category.url));
-                          onClose()
+                          onClose();
                         }
-                        else {
-                          console.warn('Category URL is null');
-                        }
-                      }
-                      }
+                      }}
                     >
                       <span className={s.itemIcon}>
-                        <Icon name="equipment" width={20} height={20} />
+                        <Icon name='equipment' width={20} height={20} />
                       </span>
 
                       <span className={s.itemTitle}>{category.title}</span>
@@ -82,24 +66,21 @@ export default function MobileCatalogMenu({
                 {hasSub && (
                   <Accordion.Content>
                     <ul className={s.subContainer}>
-                      {category.items?.map((sub) => (
+                      {category.items?.map(sub => (
                         <li className={s.subItem} key={sub.id}>
                           <button
                             className={s.subCard}
                             onClick={() => {
                               if (sub.url) {
                                 router.push(getPathAfterCom(sub.url));
-                                onClose()
+                                onClose();
                               } else {
                                 console.warn('SubCategory URL is null');
                               }
                             }}
                           >
                             <Image
-                              src={
-                                parseSubCategoryData(sub.title).image ||
-                                'https://placehold.co/100x100.png'
-                              }
+                              src={parseSubCategoryData(sub.title).image || 'https://placehold.co/100x100.png'}
                               alt={sub.title}
                               width={30}
                               height={30}
@@ -118,6 +99,6 @@ export default function MobileCatalogMenu({
           );
         })}
       </ul>
-    </Accordion.Root >
+    </Accordion.Root>
   );
 }

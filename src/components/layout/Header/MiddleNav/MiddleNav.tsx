@@ -1,22 +1,22 @@
 'use client';
 
-import Link from 'next/link';
 import Image from 'next/image';
-import { ChangeEvent, useState } from 'react';
-
-import { Icon } from '@/components/ui/Icon/Icon';
-import { AppContainer } from '@/components/common/AppContainer/AppContainer';
-import { DesktopUserActionsList } from './components/DesktopUserActionsList/DesktopUserActionsList';
-
+import Link from 'next/link';
+import { useState } from 'react';
 import { useDebounce } from 'use-debounce';
 
+import { AppContainer } from '@/components/common/AppContainer/AppContainer';
+import { CatalogMenu } from '@/components/layout/Header/MiddleNav/components/CatalogMenu/CatalogMenu';
+import { DesktopUserActionsList } from '@/components/layout/Header/MiddleNav/components/DesktopUserActionsList/DesktopUserActionsList';
+import { SearchResultList } from '@/components/layout/Header/SearchResultList/SearchResultList';
+import { Icon } from '@/components/ui/Icon/Icon';
 import { useGetMenuItems } from '@/hooks/useGetMenuItems';
 import { useGetSearchData } from '@/hooks/useGetSearchData';
 
 import s from './styles.module.scss';
-import { SearchResultList } from '@/components/layout/Header/SearchResultList/SearchResultList';
-import { Category } from './middleNav.types';
-import { CatalogMenu } from './components/CatalogMenu/CatalogMenu';
+
+import type { Category } from '@/components/layout/Header/MiddleNav/middleNav.types';
+import type { ChangeEvent } from 'react';
 
 export const MiddleNav = () => {
   const [searchValue, setSearchValue] = useState<string>('');
@@ -28,17 +28,13 @@ export const MiddleNav = () => {
   const { loadingCollections, dataCollections } = useGetMenuItems();
   const { loadingSearch, searchData } = useGetSearchData(value);
 
-  // console.info('dataCollections', dataCollections);
-
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
   };
 
-  const handleCatalogClick = () => { };
-
   const toggleCatalog = () => {
-    setIsCatalogOpen((prev) => !prev);
-    setIsFocus(false)
+    setIsCatalogOpen(prev => !prev);
+    setIsFocus(false);
   };
 
   const closeCatalog = () => {
@@ -50,14 +46,8 @@ export const MiddleNav = () => {
   return (
     <div className={s.headerMiddle}>
       <AppContainer classes={s.headerMiddleContainer}>
-        <Link href={'/'} className={s.logoLink}>
-          <Image
-            src={'/img/profstore-logo.png'}
-            alt={'Profstore logo'}
-            width={141}
-            height={66}
-            className={s.logo}
-          />
+        <Link href='/' className={s.logoLink}>
+          <Image src='/img/profstore-logo.png' alt='Profstore logo' width={141} height={66} className={s.logo} />
         </Link>
         <DesktopUserActionsList className={s.userActionList} />
         <div className={s.searchContainer}>
@@ -67,42 +57,36 @@ export const MiddleNav = () => {
             disabled={loadingCollections}
           >
             {isCatalogOpen ? (
-              <Icon name="close" width={24} height={24} />
+              <Icon name='close' width={24} height={24} />
             ) : (
-              <Icon name="viewGrid" width={24} height={24} />
+              <Icon name='viewGrid' width={24} height={24} />
             )}
             {/* <Icon name="viewGrid" width={24} height={24} /> */}
             Catalog
           </button>
 
           <div className={s.inputWrap}>
-            <label htmlFor="search" className="visuallyHidden">
+            <label htmlFor='search' className='visuallyHidden'>
               Search products
             </label>
             <input
-              id="search"
-              type="text"
-              placeholder="Search products..."
+              id='search'
+              type='text'
+              placeholder='Search products...'
               className={s.searchInput}
               onChange={handleSearchChange}
               value={searchValue}
               onFocus={() => {
-                setIsFocus(true)
+                setIsFocus(true);
                 setIsCatalogOpen(false);
               }}
-              // eslint-disable-next-line no-undef
               onBlur={() => setTimeout(() => setIsFocus(false), 100)}
             />
             <div className={s.iconWrap}>
               {loadingSearch ? (
                 <span style={{ fontSize: '12px' }}>...</span>
               ) : (
-                <Icon
-                  className={s.searchIcon}
-                  name="search"
-                  width={24}
-                  height={24}
-                />
+                <Icon className={s.searchIcon} name='search' width={24} height={24} />
               )}
             </div>
             <SearchResultList searchData={searchData} isFocus={isFocus} />
@@ -110,14 +94,7 @@ export const MiddleNav = () => {
         </div>
       </AppContainer>
 
-      {isCatalogOpen && (
-        <CatalogMenu
-          isOpen={isCatalogOpen}
-          onClose={closeCatalog}
-          collections={categories}
-        />
-      )
-      }
+      {isCatalogOpen && <CatalogMenu isOpen={isCatalogOpen} onClose={closeCatalog} collections={categories} />}
     </div>
   );
 };

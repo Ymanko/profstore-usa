@@ -8,14 +8,14 @@
 
 ## 🎯 ЗАГАЛЬНА ОЦІНКА
 
-| Категорія | Оцінка | Статус |
-|-----------|--------|--------|
-| **Безпека** | 6/10 | 🟡 Потребує уваги |
-| **Архітектура** | 4/10 | 🔴 Критично |
-| **Якість коду** | 7/10 | 🟡 Задовільно |
-| **Продуктивність** | 3/10 | 🔴 Критично |
-| **TypeScript** | 8/10 | 🟢 Добре |
-| **Загальна оцінка** | **5.6/10** | 🟡 |
+| Категорія           | Оцінка     | Статус            |
+| ------------------- | ---------- | ----------------- |
+| **Безпека**         | 6/10       | 🟡 Потребує уваги |
+| **Архітектура**     | 4/10       | 🔴 Критично       |
+| **Якість коду**     | 7/10       | 🟡 Задовільно     |
+| **Продуктивність**  | 3/10       | 🔴 Критично       |
+| **TypeScript**      | 8/10       | 🟢 Добре          |
+| **Загальна оцінка** | **5.6/10** | 🟡                |
 
 ---
 
@@ -26,11 +26,13 @@
 **Проблема:** Весь додаток обгорнутий в `'use client'`, що нівелює переваги Next.js
 
 **Локація:**
+
 - `src/app/layout.tsx:34-40` - ApolloWrapper обгортає весь додаток
 - `src/lib/apollo/appolo-client.ts:2` - Apollo Client на клієнті
 - Всі сторінки використовують Client Components для data fetching
 
 **Наслідки:**
+
 - ❌ Немає Server-Side Rendering (SSR)
 - ❌ Немає Static Site Generation (SSG)
 - ❌ Повільний First Contentful Paint (FCP)
@@ -38,6 +40,7 @@
 - ❌ Великий JavaScript bundle (~500KB+)
 
 **Що робити:**
+
 ```
 ПРІОРИТЕТ: ВИСОКИЙ
 СКЛАДНІСТЬ: Висока
@@ -51,6 +54,7 @@
 ```
 
 **Приклад:**
+
 ```typescript
 // ❌ ЗАРАЗ (погано)
 'use client';
@@ -74,10 +78,12 @@ export default async function CatalogPage() {
 **Проблема:** Apollo Client на клієнті + 'use client' скрізь
 
 **Локація:**
+
 - `src/components/pages/catalog/CatalogProducts/CatalogProducts.tsx:19` - useQuery на клієнті
 - `src/components/pages/Product/ProductInfo.tsx:15` - useQuery на клієнті
 
 **Метрики:**
+
 ```
 JavaScript bundle size: ~487KB (зі стисненням ~156KB)
 Apollo Client: ~135KB
@@ -85,6 +91,7 @@ Apollo Client: ~135KB
 ```
 
 **Що робити:**
+
 ```
 ПРІОРИТЕТ: ВИСОКИЙ
 СКЛАДНІСТЬ: Середня
@@ -103,12 +110,10 @@ Apollo Client: ~135KB
 **Проблема:** Витік внутрішньої інформації через console.warn
 
 **Локація:**
+
 ```typescript
 // src/lib/apollo/appolo-client.ts:7-10
-console.warn(
-  'process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN',
-  process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN,
-);
+console.warn('process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN', process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN);
 
 // src/components/layout/Header/MiddleNav/components/CatalogSidebar/CatalogSidebar.tsx:40
 console.warn('Category URL is null');
@@ -118,11 +123,13 @@ console.warn('SubCategory URL is null');
 ```
 
 **Наслідки:**
+
 - Витік URL структури в production
 - Витік внутрішньої бізнес-логіки
 - Засмічення browser console
 
 **Що робити:**
+
 ```
 ПРІОРИТЕТ: ВИСОКИЙ (легко виправити)
 СКЛАДНІСТЬ: Низька
@@ -141,6 +148,7 @@ console.warn('SubCategory URL is null');
 **Проблема:** Примітивна обробка помилок без fallback UI
 
 **Локація:**
+
 ```typescript
 // src/components/pages/Product/ProductInfo.tsx:17-18
 if (loading) return <p>Loading...</p>;
@@ -148,6 +156,7 @@ if (error) return <p>Error loading product</p>;
 ```
 
 **Що не так:**
+
 - ❌ Немає Error Boundary компонентів
 - ❌ Немає логування помилок (Sentry, LogRocket)
 - ❌ Примітивні повідомлення про помилки
@@ -155,6 +164,7 @@ if (error) return <p>Error loading product</p>;
 - ❌ Немає fallback UI
 
 **Що робити:**
+
 ```
 ПРІОРИТЕТ: ВИСОКИЙ
 СКЛАДНІСТЬ: Середня
@@ -174,6 +184,7 @@ if (error) return <p>Error loading product</p>;
 **Проблема:** Завантаження 50 продуктів без пагінації
 
 **Локація:**
+
 ```typescript
 // src/components/pages/catalog/CatalogProducts/CatalogProducts.tsx:20
 const { loading, error, data } = useQuery(GET_PRODUCTS, {
@@ -182,12 +193,14 @@ const { loading, error, data } = useQuery(GET_PRODUCTS, {
 ```
 
 **Проблеми:**
+
 - Немає lazy loading
 - Немає infinite scroll
 - Немає кешування
 - Немає optimistic updates
 
 **Що робити:**
+
 ```
 ПРІОРИТЕТ: СЕРЕДНІЙ
 СКЛАДНІСТЬ: Середня
@@ -209,6 +222,7 @@ const { loading, error, data } = useQuery(GET_PRODUCTS, {
 **Проблема:** Відсутня валідація URL в parseSubcategoryData
 
 **Локація:**
+
 ```typescript
 // src/utils/parsers/parseSubcategoryData.ts:2-5
 export function parseSubCategoryData(value: string): ParsedSubCategoryData {
@@ -220,6 +234,7 @@ export function parseSubCategoryData(value: string): ParsedSubCategoryData {
 **Потенційна вразливість:** XSS через зловмисні URL в image field
 
 **Що робити:**
+
 ```
 ПРІОРИТЕТ: СЕРЕДНІЙ
 СКЛАДНІСТЬ: Низька
@@ -238,10 +253,12 @@ export function parseSubCategoryData(value: string): ParsedSubCategoryData {
 **Проблема:** Типи GraphQL пишуться вручну
 
 **Локація:**
+
 - `src/components/pages/Product/ProductInfo.tsx:8-14` - мануальні типи
 - `src/components/pages/catalog/CatalogProducts/CatalogProducts.tsx:10-16` - дублювання типів
 
 **Що робити:**
+
 ```
 ПРІОРИТЕТ: СЕРЕДНІЙ
 СКЛАДНІСТЬ: Середня
@@ -255,6 +272,7 @@ export function parseSubCategoryData(value: string): ParsedSubCategoryData {
 ```
 
 **Конфігурація:**
+
 ```yaml
 # codegen.yml
 schema: 'https://profstore-usa.myshopify.com/api/2024-04/graphql.json'
@@ -273,6 +291,7 @@ generates:
 **Проблема:** Відсутність cleanup для setTimeout
 
 **Локація:**
+
 ```typescript
 // src/components/layout/Header/MiddleNav/MiddleNav.tsx:94
 onBlur={() => setTimeout(() => setIsFocus(false), 100)}
@@ -281,6 +300,7 @@ onBlur={() => setTimeout(() => setIsFocus(false), 100)}
 **Проблема:** Якщо компонент unmount до спрацювання setTimeout, буде warning
 
 **Що робити:**
+
 ```
 ПРІОРИТЕТ: СЕРЕДНІЙ
 СКЛАДНІСТЬ: Низька
@@ -305,6 +325,7 @@ useEffect(() => {
 **Проблема:** InMemoryCache без оптимізацій
 
 **Локація:**
+
 ```typescript
 // src/lib/apollo/appolo-client.ts:25-28
 export const client = new ApolloClient({
@@ -314,11 +335,13 @@ export const client = new ApolloClient({
 ```
 
 **Що не налаштовано:**
+
 - fetchPolicy для запитів
 - typePolicies для нормалізації
 - possibleTypes для unions/interfaces
 
 **Що робити:**
+
 ```
 ПРІОРИТЕТ: СЕРЕДНІЙ
 СКЛАДНІСТЬ: Середня
@@ -348,6 +371,7 @@ cache: new InMemoryCache({
 **Проблема:** Generic metadata в layout.tsx
 
 **Локація:**
+
 ```typescript
 // src/app/layout.tsx:25-28
 export const metadata: Metadata = {
@@ -357,11 +381,13 @@ export const metadata: Metadata = {
 ```
 
 **Що не так:**
+
 - Немає generateMetadata для dynamic routes
 - Немає Open Graph tags
 - Немає структурованих даних (JSON-LD)
 
 **Що робити:**
+
 ```
 ПРІОРИТЕТ: СЕРЕДНІЙ
 СКЛАДНІСТЬ: Низька
@@ -391,6 +417,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
 **Локація:** `src/lib/apollo/appolo-client.ts` ❌ має бути `apollo-client.ts` ✅
 
 **Що робити:**
+
 ```
 ПРІОРИТЕТ: НИЗЬКИЙ
 ЧАС: 2 хвилини
@@ -403,6 +430,7 @@ git mv src/lib/apollo/appolo-client.ts src/lib/apollo/apollo-client.ts
 ### 12. CODE QUALITY: Коментований код
 
 **Локація:**
+
 ```typescript
 // src/app/layout.tsx:5
 // import './globals.css';
@@ -418,9 +446,10 @@ git mv src/lib/apollo/appolo-client.ts src/lib/apollo/apollo-client.ts
 ### 13. CODE QUALITY: Порожні функції
 
 **Локація:**
+
 ```typescript
 // src/components/layout/Header/MiddleNav/MiddleNav.tsx:88
-const handleCatalogClick = () => { };
+const handleCatalogClick = () => {};
 ```
 
 **Що робити:** Видалити або реалізувати логіку
@@ -430,6 +459,7 @@ const handleCatalogClick = () => { };
 ### 14. CODE QUALITY: Hardcoded стилі
 
 **Локація:**
+
 ```typescript
 // src/app/layout.tsx:36
 <main style={{ height: "100vh" }}>{children}</main>
@@ -442,6 +472,7 @@ const handleCatalogClick = () => { };
 ### 15. UX: Некоректна сторінка пошуку
 
 **Локація:**
+
 ```typescript
 // src/app/search/page.tsx:2
 export default function HomeSearchPage() {
@@ -458,6 +489,7 @@ export default function HomeSearchPage() {
 **Проблема:** Погана доступність для screen readers
 
 **Приклади:**
+
 ```typescript
 // Кнопки без type="button"
 <button onClick={onClose}>...</button>
@@ -467,6 +499,7 @@ export default function HomeSearchPage() {
 ```
 
 **Що робити:**
+
 ```
 ПРІОРИТЕТ: НИЗЬКИЙ
 ЧАС: 2 години
@@ -483,6 +516,7 @@ export default function HomeSearchPage() {
 ### 17. ESLINT: Неправильні directives
 
 **Локація:**
+
 ```typescript
 // src/lib/apollo/appolo-client.ts:1
 /* eslint-disable no-undef */ // ❌ Глобальний disable
@@ -497,6 +531,7 @@ export default function HomeSearchPage() {
 **Проблема:** Product type визначений в кількох місцях
 
 **Що робити:**
+
 ```
 ПРІОРИТЕТ: НИЗЬКИЙ
 ЧАС: 30 хвилин
@@ -565,7 +600,7 @@ src/types/shopify.ts - shared types
 
 4. **Shopify Storefront API** ✅
    - Правильне використання API
-   - Токен NEXT_PUBLIC_ нормально для Storefront API
+   - Токен NEXT*PUBLIC* нормально для Storefront API
 
 5. **Git hygiene** ✅
    - .env файл не закоммічений
@@ -625,17 +660,21 @@ src/types/shopify.ts - shared types
 ## 📝 ВИСНОВОК
 
 ### Поточний стан:
+
 Проект має **солідний фундамент** (TypeScript, Next.js, code organization), але **критичні архітектурні проблеми** знижують продуктивність та SEO.
 
 ### Головна проблема:
+
 **Неправильне використання Next.js App Router** - весь додаток працює як Client-Side React app, що нівелює переваги Next.js.
 
 ### Рекомендація:
+
 **Пріоритет 1:** Міграція на Server Components (2-3 дні роботи)
 **Пріоритет 2:** Error handling та console cleanup (1 день)
 **Пріоритет 3:** Performance optimization (1-2 тижні)
 
 ### Оцінка складності виправлень:
+
 - **Швидкі виправлення (1 день):** 6/10 проблем
 - **Архітектурні зміни (1-2 тижні):** Всі критичні проблеми
 - **ROI:** Високий - велике покращення за помірні зусилля

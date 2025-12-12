@@ -1,10 +1,9 @@
 import { useQuery } from '@apollo/client/react';
-import {
-  SearchData,
-  SearchResults,
-} from '@/components/layout/Header/MiddleNav/middleNav.types';
+
 import { SEARCH_QUERY } from '@/queries/searchQuery';
 import { flattenEdges } from '@/utils/flattenEdges';
+
+import type { SearchData, SearchResults } from '@/components/layout/Header/MiddleNav/middleNav.types';
 
 export const useGetSearchData = (value: string) => {
   const {
