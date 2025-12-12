@@ -6,11 +6,11 @@ import s from './styles.module.scss';
 import type { SearchResults } from '@/components/layout/Header/MiddleNav/middleNav.types';
 import type { FC } from 'react';
 
-const DEFAULT_SEARCH_DATA = { products: [], collections: [] };
+const DEFAULT_SEARCH_DATA: SearchResults = { products: [], collections: [] };
 
 type TSearchResultListProps = {
   isFocus: boolean;
-  searchData: SearchResults;
+  searchData: SearchResults | null;
 };
 
 export const SearchResultList: FC<TSearchResultListProps> = ({ searchData, isFocus }) => {

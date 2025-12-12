@@ -7,10 +7,10 @@ import { getPathAfterCom } from '@/utils/parsers/getPathAfterCom';
 
 import s from './styles.module.scss';
 
-import type { Category } from '@/components/layout/Header/MiddleNav/middleNav.types';
+import type { MenuItem } from '@/lib/graphql/graphql';
 
 interface CatalogSidebarProps {
-  collections: Category[];
+  collections: MenuItem[];
   activeId: string | null;
   onSelect: (id: string) => void;
   onClose: () => void;

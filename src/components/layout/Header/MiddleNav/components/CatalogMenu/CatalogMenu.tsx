@@ -11,12 +11,12 @@ import MobileCatalogMenu from '../MobileCatalogMenu/MobileCatalogMenu';
 
 import s from './styles.module.scss';
 
-import type { Category } from '../../middleNav.types';
+import type { MenuItem } from '@/lib/graphql/graphql';
 
 interface CatalogMenuProps {
   isOpen: boolean;
   onClose: () => void;
-  collections: Category[];
+  collections: MenuItem[];
 }
 
 export const CatalogMenu = ({ isOpen, onClose, collections }: CatalogMenuProps) => {

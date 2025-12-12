@@ -1,7 +1,10 @@
-import { CatalogProducts } from '@/components/pages/catalog/CatalogProducts/CatalogProducts';
-import { Typography } from '@/components/ui/Typography';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
-import s from './catalogPage.module.css';
+import { PageWrapper } from '@/components/common/PageWrapper';
+import { CatalogProducts } from '@/components/pages/catalog/CatalogProducts';
+import { Typography } from '@/components/ui/Typography';
+import { getQueryClient } from '@/lib/tanstack/get-query-client';
+import { getProductsQueryOptions } from '@/queries/get-products';
 
 import type { Metadata } from 'next';
 
@@ -11,11 +14,16 @@ export const metadata: Metadata = {
 };
 
 export default async function CatalogPage() {
-  return (
-    <section className={s.page}>
-      <Typography variant='h1'>Catalog</Typography>
+  const queryClient = getQueryClient();
+  await queryClient.ensureQueryData(getProductsQueryOptions);
 
-      <CatalogProducts />
-    </section>
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <PageWrapper>
+        <Typography variant='h1'>Catalog</Typography>
+
+        <CatalogProducts />
+      </PageWrapper>
+    </HydrationBoundary>
   );
 }

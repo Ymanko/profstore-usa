@@ -9,10 +9,10 @@ import { parseSubCategoryData } from '@/utils/parsers/parseSubcategoryData';
 
 import s from './styles.module.scss';
 
-import type { SubCategory } from '../../middleNav.types';
+import type { MenuItem } from '@/lib/graphql/graphql';
 
 interface CatalogContentProps {
-  subCategories?: SubCategory[];
+  subCategories?: MenuItem[];
   onClose: () => void;
 }
 

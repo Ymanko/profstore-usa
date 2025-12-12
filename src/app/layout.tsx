@@ -1,11 +1,14 @@
+import '@/styles/globals.css';
+
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Montserrat, Inter } from 'next/font/google';
 
 import Providers from '@/app/providers';
 import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header/Header';
-// import '@/styles/globals.scss';
-import '@/styles/globals.css';
+import { getQueryClient } from '@/lib/tanstack/get-query-client';
 import { cn } from '@/lib/utils';
+import { getMenuItemsQueryOptions } from '@/queries/get-menu-items';
 
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
@@ -37,14 +40,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
+  const queryClient = getQueryClient();
+  await queryClient.ensureQueryData(getMenuItemsQueryOptions);
+
   return (
     <html lang='en'>
       <body className={cn('flex min-h-dvh flex-col antialiased', montserratFont.variable, interFont.variable)}>
         <Providers>
-          <Header />
-          <main className='flex-1'>{children}</main>
-          <Footer />
+          <HydrationBoundary state={dehydrate(queryClient)}>
+            <Header />
+            <main className='flex-1'>{children}</main>
+            <Footer />
+          </HydrationBoundary>
         </Providers>
       </body>
     </html>

@@ -1,3 +1,5 @@
+import type { Collection, Product } from '@/lib/graphql/graphql';
+
 interface MoneyV2 {
   amount: string;
   currencyCode: string;
@@ -54,8 +56,8 @@ export interface SearchData {
 }
 
 export interface SearchResults {
-  products: CollectionItem[];
-  collections: CollectionItem[];
+  products: Product[];
+  collections: Collection[];
 }
 
 export interface MenuItem {

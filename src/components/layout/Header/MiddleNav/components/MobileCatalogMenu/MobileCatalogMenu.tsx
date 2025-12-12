@@ -10,10 +10,10 @@ import { parseSubCategoryData } from '@/utils/parsers/parseSubcategoryData';
 
 import s from './styles.module.scss';
 
-import type { Category } from '../../middleNav.types';
+import type { MenuItem } from '@/lib/graphql/graphql';
 
 interface MobileCatalogMenuProps {
-  collections: Category[];
+  collections: MenuItem[];
   className?: string;
   onClose: () => void;
 }
