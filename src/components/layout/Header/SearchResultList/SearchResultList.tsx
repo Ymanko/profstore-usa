@@ -31,7 +31,7 @@ export const SearchResultList: FC<TSearchResultListProps> = ({ searchData, isFoc
               const url = images.edges[0]?.node?.url;
               return (
                 <li key={id} className={s.searchResultListItem}>
-                  <Link href={`/product/${handle}`} className={s.searchResultListLink}>
+                  <Link href={`/catalog/${handle}`} className={s.searchResultListLink}>
                     {url && <Image src={url} alt={altText} width={60} height={60} />}
                     <div>
                       <h3 className={s.searchResultListItemTitle}>{title}</h3>
