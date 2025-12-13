@@ -23,7 +23,7 @@ const typographyVariants = cva('text-balance font-montserrat', {
       h4: 'text-[17px] font-light',
 
       // Body Text (default)
-      body: 'font-inter text-base leading-6 font-normal',
+      body: 'text-base leading-6 font-normal',
 
       // Body Large (18px)
       'body-lg': 'text-lg leading-8 font-normal',

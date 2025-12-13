@@ -1,22 +1,9 @@
 export const HEADER_USER_ACTIONS = [
-  { label: 'Basket', href: '/basket', icon: 'shoppingCart' },
-  { label: 'Comparison', href: '/comparison', icon: 'scales' },
-  { label: 'Favorites', href: '/favorites', icon: 'heart' },
-  { label: 'Sign in', href: '/sign-in', icon: 'logIn' },
-] as const;
-
-export const MOBILE_HEADER_USER_ACTIONS = [
-  { href: '/comparison', icon: 'scales', label: 'comparison' },
-  { href: '/favorites', icon: 'heart', label: 'favorites' },
-  { href: '/sign-in', icon: 'user', label: 'sign in' },
-];
-
-export const DESKTOP_HEADER_USER_ACTIONS = [
   { href: '/basket', icon: 'shoppingCart', label: 'Basket' },
   { href: '/comparison', icon: 'scales', label: 'Comparison' },
   { href: '/favorites', icon: 'heart', label: 'Favorites' },
   { href: '/sign-in', icon: 'user', label: 'Sign in' },
-] as const;
+];
 
 export const NAV_ITEMS = [
   { label: 'New', href: '/' },

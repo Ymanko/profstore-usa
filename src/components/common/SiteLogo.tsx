@@ -7,13 +7,15 @@ import React from 'react';
 
 import { cn } from '@/lib/utils';
 
+import type { ComponentPropsWithoutRef, FC } from 'react';
+
 const HOME_PATH = '/';
 
-export const SiteLogo = () => {
+export const SiteLogo: FC<ComponentPropsWithoutRef<'a'>> = ({ className }) => {
   const pathname = usePathname();
 
   return (
-    <Link href={HOME_PATH} className={cn(pathname === HOME_PATH && 'pointer-events-none')}>
+    <Link href={HOME_PATH} className={cn(pathname === HOME_PATH && 'pointer-events-none', className)}>
       <Image
         src='/img/profstore-logo.png'
         alt='Profstore logo'

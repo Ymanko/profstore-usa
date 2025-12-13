@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 import { List } from '@/components/common/List';
 import { Show } from '@/components/common/Show';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/Card';
 import { getProductsQueryOptions } from '@/queries/get-products';
 
 export function CatalogProducts() {

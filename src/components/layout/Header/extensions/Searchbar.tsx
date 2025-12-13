@@ -6,9 +6,7 @@ import { useDebounce } from 'use-debounce';
 
 import { AppContainer } from '@/components/common/AppContainer';
 import { Show } from '@/components/common/Show';
-import { SiteLogo } from '@/components/common/SiteLogo';
 import { CatalogMenu } from '@/components/layout/Header/MiddleNav/components/CatalogMenu/CatalogMenu';
-import { DesktopUserActionsList } from '@/components/layout/Header/MiddleNav/components/DesktopUserActionsList/DesktopUserActionsList';
 import { SearchResultList } from '@/components/layout/Header/SearchResultList/SearchResultList';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
@@ -20,11 +18,11 @@ import { cn } from '@/lib/utils';
 import { getMenuItemsQueryOptions } from '@/queries/get-menu-items';
 import { searchQueryOptions } from '@/queries/search-query';
 
-import s from './MiddleNav/styles.module.scss';
+import s from '../MiddleNav/styles.module.scss';
 
-import type { ChangeEvent } from 'react';
+import type { ChangeEvent, ComponentPropsWithoutRef, FC } from 'react';
 
-export const Searchbar = () => {
+export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...props }) => {
   const { data: categories, isFetching } = useSuspenseQuery(getMenuItemsQueryOptions);
 
   const { searchValue, setSearchValue, isFocus, isCatalogOpen, handleFocus, handleBlur, toggleCatalog, closeCatalog } =
@@ -38,10 +36,8 @@ export const Searchbar = () => {
   };
 
   return (
-    <div className={s.headerMiddle}>
+    <div className={cn(s.headerMiddle, className)} {...props}>
       <AppContainer className={s.headerMiddleContainer}>
-        <SiteLogo />
-        <DesktopUserActionsList className={s.userActionList} />
         <div className={s.searchContainer}>
           <Button
             className={cn('h-13', s.catalogBtn, isCatalogOpen && s.active)}
