@@ -10,8 +10,9 @@ export const Footer = () => {
   return (
     <footer className='bg-primary-dark py-12.5'>
       <div className='container'>
-        <div className='grid place-items-start gap-6.5 md:grid-cols-2 xl:grid-cols-4'>
-          <div className='grid place-items-center gap-4.5 md:place-items-start'>
+        <div className='footer-grid items-start gap-6.5 xl:gap-20'>
+          {/*Logo*/}
+          <div className='footer-logo grid place-items-center gap-4.5 self-start md:place-items-start'>
             <SiteLogo />
             <Typography variant='small' className='text-primary-foreground font-light'>
               <span className='text-muted-foreground'>© </span>
@@ -19,25 +20,14 @@ export const Footer = () => {
             </Typography>
           </div>
 
-          <div className='border-muted-foreground grid grid-cols-2 border-y py-4 md:w-full md:gap-x-14 md:border-none xl:place-items-start xl:gap-x-24 xl:p-0'>
+          {/*Links*/}
+          <div className='footer-links border-muted-foreground self-start border-t border-b py-4 md:w-full md:gap-x-14 md:border-b-0 xl:gap-x-24 xl:border-t-0 xl:p-0'>
             <List
               data={[
                 { href: '/', label: 'New' },
                 { href: '/delivery', label: 'Delivery and payment' },
                 { href: '/contacts', label: 'Contacts' },
                 { href: '/warranty', label: 'Warranty and service' },
-              ]}
-              renderItem={link => (
-                <NavLink className='text-sm [&_span]:text-sm' href={link.href}>
-                  {link.label}
-                </NavLink>
-              )}
-              keyExtractor={link => link.href}
-              className='space-y-5'
-            />
-
-            <List
-              data={[
                 { href: '/how-to-buy', label: 'How to Buy' },
                 { href: '/producers', label: 'Producers' },
                 { href: '/shares', label: 'Shares' },
@@ -49,20 +39,22 @@ export const Footer = () => {
                 </NavLink>
               )}
               keyExtractor={link => link.href}
-              className='space-y-5'
+              className='grid grid-cols-2 gap-x-4 gap-y-5 md:grid-cols-3 md:gap-x-30 lg:gap-x-52 xl:grid-cols-2 xl:gap-x-4'
             />
           </div>
 
-          <div className='grid place-items-center gap-4.5 md:place-items-start xl:order-2'>
+          {/*Contacts*/}
+          <div className='footer-contact grid place-items-center gap-4.5 self-start md:place-items-start'>
             <Phone className='flex items-center gap-2' />
             <SocialLinks />
           </div>
 
-          <div className='grid place-items-center gap-2 md:place-items-start xl:order-1'>
+          {/*Company*/}
+          <div className='footer-company grid place-items-center self-start md:place-items-start'>
             <Typography variant='small' className='text-primary-foreground font-light'>
               Company &#34;Profstore&#34; Work Schedule:
             </Typography>
-            <Typography variant='small' className='text-primary-foreground font-light'>
+            <Typography variant='small' className='text-primary-foreground mt-2 font-light'>
               MON-FRI: from 9.00 to 18.00 Sat, Sun: days off
             </Typography>
             <Email />

@@ -80,3 +80,46 @@
 @utility container {
   @apply mx-auto px-4 md:max-w-5xl md:px-12 xl:max-w-366.5 xl:px-4;
 }
+
+/*Footer Grid Template Areas*/
+.footer-grid {
+  display: grid;
+  grid-template-areas:
+    'logo'
+    'links'
+    'contact'
+    'company';
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .footer-grid {
+    grid-template-areas:
+      'logo company contact'
+      'links links links';
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1280px) {
+  .footer-grid {
+    grid-template-areas: 'logo links company contact';
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.footer-logo {
+  grid-area: logo;
+}
+
+.footer-links {
+  grid-area: links;
+}
+
+.footer-contact {
+  grid-area: contact;
+}
+
+.footer-company {
+  grid-area: company;
+}
