@@ -1,9 +1,9 @@
 import { Email } from '@/components/common/Email';
 import { List } from '@/components/common/List';
-import { NavLink } from '@/components/common/NavLink';
 import { Phone } from '@/components/common/Phone';
 import { SiteLogo } from '@/components/common/SiteLogo';
-import { SocialLinks } from '@/components/common/SocialLinks';
+import { NavLink } from '@/components/links/NavLink';
+import { SocialLinks } from '@/components/links/SocialLinks';
 import { Typography } from '@/components/ui/Typography';
 
 export const Footer = () => {

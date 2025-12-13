@@ -6,10 +6,10 @@ export const HEADER_USER_ACTIONS = [
 ] as const;
 
 export const MOBILE_HEADER_USER_ACTIONS = [
-  { href: '/comparison', icon: 'scales' },
-  { href: '/favorites', icon: 'heart' },
-  { href: '/sign-in', icon: 'user' },
-] as const;
+  { href: '/comparison', icon: 'scales', label: 'comparison' },
+  { href: '/favorites', icon: 'heart', label: 'favorites' },
+  { href: '/sign-in', icon: 'user', label: 'sign in' },
+];
 
 export const DESKTOP_HEADER_USER_ACTIONS = [
   { href: '/basket', icon: 'shoppingCart', label: 'Basket' },

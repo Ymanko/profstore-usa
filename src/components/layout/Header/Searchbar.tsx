@@ -12,8 +12,8 @@ import { DesktopUserActionsList } from '@/components/layout/Header/MiddleNav/com
 import { SearchResultList } from '@/components/layout/Header/SearchResultList/SearchResultList';
 import { Button } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/Input';
+import { Label } from '@/components/ui/Label';
 import { SEARCH_DEBOUNCE_MS } from '@/constants/search';
 import { useSearchState } from '@/hooks/use-search-state';
 import { cn } from '@/lib/utils';
