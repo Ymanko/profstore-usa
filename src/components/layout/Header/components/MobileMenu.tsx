@@ -3,7 +3,7 @@ import React from 'react';
 
 import { List } from '@/components/common/List';
 import { Phone } from '@/components/common/Phone';
-import { MobileUserActions } from '@/components/layout/Header/extensions/MobileUserActions';
+import { MobileUserActions } from '@/components/layout/Header/components/MobileUserActions';
 import { NavLink } from '@/components/links/NavLink';
 import { SocialLinks } from '@/components/links/SocialLinks';
 import { TrainingLink } from '@/components/links/TrainingLink';

@@ -14,7 +14,10 @@ export const UserActions: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ..
 
   return (
     <div className={className} {...props}>
-      <Link href={firstItem.href} className='grid justify-items-center gap-2 xl:hidden'>
+      <Link
+        href={firstItem.href}
+        className='hover:text-accent grid justify-items-center gap-2 transition-colors duration-300 xl:hidden'
+      >
         <Icon name={firstItem.icon as IconName} className='' width='24' height='24' />
         <Typography variant='body' as='span'>
           {firstItem.label}
@@ -24,7 +27,10 @@ export const UserActions: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ..
       <List
         data={HEADER_USER_ACTIONS}
         renderItem={item => (
-          <Link href={item.href} className='grid justify-items-center gap-2'>
+          <Link
+            href={item.href}
+            className='hover:text-accent grid justify-items-center gap-2 transition-colors duration-300'
+          >
             <Icon name={item.icon as IconName} className='' width='24' height='24' />
             <Typography variant='body' as='span'>
               {item.label}
