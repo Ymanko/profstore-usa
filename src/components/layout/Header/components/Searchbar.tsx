@@ -59,15 +59,20 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
     }
   };
 
+  React.useEffect(() => {
+    document.body.style.overflow = isCatalogOpen ? 'hidden' : '';
+  }, [isCatalogOpen]);
+
   return (
     <div className={cn('grid items-center gap-5 md:grid-cols-[auto_1fr]', className)} {...props}>
       <DropdownMenu open={isCatalogOpen} onOpenChange={setIsCatalogOpen} modal={false}>
         <DropdownMenuTrigger asChild>
-          <Button size='lg' className='h-12.5 gap-2.5'>
+          <Button size='lg' className={cn('h-12.5 gap-2.5 relative', isCatalogOpen ? 'bg-secondary' : 'bg-primary')}>
             <LayoutGrid className='text-accent size-6' />
             <Typography as='span' className='font-medium'>
               Catalog
             </Typography>
+            {/* {isCatalogOpen && <Icon className='absolute bottom-[-96px] md:bottom-[-26px] md:left-14 z-60' name="vector" />} */}
           </Button>
         </DropdownMenuTrigger>
 
@@ -75,22 +80,23 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
         {isCatalogOpen && (
           <div
             className='absolute right-0 left-0 z-40 bg-black/40'
+            // className="fixed inset-0 z-40 bg-black/40"
             onClick={() => setIsCatalogOpen(false)}
             style={{ top: '100%', height: '100vh' }}
           />
         )}
+        {/* <Icon className='absolute top-[-10px] md:left-58 left-[50%] z-60' name="vector" /> */}
         <DropdownMenuContent
-          // className='border-primary bg-background z-50 flex gap-0 border-x-0 border-t-4 border-b-0 p-0 shadow-xs'
           style={{ width: '100vw', maxWidth: '100%' }}
-          className='flex right-0 left-0 z-40 bg-transparent border-none  pt-0.5'
+          className='flex right-0 left-0 z-40 bg-transparent border-none pt-0.5 overflow-auto'
           onClick={() => setIsCatalogOpen(false)}
           align='start'
           sideOffset={isMobile ? 90 : 20}
         >
-          <AppContainer className='flex h-full w-full overflow-hidden'
+          <AppContainer className='flex h-full w-full overflow-auto'
             onClick={(e) => e.stopPropagation()}>
             {/* Desktop Sidebar */}
-            <div className='bg-muted hidden shrink-0 py-4 border-primary border-t-5 md:block shadow-[inset_-10px_0_10px_0_rgba(0,0,0,0.1)]'>
+            <div className='relative bg-muted hidden shrink-0 py-4 border-secondary border-t-5 md:block shadow-[inset_-10px_0_10px_0_rgba(0,0,0,0.1)]'>
               <List
                 data={categories}
                 renderItem={category => (
@@ -125,7 +131,7 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
             </div>
 
             {/* Mobile Accordion */}
-            <Accordion.Root type='single' collapsible className='w-full md:hidden bg-background border-primary border-t-5'>
+            <Accordion.Root type='single' collapsible className='w-full md:hidden bg-background border-secondary border-t-5'>
               <div className='py-4'>
                 {categories.map(category => {
                   const hasSub = category.items && category.items.length > 0;
@@ -134,14 +140,14 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
                     <Accordion.Item key={category.id} value={category.id}>
                       <Accordion.Header>
                         {hasSub ? (
-                          <Accordion.Trigger className='hover:bg-sidebar-active/10 hover:text-sidebar-active flex w-full items-center gap-3 px-5 py-3 text-left transition-colors'>
+                          <Accordion.Trigger className='group hover:bg-sidebar-active/10 hover:text-sidebar-active data-[state=open]:accordion-open flex w-full items-center gap-3 px-5 py-3 text-left transition-colors'>
                             <Icon name='equipment' className='size-5 shrink-0' />
                             <Typography as='span' className='flex-1 font-normal'>
                               {category.title}
                             </Typography>
                             <Icon
                               name='arrowDown'
-                              className='size-5 transition-transform in-data-[state=open]:rotate-180'
+                              className='size-5 transition-transform group-data-[state=open]:rotate-180'
                             />
                           </Accordion.Trigger>
                         ) : (
@@ -159,7 +165,9 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
 
                       {hasSub && (
                         <Accordion.Content className='data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden'>
-                          <div className='grid grid-cols-2 gap-3 px-5 pt-2 pb-4'>
+                          <div
+                            className='flex flex-col'
+                          >
                             {category.items?.map(sub => {
                               const parsed = parseSubCategoryData(sub.title);
 
@@ -168,7 +176,7 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
                                   key={sub.id}
                                   href={getLastSegment(sub.id)}
                                   onClick={() => setIsCatalogOpen(false)}
-                                  className='border-border hover:border-sidebar-active hover:bg-sidebar-active/5 flex items-center gap-2 rounded-lg border p-2 transition-colors'
+                                  className='flex items-center py-2 px-6 hover:text-sidebar-active transition-colors uppercase'
                                 >
                                   <Image
                                     src={parsed.image || 'https://placehold.co/100x100.png'}
@@ -194,7 +202,7 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
 
             {/* Desktop Content*/}
             {activeCategory?.items && activeCategory.items.length > 0 && (
-              <div className='relative hidden flex-1 p-10 md:block bg-background border-primary border-t-5 xl:px-[70px] xl:py-[35px]'>
+              <div className='relative hidden flex-1 p-10 md:block bg-background border-secondary border-t-5 xl:px-[70px] xl:py-[35px]'>
                 <button
                   onClick={() => setIsCatalogOpen(false)}
                   className='hover:bg-sidebar-active/10 absolute top-2 right-2 rounded-sm p-1 opacity-70 transition-opacity hover:opacity-100'

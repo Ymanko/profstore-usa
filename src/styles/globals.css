@@ -80,6 +80,10 @@
   }
 }
 
+@utility accordion-open {
+  @apply from-sidebar-active/20 to-muted/20 text-sidebar-active bg-gradient-to-r;
+}
+
 @utility container {
   @apply mx-auto px-4 md:max-w-5xl md:px-12 xl:max-w-366.5 xl:px-4;
 }
