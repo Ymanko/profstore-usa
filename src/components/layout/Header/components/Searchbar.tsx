@@ -94,8 +94,8 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
                   key={category.id}
                   className={cn(
                     'flex w-full items-center gap-3 px-5 py-3 text-left transition-colors',
-                    'hover:bg-accent/10 hover:text-accent',
-                    activeId === category.id && 'bg-accent/10 text-accent',
+                    'hover:bg-gradient-to-r from-sidebar-active-20 to-muted-20 hover:text-sidebar-active',
+                    activeId === category.id && 'bg-gradient-to-r from-sidebar-active-20 to-muted-20 text-sidebar-active',
                   )}
                   onMouseEnter={() => {
                     if (category.items && category.items.length > 0) {
@@ -110,7 +110,7 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
                     }
                   }}
                 >
-                  <Icon name='equipment' className='size-5 shrink-0' />
+                  <Icon name='equipment' className={cn('size-5 shrink-0', activeId === category.id && 'text-sidebar-active')} />
                   <Typography as='span' className='font-normal'>
                     {category.title}
                   </Typography>
@@ -130,7 +130,7 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
                   <Accordion.Item key={category.id} value={category.id}>
                     <Accordion.Header>
                       {hasSub ? (
-                        <Accordion.Trigger className='hover:bg-accent/10 hover:text-accent flex w-full items-center gap-3 px-5 py-3 text-left transition-colors'>
+                        <Accordion.Trigger className='hover:bg-sidebar-active/10 hover:text-sidebar-active flex w-full items-center gap-3 px-5 py-3 text-left transition-colors'>
                           <Icon name='equipment' className='size-5 shrink-0' />
                           <Typography as='span' className='flex-1 font-normal'>
                             {category.title}
@@ -142,7 +142,7 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
                         </Accordion.Trigger>
                       ) : (
                         <button
-                          className='hover:bg-accent/10 hover:text-accent flex w-full items-center gap-3 px-5 py-3 text-left transition-colors'
+                          className='hover:bg-sidebar-active/10 hover:text-sidebar-active flex w-full items-center gap-3 px-5 py-3 text-left transition-colors'
                           onClick={() => handleCategoryClick(category)}
                         >
                           <Icon name='equipment' className='size-5 shrink-0' />
@@ -164,7 +164,7 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
                                 key={sub.id}
                                 href={getLastSegment(sub.id)}
                                 onClick={() => setIsCatalogOpen(false)}
-                                className='border-border hover:border-accent hover:bg-accent/5 flex items-center gap-2 rounded-lg border p-2 transition-colors'
+                                className='border-border hover:border-sidebar-active hover:bg-sidebar-active/5 flex items-center gap-2 rounded-lg border p-2 transition-colors'
                               >
                                 <Image
                                   src={parsed.image || 'https://placehold.co/100x100.png'}
@@ -193,7 +193,7 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
             <div className='relative hidden flex-1 p-6 md:block'>
               <button
                 onClick={() => setIsCatalogOpen(false)}
-                className='hover:bg-accent/10 absolute top-4 right-4 rounded-sm p-2 opacity-70 transition-opacity hover:opacity-100'
+                className='hover:bg-sidebar-active/10 absolute top-4 right-4 rounded-sm p-2 opacity-70 transition-opacity hover:opacity-100'
               >
                 <Icon name='close' className='size-6' />
               </button>
@@ -220,7 +220,7 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
                       </div>
                       <Typography
                         as='p'
-                        className='font-montserrat group-hover:text-accent text-sm font-light uppercase transition-colors'
+                        className='font-montserrat group-hover:text-sidebar-active text-sm font-light uppercase transition-colors'
                       >
                         {parsed.title}
                       </Typography>
