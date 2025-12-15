@@ -67,7 +67,7 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
     <div className={cn('grid items-center gap-5 md:grid-cols-[auto_1fr]', className)} {...props}>
       <DropdownMenu open={isCatalogOpen} onOpenChange={setIsCatalogOpen} modal={false}>
         <DropdownMenuTrigger asChild>
-          <Button size='lg' className={cn('h-12.5 gap-2.5 relative', isCatalogOpen ? 'bg-secondary' : 'bg-primary')}>
+          <Button size='lg' className={cn('relative h-12.5 gap-2.5', isCatalogOpen ? 'bg-secondary' : 'bg-primary')}>
             <LayoutGrid className='text-accent size-6' />
             <Typography as='span' className='font-medium'>
               Catalog
@@ -88,15 +88,14 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
         {/* <Icon className='absolute top-[-10px] md:left-58 left-[50%] z-60' name="vector" /> */}
         <DropdownMenuContent
           style={{ width: '100vw', maxWidth: '100%' }}
-          className='flex right-0 left-0 z-40 bg-transparent border-none pt-0.5 overflow-auto'
+          className='right-0 left-0 z-40 flex overflow-auto border-none bg-transparent pt-0.5'
           onClick={() => setIsCatalogOpen(false)}
           align='start'
           sideOffset={isMobile ? 90 : 20}
         >
-          <AppContainer className='flex h-full w-full overflow-auto'
-            onClick={(e) => e.stopPropagation()}>
+          <AppContainer className='flex h-full w-full overflow-auto' onClick={e => e.stopPropagation()}>
             {/* Desktop Sidebar */}
-            <div className='relative bg-muted hidden shrink-0 py-4 border-secondary border-t-5 md:block shadow-[inset_-10px_0_10px_0_rgba(0,0,0,0.1)]'>
+            <div className='bg-muted border-secondary relative hidden shrink-0 border-t-5 py-4 shadow-[inset_-10px_0_10px_0_rgba(0,0,0,0.1)] md:block'>
               <List
                 data={categories}
                 renderItem={category => (
@@ -104,8 +103,9 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
                     key={category.id}
                     className={cn(
                       'flex w-full items-center gap-3 px-5 py-3 text-left transition-colors',
-                      'hover:bg-gradient-to-r from-sidebar-active-20 to-muted-20 hover:text-sidebar-active',
-                      activeId === category.id && 'bg-gradient-to-r from-sidebar-active-20 to-muted-20 text-sidebar-active',
+                      'from-sidebar-active-20 to-muted-20 hover:text-sidebar-active hover:bg-gradient-to-r',
+                      activeId === category.id &&
+                        'from-sidebar-active-20 to-muted-20 text-sidebar-active bg-gradient-to-r',
                     )}
                     onMouseEnter={() => {
                       if (category.items && category.items.length > 0) {
@@ -120,7 +120,10 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
                       }
                     }}
                   >
-                    <Icon name='equipment' className={cn('size-5 shrink-0', activeId === category.id && 'text-sidebar-active')} />
+                    <Icon
+                      name='equipment'
+                      className={cn('size-5 shrink-0', activeId === category.id && 'text-sidebar-active')}
+                    />
                     <Typography as='span' className='font-normal'>
                       {category.title}
                     </Typography>
@@ -131,7 +134,11 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
             </div>
 
             {/* Mobile Accordion */}
-            <Accordion.Root type='single' collapsible className='w-full md:hidden bg-background border-secondary border-t-5'>
+            <Accordion.Root
+              type='single'
+              collapsible
+              className='bg-background border-secondary w-full border-t-5 md:hidden'
+            >
               <div className='py-4'>
                 {categories.map(category => {
                   const hasSub = category.items && category.items.length > 0;
@@ -165,9 +172,7 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
 
                       {hasSub && (
                         <Accordion.Content className='data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden'>
-                          <div
-                            className='flex flex-col'
-                          >
+                          <div className='flex flex-col'>
                             {category.items?.map(sub => {
                               const parsed = parseSubCategoryData(sub.title);
 
@@ -176,7 +181,7 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
                                   key={sub.id}
                                   href={getLastSegment(sub.id)}
                                   onClick={() => setIsCatalogOpen(false)}
-                                  className='flex items-center py-2 px-6 hover:text-sidebar-active transition-colors uppercase'
+                                  className='hover:text-sidebar-active flex items-center px-6 py-2 uppercase transition-colors'
                                 >
                                   <Image
                                     src={parsed.image || 'https://placehold.co/100x100.png'}
@@ -202,7 +207,7 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
 
             {/* Desktop Content*/}
             {activeCategory?.items && activeCategory.items.length > 0 && (
-              <div className='relative hidden flex-1 p-10 md:block bg-background border-secondary border-t-5 xl:px-[70px] xl:py-[35px]'>
+              <div className='bg-background border-secondary relative hidden flex-1 border-t-5 p-10 md:block xl:px-[70px] xl:py-[35px]'>
                 <button
                   onClick={() => setIsCatalogOpen(false)}
                   className='hover:bg-sidebar-active/10 absolute top-2 right-2 rounded-sm p-1 opacity-70 transition-opacity hover:opacity-100'
