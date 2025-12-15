@@ -8,13 +8,13 @@ const typographyVariants = cva('text-balance font-montserrat', {
   variants: {
     variant: {
       // Hero Headings (40px desktop, 32px mobile)
-      hero: 'text-[32px] leading-[40px] font-bold md:text-[40px] md:leading-[48px]',
+      hero: 'text-[32px] leading-[40px] font-bold md:text',
 
       // Page Titles (32px)
       h1: 'text-[32px] leading-[40px] font-bold',
 
       // Section Titles / Product Titles (18px)
-      h2: 'text-lg font-semibold leading-6',
+      h2: 'font-bold text-3xl',
 
       // Card Titles (18px)
       h3: 'text-lg font-semibold',
