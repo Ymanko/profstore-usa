@@ -10,6 +10,7 @@ import * as React from 'react';
 import { useBoolean, useMedia } from 'react-use';
 import { useDebounce } from 'use-debounce';
 
+import { AppContainer } from '@/components/common/AppContainer';
 import { List } from '@/components/common/List';
 import { Show } from '@/components/common/Show';
 import { Button } from '@/components/ui/Button';
@@ -78,158 +79,162 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
             style={{ top: '100%', height: '100vh' }}
           />
         )}
-
         <DropdownMenuContent
-          className='border-primary bg-background z-50 flex gap-0 border-x-0 border-t-4 border-b-0 p-0 shadow-xs'
-          style={{ width: 'calc(100vw - 2rem)', maxWidth: '1200px' }}
+          // className='border-primary bg-background z-50 flex gap-0 border-x-0 border-t-4 border-b-0 p-0 shadow-xs'
+          style={{ width: '100vw', maxWidth: '100%' }}
+          className='flex right-0 left-0 z-40 bg-transparent border-none  pt-0.5'
+          onClick={() => setIsCatalogOpen(false)}
           align='start'
           sideOffset={isMobile ? 90 : 20}
         >
-          {/* Desktop Sidebar */}
-          <div className='bg-muted hidden w-80 shrink-0 py-4 md:block'>
-            <List
-              data={categories}
-              renderItem={category => (
-                <button
-                  key={category.id}
-                  className={cn(
-                    'flex w-full items-center gap-3 px-5 py-3 text-left transition-colors',
-                    'hover:bg-gradient-to-r from-sidebar-active-20 to-muted-20 hover:text-sidebar-active',
-                    activeId === category.id && 'bg-gradient-to-r from-sidebar-active-20 to-muted-20 text-sidebar-active',
-                  )}
-                  onMouseEnter={() => {
-                    if (category.items && category.items.length > 0) {
-                      setActiveId(category.id);
-                    }
-                  }}
-                  onClick={() => {
-                    if (!category.items || category.items.length === 0) {
-                      handleCategoryClick(category);
-                    } else {
-                      setActiveId(category.id);
-                    }
-                  }}
-                >
-                  <Icon name='equipment' className={cn('size-5 shrink-0', activeId === category.id && 'text-sidebar-active')} />
-                  <Typography as='span' className='font-normal'>
-                    {category.title}
-                  </Typography>
-                </button>
-              )}
-              keyExtractor={category => category.id}
-            />
-          </div>
-
-          {/* Mobile Accordion */}
-          <Accordion.Root type='single' collapsible className='w-full md:hidden'>
-            <div className='py-4'>
-              {categories.map(category => {
-                const hasSub = category.items && category.items.length > 0;
-
-                return (
-                  <Accordion.Item key={category.id} value={category.id}>
-                    <Accordion.Header>
-                      {hasSub ? (
-                        <Accordion.Trigger className='hover:bg-sidebar-active/10 hover:text-sidebar-active flex w-full items-center gap-3 px-5 py-3 text-left transition-colors'>
-                          <Icon name='equipment' className='size-5 shrink-0' />
-                          <Typography as='span' className='flex-1 font-normal'>
-                            {category.title}
-                          </Typography>
-                          <Icon
-                            name='arrowDown'
-                            className='size-5 transition-transform in-data-[state=open]:rotate-180'
-                          />
-                        </Accordion.Trigger>
-                      ) : (
-                        <button
-                          className='hover:bg-sidebar-active/10 hover:text-sidebar-active flex w-full items-center gap-3 px-5 py-3 text-left transition-colors'
-                          onClick={() => handleCategoryClick(category)}
-                        >
-                          <Icon name='equipment' className='size-5 shrink-0' />
-                          <Typography as='span' className='font-normal'>
-                            {category.title}
-                          </Typography>
-                        </button>
-                      )}
-                    </Accordion.Header>
-
-                    {hasSub && (
-                      <Accordion.Content className='data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden'>
-                        <div className='grid grid-cols-2 gap-3 px-5 pt-2 pb-4'>
-                          {category.items?.map(sub => {
-                            const parsed = parseSubCategoryData(sub.title);
-
-                            return (
-                              <Link
-                                key={sub.id}
-                                href={getLastSegment(sub.id)}
-                                onClick={() => setIsCatalogOpen(false)}
-                                className='border-border hover:border-sidebar-active hover:bg-sidebar-active/5 flex items-center gap-2 rounded-lg border p-2 transition-colors'
-                              >
-                                <Image
-                                  src={parsed.image || 'https://placehold.co/100x100.png'}
-                                  alt={parsed.title}
-                                  width={40}
-                                  height={40}
-                                  className='shrink-0 object-contain'
-                                />
-                                <Typography as='span' className='text-xs'>
-                                  {parsed.title}
-                                </Typography>
-                              </Link>
-                            );
-                          })}
-                        </div>
-                      </Accordion.Content>
+          <AppContainer className='flex h-full w-full overflow-hidden'
+            onClick={(e) => e.stopPropagation()}>
+            {/* Desktop Sidebar */}
+            <div className='bg-muted hidden shrink-0 py-4 border-primary border-t-5 md:block shadow-[inset_-10px_0_10px_0_rgba(0,0,0,0.1)]'>
+              <List
+                data={categories}
+                renderItem={category => (
+                  <button
+                    key={category.id}
+                    className={cn(
+                      'flex w-full items-center gap-3 px-5 py-3 text-left transition-colors',
+                      'hover:bg-gradient-to-r from-sidebar-active-20 to-muted-20 hover:text-sidebar-active',
+                      activeId === category.id && 'bg-gradient-to-r from-sidebar-active-20 to-muted-20 text-sidebar-active',
                     )}
-                  </Accordion.Item>
-                );
-              })}
+                    onMouseEnter={() => {
+                      if (category.items && category.items.length > 0) {
+                        setActiveId(category.id);
+                      }
+                    }}
+                    onClick={() => {
+                      if (!category.items || category.items.length === 0) {
+                        handleCategoryClick(category);
+                      } else {
+                        setActiveId(category.id);
+                      }
+                    }}
+                  >
+                    <Icon name='equipment' className={cn('size-5 shrink-0', activeId === category.id && 'text-sidebar-active')} />
+                    <Typography as='span' className='font-normal'>
+                      {category.title}
+                    </Typography>
+                  </button>
+                )}
+                keyExtractor={category => category.id}
+              />
             </div>
-          </Accordion.Root>
 
-          {/* Desktop Content*/}
-          {activeCategory?.items && activeCategory.items.length > 0 && (
-            <div className='relative hidden flex-1 p-6 md:block'>
-              <button
-                onClick={() => setIsCatalogOpen(false)}
-                className='hover:bg-sidebar-active/10 absolute top-4 right-4 rounded-sm p-2 opacity-70 transition-opacity hover:opacity-100'
-              >
-                <Icon name='close' className='size-6' />
-              </button>
-
-              <div className='grid grid-cols-[repeat(auto-fill,minmax(140px,1fr))] gap-5'>
-                {activeCategory.items.map(sub => {
-                  const parsed = parseSubCategoryData(sub.title);
+            {/* Mobile Accordion */}
+            <Accordion.Root type='single' collapsible className='w-full md:hidden bg-background border-primary border-t-5'>
+              <div className='py-4'>
+                {categories.map(category => {
+                  const hasSub = category.items && category.items.length > 0;
 
                   return (
-                    <Link
-                      key={sub.id}
-                      href={getLastSegment(sub.id)}
-                      onClick={() => setIsCatalogOpen(false)}
-                      className='border-border group hover:border-border flex flex-col items-center rounded-lg border p-4 text-center transition-all'
-                    >
-                      <div className='border-border mb-3 flex h-30 w-full items-center justify-center border-b pb-3 transition-transform group-hover:scale-105'>
-                        <Image
-                          src={parsed.image || 'https://placehold.co/100x100.png'}
-                          alt={parsed.title}
-                          width={100}
-                          height={100}
-                          className='object-contain'
-                        />
-                      </div>
-                      <Typography
-                        as='p'
-                        className='font-montserrat group-hover:text-sidebar-active text-sm font-light uppercase transition-colors'
-                      >
-                        {parsed.title}
-                      </Typography>
-                    </Link>
+                    <Accordion.Item key={category.id} value={category.id}>
+                      <Accordion.Header>
+                        {hasSub ? (
+                          <Accordion.Trigger className='hover:bg-sidebar-active/10 hover:text-sidebar-active flex w-full items-center gap-3 px-5 py-3 text-left transition-colors'>
+                            <Icon name='equipment' className='size-5 shrink-0' />
+                            <Typography as='span' className='flex-1 font-normal'>
+                              {category.title}
+                            </Typography>
+                            <Icon
+                              name='arrowDown'
+                              className='size-5 transition-transform in-data-[state=open]:rotate-180'
+                            />
+                          </Accordion.Trigger>
+                        ) : (
+                          <button
+                            className='hover:bg-sidebar-active/10 hover:text-sidebar-active flex w-full items-center gap-3 px-5 py-3 text-left transition-colors'
+                            onClick={() => handleCategoryClick(category)}
+                          >
+                            <Icon name='equipment' className='size-5 shrink-0' />
+                            <Typography as='span' className='font-normal'>
+                              {category.title}
+                            </Typography>
+                          </button>
+                        )}
+                      </Accordion.Header>
+
+                      {hasSub && (
+                        <Accordion.Content className='data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden'>
+                          <div className='grid grid-cols-2 gap-3 px-5 pt-2 pb-4'>
+                            {category.items?.map(sub => {
+                              const parsed = parseSubCategoryData(sub.title);
+
+                              return (
+                                <Link
+                                  key={sub.id}
+                                  href={getLastSegment(sub.id)}
+                                  onClick={() => setIsCatalogOpen(false)}
+                                  className='border-border hover:border-sidebar-active hover:bg-sidebar-active/5 flex items-center gap-2 rounded-lg border p-2 transition-colors'
+                                >
+                                  <Image
+                                    src={parsed.image || 'https://placehold.co/100x100.png'}
+                                    alt={parsed.title}
+                                    width={40}
+                                    height={40}
+                                    className='shrink-0 object-contain'
+                                  />
+                                  <Typography as='span' className='text-xs'>
+                                    {parsed.title}
+                                  </Typography>
+                                </Link>
+                              );
+                            })}
+                          </div>
+                        </Accordion.Content>
+                      )}
+                    </Accordion.Item>
                   );
                 })}
               </div>
-            </div>
-          )}
+            </Accordion.Root>
+
+            {/* Desktop Content*/}
+            {activeCategory?.items && activeCategory.items.length > 0 && (
+              <div className='relative hidden flex-1 p-10 md:block bg-background border-primary border-t-5 xl:px-[70px] xl:py-[35px]'>
+                <button
+                  onClick={() => setIsCatalogOpen(false)}
+                  className='hover:bg-sidebar-active/10 absolute top-2 right-2 rounded-sm p-1 opacity-70 transition-opacity hover:opacity-100'
+                >
+                  <Icon name='close' className='size-6' />
+                </button>
+
+                <div className='grid grid-cols-[repeat(auto-fill,minmax(140px,1fr))] gap-5'>
+                  {activeCategory.items.map(sub => {
+                    const parsed = parseSubCategoryData(sub.title);
+
+                    return (
+                      <Link
+                        key={sub.id}
+                        href={getLastSegment(sub.id)}
+                        onClick={() => setIsCatalogOpen(false)}
+                        className='border-border group hover:border-border flex flex-col items-center rounded-lg border p-4 text-center transition-all'
+                      >
+                        <div className='border-border mb-3 flex h-30 w-full items-center justify-center border-b pb-3 transition-transform group-hover:scale-105'>
+                          <Image
+                            src={parsed.image || 'https://placehold.co/100x100.png'}
+                            alt={parsed.title}
+                            width={100}
+                            height={100}
+                            className='object-contain'
+                          />
+                        </div>
+                        <Typography
+                          as='p'
+                          className='font-montserrat group-hover:text-sidebar-active text-sm font-light uppercase transition-colors'
+                        >
+                          {parsed.title}
+                        </Typography>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </AppContainer>
         </DropdownMenuContent>
       </DropdownMenu>
 
