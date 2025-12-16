@@ -22,6 +22,8 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-sidebar-active: var(--sidebar-active);
+  --color-sidebar-active-20: rgb(from var(--sidebar-active) r g b / 0.2);
+  --color-muted-20: rgb(from var(--muted) r g b / 0.2);
   --color-destructive: var(--destructive);
   --font-montserrat: var(--font-montserrat);
   --font-inter: var(--font-inter);
@@ -58,6 +60,7 @@
 
   /* Sidebar */
   --sidebar-active: #579040;
+  --surface: #f9faff;
 
   /* Destructive / Error */
   --destructive: #dc2626;
@@ -77,8 +80,16 @@
   }
 }
 
+@utility accordion-open {
+  @apply from-sidebar-active/20 to-muted/20 text-sidebar-active bg-gradient-to-r;
+}
+
 @utility container {
   @apply mx-auto px-4 md:max-w-5xl md:px-12 xl:max-w-366.5 xl:px-4;
+}
+
+button {
+  cursor: pointer;
 }
 
 /*Footer Grid Template Areas*/
