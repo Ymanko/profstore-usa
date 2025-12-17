@@ -1,10 +1,12 @@
 import { PageWrapper } from '@/components/common/PageWrapper';
+import { RichText } from '@/components/common/RichText';
 import { Section } from '@/components/common/Section';
 import { Banner } from '@/components/pages/home/Banner';
 import { ProductTabs } from '@/components/pages/home/ProductTabs';
 import { Recommended } from '@/components/pages/home/Recommended';
 import { Typography } from '@/components/ui/Typography';
 import { getQueryClient } from '@/lib/tanstack/get-query-client';
+import { getHomePageContentQueryOptions } from '@/queries/home/get-home-page-content';
 import { getNewProductsQueryOptions } from '@/queries/home/get-new-products';
 import { getPopularProductsQueryOptions } from '@/queries/home/get-popular-products';
 import { getRecommendedQueryOptions } from '@/queries/home/get-recommended';
@@ -22,11 +24,16 @@ export default async function Home() {
 
   // Prefetch all home page data
   await Promise.all([
+    queryClient.ensureQueryData(getHomePageContentQueryOptions),
     queryClient.ensureQueryData(getRecommendedQueryOptions),
     queryClient.ensureQueryData(getPopularProductsQueryOptions),
     queryClient.ensureQueryData(getNewProductsQueryOptions),
     queryClient.ensureQueryData(getSaleHitsQueryOptions),
   ]);
+
+  const getHomePageContent = queryClient.getQueryData(getHomePageContentQueryOptions.queryKey);
+
+  console.log('getHomePageContent', getHomePageContent);
 
   return (
     <PageWrapper className='pt-4.5'>
@@ -47,14 +54,18 @@ export default async function Home() {
       {/*Recommended*/}
       <Recommended />
 
-      {/*ProductTabs*/}
+      {/*NewAndSaleProducts*/}
       <ProductTabs />
 
       {/*Description*/}
       <Section className='pb-10.5 md:pb-12.5'>
-        <Typography variant='h2' as='h2'>
-          Description
-        </Typography>
+        {getHomePageContent?.descriptionTitle && (
+          <Typography variant='h2' as='h2'>
+            {getHomePageContent?.descriptionTitle}
+          </Typography>
+        )}
+
+        {getHomePageContent?.descriptionContent && <RichText content={getHomePageContent.descriptionContent} />}
       </Section>
 
       {/*Our Brands*/}
