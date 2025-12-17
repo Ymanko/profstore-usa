@@ -52,7 +52,6 @@
     "@graphql-codegen/cli": "^6.1.0",
     "@graphql-codegen/client-preset": "^5.2.1",
     "@svgr/cli": "^8.1.0",
-    "@tailwindcss/typography": "^0.5.19",
     "@tanstack/eslint-plugin-query": "^5.91.2",
     "@types/node": "^20",
     "@types/react": "^19.2.7",

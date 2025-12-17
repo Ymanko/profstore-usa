@@ -2,10 +2,12 @@ import { PageWrapper } from '@/components/common/PageWrapper';
 import { RichText } from '@/components/common/RichText';
 import { Section } from '@/components/common/Section';
 import { Banner } from '@/components/pages/home/Banner';
+import { Categories } from '@/components/pages/home/Categories';
 import { ProductTabs } from '@/components/pages/home/ProductTabs';
 import { Recommended } from '@/components/pages/home/Recommended';
 import { Typography } from '@/components/ui/Typography';
 import { getQueryClient } from '@/lib/tanstack/get-query-client';
+import { getCategoriesQueryOptions } from '@/queries/home/get-categories';
 import { getHomePageContentQueryOptions } from '@/queries/home/get-home-page-content';
 import { getNewProductsQueryOptions } from '@/queries/home/get-new-products';
 import { getPopularProductsQueryOptions } from '@/queries/home/get-popular-products';
@@ -25,6 +27,7 @@ export default async function Home() {
   // Prefetch all home page data
   await Promise.all([
     queryClient.ensureQueryData(getHomePageContentQueryOptions),
+    queryClient.ensureQueryData(getCategoriesQueryOptions),
     queryClient.ensureQueryData(getRecommendedQueryOptions),
     queryClient.ensureQueryData(getPopularProductsQueryOptions),
     queryClient.ensureQueryData(getNewProductsQueryOptions),
@@ -45,11 +48,7 @@ export default async function Home() {
       <Banner />
 
       {/*Category*/}
-      <Section className='pb-10.5 md:pb-12.5'>
-        <Typography variant='h2' as='h2'>
-          Categories
-        </Typography>
-      </Section>
+      <Categories />
 
       {/*Recommended*/}
       <Recommended />
