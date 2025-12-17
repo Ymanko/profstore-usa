@@ -1,5 +1,8 @@
 import Image from 'next/image';
+
 import { Typography } from '@/components/ui/Typography';
+
+import { Icon } from '../ui/Icon';
 
 type ProductCardProps = {
   item: {
@@ -55,9 +58,9 @@ export const ProductCard = ({ item, onAddToCart }: ProductCardProps) => {
         <button
           onClick={onAddToCart}
           disabled={!availableForSale}
-          className="rounded-md bg-black px-4 py-2 text-sm text-white transition disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex items-center justify-center w-10 h-10 rounded-[5px] bg-[linear-gradient(90deg,rgba(87,144,64,1),rgba(58,111,67,1)_100%)]"
         >
-          Add
+          <Icon name='shoppingCart' className='text-white' width='18' height='18' />
         </button>
       </div>
     </div>

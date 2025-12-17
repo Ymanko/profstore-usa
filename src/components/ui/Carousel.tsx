@@ -186,6 +186,9 @@ function CarouselPrevious({
       size={size}
       className={cn(
         "size-10 rounded-full",
+        "hover:text-white",
+        "focus:text-white",
+        "focus:bg-accent",
         className
       )}
       disabled={!canScrollPrev}
@@ -213,6 +216,9 @@ function CarouselNext({
       size={size}
       className={cn(
         "size-10 rounded-full",
+        "hover:text-white",
+        "focus:text-white",
+        "focus:bg-accent",
         className
       )}
       disabled={!canScrollNext}

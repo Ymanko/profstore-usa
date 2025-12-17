@@ -1,44 +1,44 @@
 import Image from 'next/image';
+import Link from 'next/link';
+
 import { Typography } from '@/components/ui/Typography';
 
 type ProductCardProps = {
-  item: {
-    id: string;
-    title: string;
-    featuredImage?: {
-      url: string;
-      altText?: string | null;
-    } | null;
-    priceRange: {
-      minVariantPrice: {
-        amount: string;
-        currencyCode: string;
-      };
-    };
-    availableForSale: boolean;
-  };
-  onAddToCart?: () => void;
+  href: string;
+  title: string;
+  alt: string;
+  image: string;
+  onClick?: () => void;
 };
 
-export const ProductCard = ({ item, onAddToCart }: ProductCardProps) => {
-  const { title, featuredImage, priceRange, availableForSale } = item;
-
+export const CategoryCard = ({
+  href,
+  title,
+  image,
+  alt,
+  onClick,
+}: ProductCardProps) => {
   return (
-    <div className="flex flex-col rounded-lg border p-4 w-full h-full">
-      <div className="relative mb-4 aspect-square w-full overflow-hidden rounded-md">
-        {featuredImage && (
-          <Image
-            src={featuredImage.url}
-            alt={featuredImage.altText || title}
-            fill
-            className="w-full object-cover"
-            sizes="(max-width: 768px) 100vw, 25vw"
-          />
-        )}
+    <Link
+      href={href}
+      onClick={onClick}
+      className="h-full border-border group flex flex-col items-center rounded-lg border p-4 text-center transition-all hover:border-border"
+    >
+      <div className="shrink-0 border-border mb-3 flex h-30 w-full items-center justify-center border-b pb-3 transition-transform group-hover:scale-105">
+        <Image
+          src={image || 'https://placehold.co/100x100.png'}
+          alt={alt}
+          width={100}
+          height={100}
+          className="object-contain"
+        />
       </div>
-      <Typography variant="h3" as="h3" className="mb-1 line-clamp-2">
+
+      <Typography
+        variant='h3' className='uppercase flex items-center justify-center h-full'
+      >
         {title}
       </Typography>
-    </div>
+    </Link>
   );
 };
