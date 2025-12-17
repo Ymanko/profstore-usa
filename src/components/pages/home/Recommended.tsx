@@ -1,10 +1,10 @@
 'use client';
 
 import { useSuspenseQuery } from '@tanstack/react-query';
-import Image from 'next/image';
 
-import { List } from '@/components/common/List';
+import { ProductCard } from '@/components/common/ProductCard';
 import { Section } from '@/components/common/Section';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/Carousel';
 import { Typography } from '@/components/ui/Typography';
 import { getRecommendedQueryOptions } from '@/queries/home/get-recommended';
 
@@ -17,32 +17,28 @@ export const Recommended: FC = () => {
 
   return (
     <Section className='pb-10.5 md:pb-12.5'>
-      <Typography variant='h2' as='h2'>
-        {title}
-      </Typography>
+      <div className='relative'>
+        <Typography variant='h2' as='h2' className='mb-5'>
+          {title}
+        </Typography>
 
-      <List
-        data={products}
-        renderItem={item => (
-          <div key={item.id} className='border p-4'>
-            <Image
-              src={item.featuredImage?.url}
-              alt={item.featuredImage?.altText || item.title}
-              className='mb-4 h-48 w-full object-cover'
-              width={400}
-              height={192}
-            />
-            <Typography variant='h3' as='h3' className='mb-2'>
-              {item.title}
-            </Typography>
-            <Typography variant='body'>
-              Price: {item.priceRange.minVariantPrice.amount} {item.priceRange.minVariantPrice.currencyCode}
-            </Typography>
+        <Carousel className="w-full">
+          <CarouselContent>
+            {products.map((item, index) => (
+              <CarouselItem key={index} className='md:basis-1/2 lg:basis-1/4'>
+
+                <ProductCard item={item} />
+
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <div className='absolute top-0 right-0 hidden md:flex gap-3'>
+            <CarouselPrevious />
+            <CarouselNext />
           </div>
-        )}
-        keyExtractor={item => item.id}
-        className='flex gap-4 overflow-x-auto'
-      />
+        </Carousel>
+
+      </div>
     </Section>
   );
 };
