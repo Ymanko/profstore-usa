@@ -16,28 +16,33 @@ export const Recommended: FC = () => {
   } = useSuspenseQuery(getRecommendedQueryOptions);
 
   return (
-    <Section className='pb-10.5 md:pb-12.5'>
-      <div className='relative'>
-        <Typography variant='h2' as='h2' className='mb-5'>
-          {title}
-        </Typography>
+    <Section className='md: pb - 12.5 pb-10.5'>
+      <div className='border-accent border-t-3 pt-10.5 md:pt-12.5 lg:pt-15'>
+        <div className='relative'>
+          <Typography variant='h2' as='h2' className='mb-5'>
+            {title}
+          </Typography>
 
-        <Carousel className="w-full">
-          <CarouselContent>
-            {products.map((item, index) => (
-              <CarouselItem key={index} className='md:basis-1/2 lg:basis-1/4'>
-
-                <ProductCard item={item} />
-
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <div className='absolute top-0 right-0 hidden md:flex gap-3'>
-            <CarouselPrevious />
-            <CarouselNext />
-          </div>
-        </Carousel>
-
+          <Carousel
+            className='w-full'
+            opts={{
+              align: 'start',
+              slidesToScroll: 'auto',
+            }}
+          >
+            <div className='absolute top-0 right-0 hidden gap-3 md:flex'>
+              <CarouselPrevious />
+              <CarouselNext />
+            </div>
+            <CarouselContent>
+              {products.map((item, index) => (
+                <CarouselItem key={index} className='sm:basis-1/2 lg:basis-1/4'>
+                  <ProductCard item={item} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        </div>
       </div>
     </Section>
   );

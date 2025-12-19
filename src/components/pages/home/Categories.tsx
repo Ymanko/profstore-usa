@@ -18,7 +18,13 @@ export function Categories() {
           Categories
         </Typography>
 
-        <Carousel className="w-full">
+        <Carousel
+          className='w-full'
+          opts={{
+            align: 'start',
+            slidesToScroll: 'auto',
+          }}
+        >
           <CarouselContent>
             {categories.map(({ node: category }) => (
               <CarouselItem key={category.id} className='basis-1/2 md:basis-1/4 lg:basis-1/5 xl:basis-1/7'>
@@ -31,21 +37,19 @@ export function Categories() {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <div className='absolute top-0 right-0 hidden md:flex gap-3'>
+          <div className='absolute top-0 right-0 flex gap-3'>
             <CarouselPrevious />
             <CarouselNext />
           </div>
         </Carousel>
 
-        {
-          categories.length === 0 && (
-            <Typography variant='body-lg' className='text-center text-gray-500'>
-              No categories found
-            </Typography>
-          )
-        }
+        {categories.length === 0 && (
+          <Typography variant='body-lg' className='text-center text-gray-500'>
+            No categories found
+          </Typography>
+        )}
       </div>
-    </Section >
+    </Section>
   );
 }
 

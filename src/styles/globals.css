@@ -24,6 +24,7 @@
   --color-sidebar-active: var(--sidebar-active);
   --color-sidebar-active-20: rgb(from var(--sidebar-active) r g b / 0.2);
   --color-muted-20: rgb(from var(--muted) r g b / 0.2);
+  --color-brand-section-bg: var(--brand-section-bg);
   --color-destructive: var(--destructive);
   --font-montserrat: var(--font-montserrat);
   --font-inter: var(--font-inter);
@@ -61,6 +62,9 @@
   /* Sidebar */
   --sidebar-active: #579040;
   --surface: #f9faff;
+
+  /* Section*/
+  --brand-section-bg: #f2f2f2;
 
   /* Destructive / Error */
   --destructive: #dc2626;
@@ -160,4 +164,9 @@
 
 @utility animate-accordion-up {
   animation: accordion-up 0.2s ease-out;
+}
+[data-radix-scroll-area-viewport] > div {
+  /* min-width: unset !important; */
+  /* width: 100%; */
+  display: block !important;
 }

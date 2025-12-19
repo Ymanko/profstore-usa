@@ -11,32 +11,24 @@ type ProductCardProps = {
   onClick?: () => void;
 };
 
-export const CategoryCard = ({
-  href,
-  title,
-  image,
-  alt,
-  onClick,
-}: ProductCardProps) => {
+export const CategoryCard = ({ href, title, image, alt, onClick }: ProductCardProps) => {
   return (
     <Link
       href={href}
       onClick={onClick}
-      className="h-full border-border group flex flex-col items-center rounded-lg border p-4 text-center transition-all hover:border-border"
+      className='border-border group hover:border-border flex h-full flex-col items-center rounded-lg border p-4 text-center transition-all'
     >
-      <div className="shrink-0 border-border mb-3 flex h-30 w-full items-center justify-center border-b pb-3 transition-transform group-hover:scale-105">
+      <div className='border-border mb-3 flex h-30 w-full shrink-0 items-center justify-center border-b pb-3 transition-transform group-hover:scale-105'>
         <Image
           src={image || 'https://placehold.co/100x100.png'}
           alt={alt}
           width={100}
           height={100}
-          className="object-contain"
+          className='object-contain'
         />
       </div>
 
-      <Typography
-        variant='h3' className='uppercase flex items-center justify-center h-full'
-      >
+      <Typography variant='h3' className='flex h-full items-center justify-center uppercase'>
         {title}
       </Typography>
     </Link>
