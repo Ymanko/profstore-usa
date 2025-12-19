@@ -34,34 +34,14 @@ export function ProductTabs() {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`w-1/2 rounded-[10px] px-4 py-2 font-bold transition-colors md:max-w-[260px] ${
-              activeTab === tab.id ? 'bg-white text-[#3A6F43]' : 'bg-transparent text-white'
-            }`}
+            className={`w-1/2 rounded-[10px] px-4 py-2 font-bold transition-colors md:max-w-[260px] ${activeTab === tab.id ? 'bg-white text-[#3A6F43]' : 'bg-transparent text-white'
+              }`}
           >
             {tab.label}
           </button>
         ))}
       </div>
 
-      {/* Products Grid */}
-      {/* <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {activeProducts.map(({ node: product }) => (
-          <ProductCard
-            key={product.id}
-            item={{
-              id: product.id,
-              title: product.title,
-              featuredImage: product.featuredImage,
-              priceRange: product.priceRange,
-              availableForSale: product.availableForSale,
-            }}
-            onAddToCart={() => {
-              console.log('Add to cart:', product.id);
-              // сюда потом подключишь реальную логику корзины
-            }}
-          />
-        ))}
-      </div> */}
       <ScrollArea className=''>
         {/* <ScrollAreaViewport
           onWheel={(e) => {
