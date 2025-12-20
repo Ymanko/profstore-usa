@@ -1,25 +1,81 @@
-name: Linting...
-run-name: ${{ github.actor }} linting... 🚀
+---
+name: Quality Checks
+
 on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'scripts/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'tsconfig.json'
+      - 'next.config.ts'
+      - 'eslint.config.mjs'
+      - '.prettierrc.json'
+      - 'declarations.d.ts'
   push:
     branches: [main]
-  pull_request:
-    branches: ['*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
 jobs:
-  Explore-GitHub-Actions:
+  quality-checks:
+    name: Type Check, Lint & Format
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [22.x]
+    timeout-minutes: 10
+
     steps:
-      - uses: actions/checkout@v3
-      - name: install node ${{matrix.node-version}}
-        uses: actions/setup-node@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: ${{matrix.node-version}}
+          node-version: 22
+          cache: 'npm'
+
       - name: Install dependencies
-        run: npm install
-      - name: Linting project
-        run: npm run lint
-      - name: Build project
-        run: npm run build
+        run: npm ci
+
+      - name: Type Check
+        run: |
+          echo "🔍 Running TypeScript type check..."
+          npm run typecheck
+
+      - name: Lint
+        run: |
+          echo "🔎 Running ESLint..."
+          npm run lint:check
+
+      - name: Format Check
+        run: |
+          echo "💅 Checking code formatting..."
+          npm run format:check
+
+      - name: Build Check
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          echo "🏗️  Building Next.js application..."
+          npm run build
+
+  quality-checks-summary:
+    name: Quality Checks Summary
+    needs: quality-checks
+    if: always()
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check results
+        run: |
+          if [[ "${{ needs.quality-checks.result }}" == "success" ]]; then
+            echo "✅ All quality checks passed!"
+            exit 0
+          else
+            echo "❌ Quality checks failed"
+            exit 1
+          fi

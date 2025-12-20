@@ -1,10 +1,17 @@
-import { Metadata } from 'next';
+import { PageWrapper } from '@/components/common/PageWrapper';
+import { Typography } from '@/components/ui/Typography';
+
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'ProfStore',
   description: 'Some shop',
 };
 
-export default function HomeAccountPage() {
-  return <h1>delivery</h1>;
+export default function AccountPage() {
+  return (
+    <PageWrapper>
+      <Typography variant='h1'>Account Page</Typography>
+    </PageWrapper>
+  );
 }

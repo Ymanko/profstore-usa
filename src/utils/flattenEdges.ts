@@ -8,5 +8,5 @@ type Connection<T> =
   | undefined;
 
 export const flattenEdges = <T>(connection: Connection<T>): T[] => {
-  return connection?.edges?.map((edge) => edge.node) ?? [];
+  return connection?.edges?.map(edge => edge.node) ?? [];
 };
