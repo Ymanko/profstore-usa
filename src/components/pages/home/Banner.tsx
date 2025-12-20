@@ -2,11 +2,11 @@
 
 import { useSuspenseQuery } from '@tanstack/react-query';
 
+import { BannerSlide } from '@/components/common/BannerSlide';
+import { PopularProductBanner } from '@/components/common/PopularCard';
 import { Section } from '@/components/common/Section';
 import { Typography } from '@/components/ui/Typography';
 import { getPopularProductsQueryOptions } from '@/queries/home/get-popular-products';
-import { PopularProductBanner } from '@/components/common/PopularCard';
-import { BannerSlide } from '@/components/common/BannerSlide';
 
 export function Banner() {
   const { data: popular } = useSuspenseQuery(getPopularProductsQueryOptions);
@@ -18,7 +18,7 @@ export function Banner() {
         Popular Products
       </Typography>
 
-      {/* Popular Products Carousel */}
+      {/* Popular Products Carousel
       <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4'>
         {popular.products.map(({ node: product }) => (
           <div key={product.id} className='border p-4'>
@@ -44,7 +44,7 @@ export function Banner() {
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
       <BannerSlide imageSrc='https://placehold.co/500x500.png' />
       <PopularProductBanner
         title="Bar blender Quamar CE/1 inox"
