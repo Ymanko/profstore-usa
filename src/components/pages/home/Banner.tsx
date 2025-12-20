@@ -5,9 +5,12 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { Section } from '@/components/common/Section';
 import { Typography } from '@/components/ui/Typography';
 import { getPopularProductsQueryOptions } from '@/queries/home/get-popular-products';
+import { PopularProductBanner } from '@/components/common/PopularCard';
+import { BannerSlide } from '@/components/common/BannerSlide';
 
 export function Banner() {
   const { data: popular } = useSuspenseQuery(getPopularProductsQueryOptions);
+  console.log('popular: ', popular);
 
   return (
     <Section className='pb-10.5 md:pb-12.5'>
@@ -42,6 +45,16 @@ export function Banner() {
           </div>
         ))}
       </div>
+      <BannerSlide imageSrc='https://placehold.co/500x500.png' />
+      <PopularProductBanner
+        title="Bar blender Quamar CE/1 inox"
+        image="https://placehold.co/100x200.png"
+        price={1200}
+        oldPrice={1400}
+        saleLabel="Sale / -55%"
+        description="Bar blender Quamar CE/1 inox is a professional economy class equipment that combines the optimal..."
+      />
+
 
       {popular.products.length === 0 && (
         <Typography variant='body-lg' className='text-center text-gray-500'>
