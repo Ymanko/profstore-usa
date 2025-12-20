@@ -36,8 +36,7 @@ export default async function Home() {
   ]);
 
   const getHomePageContent = queryClient.getQueryData(getHomePageContentQueryOptions.queryKey);
-
-  console.log('getHomePageContent', getHomePageContent);
+  const popular = queryClient.getQueryData(getPopularProductsQueryOptions.queryKey);
 
   return (
     <PageWrapper className='pt-4.5'>
