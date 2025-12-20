@@ -46,14 +46,14 @@ export function Banner() {
         ))}
       </div> */}
       <BannerSlide imageSrc='https://placehold.co/500x500.png' />
-      <PopularProductBanner
+      {/* <PopularProductBanner
         title="Bar blender Quamar CE/1 inox"
         image="https://placehold.co/100x200.png"
         price={1200}
         oldPrice={1400}
         saleLabel="Sale / -55%"
         description="Bar blender Quamar CE/1 inox is a professional economy class equipment that combines the optimal..."
-      />
+      /> */}
 
 
       {popular.products.length === 0 && (

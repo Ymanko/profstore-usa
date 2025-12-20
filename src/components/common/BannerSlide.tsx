@@ -28,10 +28,7 @@ export const BannerSlide: React.FC<BannerSlideProps> = ({
   return (
     <div
       className={cn(
-        // Базовые стили контейнера
         "relative w-full aspect-[1/1.23] overflow-hidden rounded-3xl bg-brand-section-bg",
-        // Отступы и размеры:
-        // Mobile: фиксированная высота не обязательна, контент толкает, но добавим min-h для красоты
         "flex flex-col md:flex-row items-center justify-between",
         "pt-7.5 pb-0 px-3.5 md:py-0 md:px-0", // Mobile padding vs Desktop reset
         className
@@ -70,7 +67,7 @@ export const BannerSlide: React.FC<BannerSlideProps> = ({
       */}
       <div className="relative w-full h-full mt-2.5 z-10 order-2 md:order-1 md:w-1/2 md:h-full flex items-end justify-center md:justify-start md:mt-0">
         <div className="absolute w-full top-0 aspect-square rounded-[50%] bg-[#d9d9d9]"></div>
-        <div className="absolute top-0 w-full h-full md:absolute md:inset-0 md:left-4 lg:left-8 top-4 md:top-auto flex items-end">
+        <div className="absolute top-0 w-full h-full md:absolute md:inset-0 md:left-4 lg:left-8 top-4 md:top-auto">
           {/* Важно: object-contain, чтобы картинка не обрезалась.
               object-bottom - прижимает к низу.
            */}
