@@ -47,7 +47,7 @@ function renderNode(node: RichTextNode, index: number): React.ReactNode {
 
     case 'list-item':
       return (
-        <li key={index} className='mb-2 font-montserrat'>
+        <li key={index} className='font-montserrat mb-2'>
           {node.children?.map((child, i) => renderNode(child, i))}
         </li>
       );

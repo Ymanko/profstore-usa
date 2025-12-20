@@ -3,6 +3,7 @@ import { RichText } from '@/components/common/RichText';
 import { Section } from '@/components/common/Section';
 import { Banner } from '@/components/pages/home/Banner';
 import { Categories } from '@/components/pages/home/Categories';
+import { OurBrands } from '@/components/pages/home/OurBrands';
 import { ProductTabs } from '@/components/pages/home/ProductTabs';
 import { Recommended } from '@/components/pages/home/Recommended';
 import { Typography } from '@/components/ui/Typography';
@@ -35,7 +36,6 @@ export default async function Home() {
   ]);
 
   const getHomePageContent = queryClient.getQueryData(getHomePageContentQueryOptions.queryKey);
-  const popular = queryClient.getQueryData(getPopularProductsQueryOptions.queryKey);
 
   return (
     <PageWrapper className='pt-4.5'>
@@ -58,7 +58,7 @@ export default async function Home() {
       {/*Description*/}
       <Section className='pb-10.5 md:pb-12.5'>
         {getHomePageContent?.descriptionTitle && (
-          <Typography variant='h2' as='h2'>
+          <Typography variant='h2' as='h2' className='mb-4 text-[27px] md:mb-[18px] md:text-3xl lg:mb-6'>
             {getHomePageContent?.descriptionTitle}
           </Typography>
         )}
@@ -67,11 +67,7 @@ export default async function Home() {
       </Section>
 
       {/*Our Brands*/}
-      <Section className='bg-border py-12.5 xl:pt-8 xl:pb-13'>
-        <Typography variant='h2' as='h2'>
-          Our Brands
-        </Typography>
-      </Section>
+      <OurBrands brands={getHomePageContent?.brands} />
     </PageWrapper>
   );
 }
