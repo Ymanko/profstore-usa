@@ -33,6 +33,23 @@ const GET_POPULAR_PRODUCTS = `
               url
               altText
             }
+            metafields(identifiers: [
+              {namespace: "custom", key: "short_description"},
+              {namespace: "custom", key: "custom_product_image"}
+            ]) {
+              namespace
+              key
+              value
+              type
+              reference {
+                ... on MediaImage {
+                  image {
+                    url
+                    altText
+                  }
+                }
+              }
+            }
           }
         }
       }

@@ -9,6 +9,8 @@ import { getPopularProductsQueryOptions } from '@/queries/home/get-popular-produ
 export function Banner() {
   const { data: popular } = useSuspenseQuery(getPopularProductsQueryOptions);
 
+  console.log('popular products:', popular);
+
   return (
     <Section className='pb-10.5 md:pb-12.5'>
       <Typography variant='h2' as='h2' className='mb-6'>
