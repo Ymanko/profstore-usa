@@ -28,21 +28,39 @@ export const BannerSlide: React.FC<BannerSlideProps> = ({
   return (
     <div
       className={cn(
-        "relative w-full aspect-[1/1.23] overflow-hidden rounded-3xl bg-brand-section-bg",
-        "flex flex-col md:flex-row items-center justify-between",
-        "pt-7.5 pb-0 px-3.5 md:py-0 md:px-0", // Mobile padding vs Desktop reset
+        "relative w-full max-w-245 h-102 overflow-hidden rounded-[20px] bg-brand-section-bg",
+        "flex flex-col md:flex-row items-center justify-end",
+        "p-7.5", // Mobile padding vs Desktop reset
         className
       )}
     >
-
-      <div className="flex flex-col items-center md:items-start text-center md:text-left w-fulzl md:w-1/2 md:pr-12 xl:pr-20">
+      <div className="absolute z-0 top-0 w-full h-full md:inset-0">
+        <Image
+          src={imageSrc}
+          alt="Professional Kitchen Equipment"
+          fill
+          className="object-cover object-bottom md:object-left-bottom drop-shadow-xl"
+          sizes="(max-width: 768px) 100vw, 50vw"
+          priority // Так как это баннер, лучше грузить сразу
+        />
+      </div>
+      <div className="relative flex flex-col items-center md:items-start text-center md:text-left w-fulzl">
         {/* <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold uppercase text-primary-dark tracking-tight leading-tight mb-2 md:mb-4">
           {title}
         </h2> */}
         <Typography
           variant="h1"
-          as='h3'
-          className="mb-3.5 text-[25px] leading-tight font-extrabold text-[#3a6f43] uppercase"
+          as="h3"
+          className="
+            mb-3.5
+            text-[25px] leading-tight
+            font-extrabold
+            text-[#3a6f43]
+            uppercase
+
+            md:max-w-80 md:text-[45px] md:leading-[1.22]
+            md:max-w-97 lg:text-[55px] lg:leading-[1.22]
+          "
         >
           {title}
         </Typography>
@@ -62,25 +80,6 @@ export const BannerSlide: React.FC<BannerSlideProps> = ({
         </Button>
       </div>
 
-      {/* Блок 2: Изображение
-          Order-2 на мобильном (снизу), Order-1 на десктопе (слева)
-      */}
-      <div className="relative w-full h-full mt-2.5 z-10 order-2 md:order-1 md:w-1/2 md:h-full flex items-end justify-center md:justify-start md:mt-0">
-        <div className="absolute w-full top-0 aspect-square rounded-[50%] bg-[#d9d9d9]"></div>
-        <div className="absolute top-0 w-full h-full md:absolute md:inset-0 md:left-4 lg:left-8 top-4 md:top-auto">
-          {/* Важно: object-contain, чтобы картинка не обрезалась.
-              object-bottom - прижимает к низу.
-           */}
-          <Image
-            src={imageSrc}
-            alt="Professional Kitchen Equipment"
-            fill
-            className="object-contain object-bottom md:object-left-bottom drop-shadow-xl"
-            sizes="(max-width: 768px) 100vw, 50vw"
-            priority // Так как это баннер, лучше грузить сразу
-          />
-        </div>
-      </div>
     </div>
   );
 };

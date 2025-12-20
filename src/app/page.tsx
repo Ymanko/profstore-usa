@@ -36,7 +36,6 @@ export default async function Home() {
   ]);
 
   const getHomePageContent = queryClient.getQueryData(getHomePageContentQueryOptions.queryKey);
-  const popular = queryClient.getQueryData(getPopularProductsQueryOptions.queryKey);
 
   return (
     <PageWrapper className='pt-4.5'>
@@ -69,12 +68,6 @@ export default async function Home() {
 
       {/*Our Brands*/}
       <OurBrands brands={getHomePageContent?.brands} />
-      {/* <Section className='bg-border py-12.5 xl:pt-8 xl:pb-13'>
-        OurBrands
-        <Typography variant='h2' as='h2'>
-          Our Brands
-        </Typography>
-      </Section> */}
     </PageWrapper>
   );
 }
