@@ -28,7 +28,7 @@ export const ProductCard = ({ item, onAddToCart }: ProductCardProps) => {
 
   return (
     <div className='flex h-full w-full flex-col rounded-lg border p-4'>
-      <div className='relative mb-3.5 pb-5 border-b aspect-square w-full overflow-hidden'>
+      <div className='relative mb-3.5 aspect-square w-full overflow-hidden border-b pb-5'>
         {featuredImage && (
           <Image
             src={featuredImage.url}
@@ -53,8 +53,12 @@ export const ProductCard = ({ item, onAddToCart }: ProductCardProps) => {
       <Typography variant='h3' as='h3' className='mb-1 line-clamp-2'>
         {title}
       </Typography>
-      <Typography variant='body' className={`flex items-center gap-2 mb-3 text-sm ${availableForSale ? 'text-muted-foreground' : 'text-red-600'}`}>
-        <Icon name='checkmarkSmall' className='' width='22' height='22' /> {availableForSale ? 'In stock' : 'Out of stock'}
+      <Typography
+        variant='body'
+        className={`mb-3 flex items-center gap-2 text-sm ${availableForSale ? 'text-muted-foreground' : 'text-red-600'}`}
+      >
+        <Icon name='checkmarkSmall' className='' width='22' height='22' />{' '}
+        {availableForSale ? 'In stock' : 'Out of stock'}
       </Typography>
       <div className='mt-auto flex items-center justify-between gap-3'>
         <Typography variant='body' className='font-bold'>
@@ -67,9 +71,7 @@ export const ProductCard = ({ item, onAddToCart }: ProductCardProps) => {
 
             {/* Показуємо стару ціну тільки якщо вона більша */}
             {hasDiscount && (
-              <span className='text- leading-[1.2] font-bold text-[#9f9f9f] line-through'>
-                {previousPrice}$
-              </span>
+              <span className='text- leading-[1.2] font-bold text-[#9f9f9f] line-through'>{previousPrice}$</span>
             )}
           </div>
         </Typography>
@@ -77,7 +79,7 @@ export const ProductCard = ({ item, onAddToCart }: ProductCardProps) => {
         <button
           onClick={onAddToCart}
           disabled={!availableForSale}
-          className='shrink-0 hover:text-accent flex h-10 w-10 items-center justify-center rounded-[5px] bg-[linear-gradient(90deg,rgba(87,144,64,1),rgba(58,111,67,1)_100%)] text-white'
+          className='hover:text-accent flex h-10 w-10 shrink-0 items-center justify-center rounded-[5px] bg-[linear-gradient(90deg,rgba(87,144,64,1),rgba(58,111,67,1)_100%)] text-white'
         >
           <Icon name='shoppingCart' className='' width='18' height='18' />
         </button>

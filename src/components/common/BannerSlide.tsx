@@ -31,13 +31,13 @@ export const MainBannerSlide = ({ data, className }: BannerSlideProps) => {
               alt={imageAlt ? imageAlt : title}
               fill
               className='object-cover object-center'
-              sizes="(max-width: 1280px) 100vw, 70vw"
+              sizes='(max-width: 1280px) 100vw, 70vw'
               priority
               quality={90}
             />
           </div>
 
-          <div className='md:items-strech w-full relative mt-auto flex flex-col items-center justify-end gap-5 text-center text-white md:flex-row md:justify-between md:self-end md:text-left'>
+          <div className='md:items-strech relative mt-auto flex w-full flex-col items-center justify-end gap-5 text-center text-white md:flex-row md:justify-between md:self-end md:text-left'>
             <div className='flex flex-col'>
               <h3 className='mb-3.5 max-w-131.5 text-[25px] leading-tight font-extrabold uppercase md:text-[35px] lg:text-[45px]'>
                 {title}
@@ -67,13 +67,13 @@ export const MainBannerSlide = ({ data, className }: BannerSlideProps) => {
               src={image}
               alt={imageAlt ? imageAlt : title}
               fill
-              className='object-cover object-center '
+              className='object-cover object-center'
               sizes='(max-width: 768px) 100vw, 50vw'
               priority
             />
           </div>
 
-          <div className='md:items-strech w-full relative mt-auto flex flex-col items-center justify-end gap-5 text-center text-white md:flex-row md:justify-between md:self-end md:text-left'>
+          <div className='md:items-strech relative mt-auto flex w-full flex-col items-center justify-end gap-5 text-center text-white md:flex-row md:justify-between md:self-end md:text-left'>
             <div className='flex flex-col'>
               <h3 className='mb-3.5 max-w-131.5 text-[25px] leading-tight font-extrabold uppercase md:text-[35px] lg:text-[45px]'>
                 {title}

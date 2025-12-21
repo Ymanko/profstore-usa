@@ -36,7 +36,7 @@ export function PopularProductBanner({ product }: PopularProductBannerProps) {
         className,
       )}
     >
-      <div className='absolute inset-0 shrink-0 overflow-hidden rounded-lg h-full'>
+      <div className='absolute inset-0 h-full shrink-0 overflow-hidden rounded-lg'>
         <Image
           src={image ? image : 'https://cdn.shopify.com/s/files/1/0745/0886/1694/files/Group_2.png?v=1766223903'}
           alt={title}

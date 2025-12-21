@@ -17,9 +17,6 @@ export function ProductTabs() {
 
   const { data: newProducts } = useSuspenseQuery(getNewProductsQueryOptions);
   const { data: saleHits } = useSuspenseQuery(getSaleHitsQueryOptions);
-  console.log('saleHits: ', saleHits);
-  console.log('newProducts: ', newProducts);
-
 
   const tabs = [
     { id: 'saleHits' as Tab, label: 'Sale Hits', products: saleHits.products },
@@ -27,7 +24,6 @@ export function ProductTabs() {
   ];
 
   const activeProducts = tabs.find(tab => tab.id === activeTab)?.products || [];
-  console.log('activeProducts: ', activeProducts);
 
   return (
     <Section className='pb-10.5 md:pb-12.5'>
@@ -37,8 +33,9 @@ export function ProductTabs() {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`w-1/2 rounded-[10px] px-4 py-2 font-bold transition-colors md:max-w-[260px] ${activeTab === tab.id ? 'bg-white text-[#3A6F43]' : 'bg-transparent text-white'
-              }`}
+            className={`w-1/2 rounded-[10px] px-4 py-2 font-bold transition-colors md:max-w-[260px] ${
+              activeTab === tab.id ? 'bg-white text-[#3A6F43]' : 'bg-transparent text-white'
+            }`}
           >
             {tab.label}
           </button>
@@ -61,7 +58,7 @@ export function ProductTabs() {
                   price: product.compareAtPriceRange.minVariantPrice.amount,
                   availableForSale: product.availableForSale,
                 }}
-                onAddToCart={() => { }}
+                onAddToCart={() => {}}
               />
             </div>
           ))}

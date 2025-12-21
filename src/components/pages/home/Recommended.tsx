@@ -13,9 +13,7 @@ import type { FC } from 'react';
 export const Recommended: FC = () => {
   const {
     data: { title, products },
-
   } = useSuspenseQuery(getRecommendedQueryOptions);
-  console.log('products: ', products);
 
   return (
     <Section className='md: pb - 12.5 pb-10.5'>
@@ -39,14 +37,16 @@ export const Recommended: FC = () => {
             <CarouselContent>
               {products.map((product, index) => (
                 <CarouselItem key={index} className='sm:basis-1/2 lg:basis-1/4'>
-                  <ProductCard item={{
-                    id: product.id,
-                    title: product.title,
-                    featuredImage: product.featuredImage,
-                    oldPrice: product.priceRange.minVariantPrice.amount,
-                    price: product.compareAtPriceRange.minVariantPrice.amount,
-                    availableForSale: product.availableForSale,
-                  }} />
+                  <ProductCard
+                    item={{
+                      id: product.id,
+                      title: product.title,
+                      featuredImage: product.featuredImage,
+                      oldPrice: product.priceRange.minVariantPrice.amount,
+                      price: product.compareAtPriceRange.minVariantPrice.amount,
+                      availableForSale: product.availableForSale,
+                    }}
+                  />
                 </CarouselItem>
               ))}
             </CarouselContent>

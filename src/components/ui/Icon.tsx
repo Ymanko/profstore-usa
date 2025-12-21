@@ -51,7 +51,7 @@ const ICONS = {
   viewGrid: ViewGrid,
   equipment: Equipment,
   vector: Vector,
-  checkmarkSmall: CheckmarkSmall
+  checkmarkSmall: CheckmarkSmall,
 } as const;
 
 export type IconName = keyof typeof ICONS;
