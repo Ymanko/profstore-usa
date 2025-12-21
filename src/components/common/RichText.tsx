@@ -61,8 +61,7 @@ export function RichText({ content }: { content: string }) {
   try {
     const data: RichTextRoot = JSON.parse(content);
     return <div className='prose max-w-none'>{data.children?.map((child, i) => renderNode(child, i))}</div>;
-  } catch (error) {
-    console.error('Failed to parse rich text:', error);
+  } catch (_error) {
     return <div>{content}</div>;
   }
 }
