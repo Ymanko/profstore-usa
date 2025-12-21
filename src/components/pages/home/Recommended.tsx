@@ -24,7 +24,7 @@ export const Recommended: FC = () => {
           </Typography>
 
           <Carousel
-            className='w-full'
+            className='m-auto w-full max-w-100 sm:max-w-[100%]'
             opts={{
               align: 'start',
               slidesToScroll: 'auto',
