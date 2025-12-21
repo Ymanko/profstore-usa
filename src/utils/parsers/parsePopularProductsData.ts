@@ -1,9 +1,9 @@
 import { getLastSegment } from './getLastSegment';
 
-import type { MediaImage, ProductEdge } from '@/lib/graphql/graphql';
+import type { MediaImage, MetafieldReference, ProductEdge } from '@/lib/graphql/graphql';
 
-function isMediaImage(ref: any): ref is MediaImage {
-  return ref?.__typename === 'MediaImage' || ref?.image !== undefined;
+function isMediaImage(ref: MetafieldReference | null | undefined): ref is MediaImage {
+  return ref?.__typename === 'MediaImage' || (ref !== null && ref !== undefined && 'image' in ref);
 }
 
 export function parsePopularProductsData(products: ProductEdge[]) {
@@ -14,6 +14,7 @@ export function parsePopularProductsData(products: ProductEdge[]) {
 
     return {
       productId: getLastSegment(node.id),
+      handle: node.handle,
       title: node.title,
       image: (imageRef && isMediaImage(imageRef) ? imageRef.image?.url : null) ?? null,
       price: node.compareAtPriceRange?.minVariantPrice.amount ?? null,

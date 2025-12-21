@@ -17,8 +17,6 @@ export function Banner() {
     data: { bannerSlides },
   } = useSuspenseQuery(getHomePageContentQueryOptions);
 
-  console.log('bannerSlides', bannerSlides);
-
   return (
     <Section className='pb-10.5 md:pt-7.5 md:pb-12.5'>
       <div className='flex gap-5'>
@@ -32,7 +30,7 @@ export function Banner() {
           {data => <MainBannerSlide data={data} />}
         </AutoSlider>
         <div className='relative hidden shrink-0 xl:block'>
-          <AutoSlider slides={popularProducts} className='max-w-[435px]'>
+          <AutoSlider slides={popularProducts} className='max-w-108.75'>
             {product => <PopularProductBanner product={product} />}
           </AutoSlider>
         </div>

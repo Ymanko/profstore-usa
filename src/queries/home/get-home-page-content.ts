@@ -67,6 +67,24 @@ type MetaobjectField = {
   } | null;
 };
 
+type MetaobjectNode = {
+  id: string;
+  type: string;
+  fields: MetaobjectField[];
+};
+
+type MetaobjectEdge = {
+  node: MetaobjectNode;
+};
+
+type MetaobjectFieldWithReferences = {
+  key: string;
+  value: string;
+  references?: {
+    edges: MetaobjectEdge[];
+  } | null;
+};
+
 export type BannerSlide = {
   image: string;
   imageAlt?: string;
@@ -92,8 +110,8 @@ type HomePageContent = {
   brands: Brand[];
 };
 
-function parseMetaobjectFields(fields: MetaobjectField[]): Record<string, any> {
-  const result: Record<string, any> = {};
+function parseMetaobjectFields(fields: MetaobjectField[]): Record<string, unknown> {
+  const result: Record<string, unknown> = {};
 
   fields.forEach(field => {
     if (field.reference?.image) {
@@ -122,7 +140,7 @@ export const getHomePageContentQueryOptions = queryOptions({
       throw new Error('Home page metaobject not found');
     }
 
-    const fields = data.metaobject.fields;
+    const fields = data.metaobject.fields as unknown as MetaobjectFieldWithReferences[];
     const result: HomePageContent = {
       bannerSlides: [],
       showCategories: false,
@@ -133,19 +151,19 @@ export const getHomePageContentQueryOptions = queryOptions({
       brands: [],
     };
 
-    fields.forEach((field: any) => {
+    fields.forEach((field: MetaobjectFieldWithReferences) => {
       switch (field.key) {
         case 'banner_slides':
           if (field.references?.edges) {
-            result.bannerSlides = field.references.edges.map((edge: any) => {
+            result.bannerSlides = field.references.edges.map((edge: MetaobjectEdge) => {
               const slideFields = parseMetaobjectFields(edge.node.fields);
               return {
-                image: slideFields.image || '',
-                imageAlt: slideFields.imageAlt || slideFields.title || '',
-                title: slideFields.title || '',
-                subtitle: slideFields.subtitle || '',
-                buttonText: slideFields.button_text || '',
-                buttonLink: slideFields.button_link || '',
+                image: (slideFields.image as string) || '',
+                imageAlt: (slideFields.imageAlt as string) || (slideFields.title as string) || '',
+                title: (slideFields.title as string) || '',
+                subtitle: (slideFields.subtitle as string) || '',
+                buttonText: (slideFields.button_text as string) || '',
+                buttonLink: (slideFields.button_link as string) || '',
               };
             });
           }
@@ -167,12 +185,12 @@ export const getHomePageContentQueryOptions = queryOptions({
           break;
         case 'brands':
           if (field.references?.edges) {
-            result.brands = field.references.edges.map((edge: any) => {
+            result.brands = field.references.edges.map((edge: MetaobjectEdge) => {
               const brandFields = parseMetaobjectFields(edge.node.fields);
               return {
-                name: brandFields.name || '',
-                logo: brandFields.logo || '',
-                logoAlt: brandFields.alt_text || brandFields.name || '',
+                name: (brandFields.name as string) || '',
+                logo: (brandFields.logo as string) || '',
+                logoAlt: (brandFields.alt_text as string) || (brandFields.name as string) || '',
               };
             });
           }

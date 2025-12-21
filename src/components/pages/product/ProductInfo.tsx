@@ -14,18 +14,20 @@ export const ProductView = ({ handle }: { handle: string }) => {
 
   return (
     <PageWrapper>
-      <Typography variant='h1'>{product.title}</Typography>
+      <div className='container'>
+        <Typography variant='h1'>{product.title}</Typography>
 
-      {product.featuredImage && (
-        <Image
-          src={product.featuredImage.url}
-          alt={product.featuredImage.altText || product.title}
-          width={600}
-          height={600}
-        />
-      )}
+        {product.featuredImage && (
+          <Image
+            src={product.featuredImage.url}
+            alt={product.featuredImage.altText || product.title}
+            width={600}
+            height={600}
+          />
+        )}
 
-      <p>{product.description}</p>
+        <p>{product.description}</p>
+      </div>
     </PageWrapper>
   );
 };
