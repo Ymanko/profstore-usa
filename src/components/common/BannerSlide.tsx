@@ -68,8 +68,9 @@ export const MainBannerSlide = ({ data, className }: BannerSlideProps) => {
               alt={imageAlt ? imageAlt : title}
               fill
               className='object-cover object-center'
-              sizes='(max-width: 768px) 100vw, 50vw'
+              sizes='(max-width: 1280px) 100vw, 70vw'
               priority
+              quality={90}
             />
           </div>
 
