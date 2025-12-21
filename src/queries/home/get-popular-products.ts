@@ -2,6 +2,7 @@ import { queryOptions } from '@tanstack/react-query';
 
 import { STALE_TIME } from '@/constants/stale-time';
 import { serverGraphqlFetcher } from '@/lib/graphql/server-graphql-fetcher';
+import { parsePopularProductsData } from '@/utils/parsers/parsePopularProductsData';
 
 import type { QueryRoot } from '@/lib/graphql/graphql';
 
@@ -69,8 +70,9 @@ export const getPopularProductsQueryOptions = queryOptions({
     );
   },
   staleTime: STALE_TIME.ONE_HOUR,
-  select: data => ({
-    ...data.collection,
-    products: data.collection?.products?.edges ?? [],
-  }),
+  select: data => parsePopularProductsData(data?.collection?.products?.edges ?? []),
+  // select: data => ({
+  //   ...data.collection,
+  //   products: data.collection?.products?.edges ?? [],
+  // }),
 });

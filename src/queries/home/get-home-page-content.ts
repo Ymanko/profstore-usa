@@ -67,7 +67,7 @@ type MetaobjectField = {
   } | null;
 };
 
-type BannerSlide = {
+export type BannerSlide = {
   image: string;
   imageAlt?: string;
   title: string;

@@ -3,7 +3,9 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import { ProductCard } from '@/components/common/ProductCard';
 import { Section } from '@/components/common/Section';
+import { ScrollArea, ScrollBar } from '@/components/ui/Scroll-Area';
 import { Typography } from '@/components/ui/Typography';
 import { getNewProductsQueryOptions } from '@/queries/home/get-new-products';
 import { getSaleHitsQueryOptions } from '@/queries/home/get-sale-hits';
@@ -18,7 +20,7 @@ export function ProductTabs() {
 
   const tabs = [
     { id: 'saleHits' as Tab, label: 'Sale Hits', products: saleHits.products },
-    { id: 'new' as Tab, label: 'New', products: newProducts.edges },
+    { id: 'new' as Tab, label: 'NEW', products: newProducts.edges },
   ];
 
   const activeProducts = tabs.find(tab => tab.id === activeTab)?.products || [];
@@ -26,13 +28,13 @@ export function ProductTabs() {
   return (
     <Section className='pb-10.5 md:pb-12.5'>
       {/* Tabs */}
-      <div className='mb-8 flex gap-4'>
+      <div className='mb-8 flex gap-2.5 rounded-[10px] bg-[#B6CEB4] p-1.5'>
         {tabs.map(tab => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-4 py-2 font-medium transition-colors ${
-              activeTab === tab.id ? 'border-accent text-accent border-b-2' : 'hover:text-accent text-gray-600'
+            className={`w-1/2 rounded-[10px] px-4 py-2 font-bold transition-colors md:max-w-[260px] ${
+              activeTab === tab.id ? 'bg-white text-[#3A6F43]' : 'bg-transparent text-white'
             }`}
           >
             {tab.label}
@@ -40,34 +42,28 @@ export function ProductTabs() {
         ))}
       </div>
 
-      {/* Products Grid */}
-      <div className='grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4'>
-        {activeProducts.map(({ node: product }) => (
-          <div key={product.id} className='border p-4'>
-            {product.featuredImage && (
-              <img
-                src={product.featuredImage.url}
-                alt={product.featuredImage.altText || product.title}
-                className='mb-4 h-48 w-full object-cover'
+      <ScrollArea className='m-auto w-full max-w-100 sm:max-w-[100%]'>
+        <div className='flex gap-5 pb-4'>
+          {activeProducts.map(({ node: product }) => (
+            <div
+              key={product.id}
+              className='w-full shrink-0 sm:[width:calc((100%-20px)/2)] lg:[width:calc((100%-60px)/4)]'
+            >
+              <ProductCard
+                item={{
+                  id: product.id,
+                  title: product.title,
+                  featuredImage: product.featuredImage,
+                  priceRange: product.priceRange,
+                  availableForSale: product.availableForSale,
+                }}
+                onAddToCart={() => {}}
               />
-            )}
-            <Typography variant='h3' className='mb-2'>
-              {product.title}
-            </Typography>
-
-            <div className='flex items-center gap-2'>
-              {product.compareAtPriceRange.minVariantPrice.amount !== '0.0' && (
-                <span className='text-sm text-gray-500 line-through'>
-                  ${product.compareAtPriceRange.minVariantPrice.amount}
-                </span>
-              )}
-              <span className='font-bold'>
-                ${product.priceRange.minVariantPrice.amount} {product.priceRange.minVariantPrice.currencyCode}
-              </span>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+        <ScrollBar orientation='horizontal' />
+      </ScrollArea>
 
       {activeProducts.length === 0 && (
         <Typography variant='body-lg' className='text-center text-gray-500'>
