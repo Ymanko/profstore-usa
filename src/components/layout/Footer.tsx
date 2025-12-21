@@ -1,8 +1,9 @@
+import Link from 'next/link';
+
 import { Email } from '@/components/common/Email';
 import { List } from '@/components/common/List';
 import { Phone } from '@/components/common/Phone';
 import { SiteLogo } from '@/components/common/SiteLogo';
-import { NavLink } from '@/components/links/NavLink';
 import { SocialLinks } from '@/components/links/SocialLinks';
 import { Typography } from '@/components/ui/Typography';
 
@@ -34,9 +35,12 @@ export const Footer = () => {
                 { href: '/training', label: 'AI Training Page' },
               ]}
               renderItem={link => (
-                <NavLink className='text-sm [&_span]:text-sm' href={link.href}>
+                <Link
+                  className='text-primary-foreground hover:text-accent truncate text-sm font-normal transition-colors duration-300'
+                  href={link.href}
+                >
                   {link.label}
-                </NavLink>
+                </Link>
               )}
               keyExtractor={link => link.href}
               className='grid grid-cols-2 gap-x-4 gap-y-5 md:grid-cols-3 md:gap-x-30 lg:gap-x-52 xl:grid-cols-2 xl:gap-x-4'

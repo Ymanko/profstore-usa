@@ -36,7 +36,7 @@ export function PopularProductBanner({ product }: PopularProductBannerProps) {
         className,
       )}
     >
-      <div className='absolute inset-0 shrink-0 overflow-hidden rounded-lg'>
+      <div className='absolute inset-0 h-full shrink-0 overflow-hidden rounded-lg'>
         <Image
           src={image ? image : 'https://cdn.shopify.com/s/files/1/0745/0886/1694/files/Group_2.png?v=1766223903'}
           alt={title}
@@ -49,7 +49,7 @@ export function PopularProductBanner({ product }: PopularProductBannerProps) {
           {title}
         </Typography>
 
-        {price && oldPrice && (
+        {discount > 0 && (
           <button className='relative inline-flex items-center gap-6 rounded-[10px] bg-[linear-gradient(120deg,var(--foreground)_50%,var(--secondary)_50%)] px-4 py-3 text-xs font-semibold'>
             <Typography variant='small' as='span' className='text-center leading-[17px] font-medium text-white'>
               Sale
@@ -62,12 +62,14 @@ export function PopularProductBanner({ product }: PopularProductBannerProps) {
       </div>
 
       <div className='relative flex flex-col items-start justify-between gap-5 pl-37.5'>
-        {/* <div className="pt-3.5"> */}
         <div className='mb-5 flex items-baseline gap-3'>
-          <span className='text-foreground text-3xl leading-tight font-extrabold'>{price.toLocaleString()}$</span>
-
-          {oldPrice && (
-            <span className='text-xl leading-[1.2] font-bold text-[#9f9f9f]'>{oldPrice.toLocaleString()}$</span>
+          {discount > 0 ? (
+            <>
+              <span className='text-foreground text-3xl leading-tight font-extrabold'>{price.toLocaleString()}$</span>
+              <span className='text-xl leading-[1.2] font-bold text-[#9f9f9f]'>{oldPrice.toLocaleString()}$</span>
+            </>
+          ) : (
+            <span className='text-foreground text-3xl leading-tight font-extrabold'>{oldPrice.toLocaleString()}$</span>
           )}
         </div>
 

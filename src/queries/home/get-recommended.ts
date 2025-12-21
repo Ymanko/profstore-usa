@@ -29,6 +29,7 @@ const GET_RECOMMENDED = `
                 currencyCode
               }
             }
+            availableForSale
             featuredImage {
               url
               altText

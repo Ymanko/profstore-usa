@@ -3,6 +3,7 @@ export { default as ArrowLeft } from './ArrowLeft';
 export { default as ArrowRight } from './ArrowRight';
 export { default as ArrowTop } from './ArrowTop';
 export { default as CallReceive } from './CallReceive';
+export { default as CheckmarkSmall } from './CheckmarkSmall';
 export { default as Close } from './Close';
 export { default as Equipment } from './Equipment';
 export { default as EyeOff } from './EyeOff';

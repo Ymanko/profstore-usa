@@ -17,10 +17,11 @@ export function BrandCard({ brand, width = 152 }: BrandCardProps) {
       <Image
         src={brand.logo}
         alt={brand.logoAlt}
-        width={300}
-        height={150}
+        width={150}
+        height={75}
         className='h-auto w-full object-contain'
         sizes={`${width}px`}
+        quality={90}
       />
     </div>
   );

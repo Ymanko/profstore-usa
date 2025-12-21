@@ -42,7 +42,7 @@ export function ProductTabs() {
         ))}
       </div>
 
-      <ScrollArea className='m-auto w-full max-w-100 sm:max-w-[100%]'>
+      <ScrollArea className='m-auto w-full max-w-87 md:max-w-167 lg:max-w-full'>
         <div className='flex gap-5 pb-4'>
           {activeProducts.map(({ node: product }) => (
             <div
@@ -54,7 +54,8 @@ export function ProductTabs() {
                   id: product.id,
                   title: product.title,
                   featuredImage: product.featuredImage,
-                  priceRange: product.priceRange,
+                  oldPrice: product.priceRange.minVariantPrice.amount,
+                  price: product.compareAtPriceRange.minVariantPrice.amount,
                   availableForSale: product.availableForSale,
                 }}
                 onAddToCart={() => {}}

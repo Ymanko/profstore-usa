@@ -30,6 +30,7 @@ const GET_POPULAR_PRODUCTS = `
                 currencyCode
               }
             }
+            availableForSale
             featuredImage {
               url
               altText

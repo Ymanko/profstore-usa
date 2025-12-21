@@ -22,6 +22,7 @@ import Trash from '@/icons-react/Trash';
 import User from '@/icons-react/User';
 import Vector from '@/icons-react/Vector';
 import ViewGrid from '@/icons-react/ViewGrid';
+import CheckmarkSmall from '@/icons-react/CheckmarkSmall';
 
 import type { SVGProps } from 'react';
 
@@ -50,6 +51,7 @@ const ICONS = {
   viewGrid: ViewGrid,
   equipment: Equipment,
   vector: Vector,
+  checkmarkSmall: CheckmarkSmall,
 } as const;
 
 export type IconName = keyof typeof ICONS;
