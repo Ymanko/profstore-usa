@@ -76,7 +76,7 @@ export const ProductCard = ({ item, onAddToCart }: ProductCardProps) => {
         <button
           onClick={onAddToCart}
           disabled={!availableForSale}
-          className=' self-end hover:text-accent flex h-10 w-10 shrink-0 align-self items-center justify-center rounded-[5px] bg-[linear-gradient(90deg,rgba(87,144,64,1),rgba(58,111,67,1)_100%)] text-white'
+          className='hover:text-accent align-self flex h-10 w-10 shrink-0 items-center justify-center self-end rounded-[5px] bg-[linear-gradient(90deg,rgba(87,144,64,1),rgba(58,111,67,1)_100%)] text-white'
         >
           <Icon name='shoppingCart' className='' width='18' height='18' />
         </button>
