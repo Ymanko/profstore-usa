@@ -17,6 +17,7 @@ export function ProductTabs() {
 
   const { data: newProducts } = useSuspenseQuery(getNewProductsQueryOptions);
   const { data: saleHits } = useSuspenseQuery(getSaleHitsQueryOptions);
+  console.log('saleHits: ', saleHits);
   console.log('newProducts: ', newProducts);
 
 
@@ -26,6 +27,7 @@ export function ProductTabs() {
   ];
 
   const activeProducts = tabs.find(tab => tab.id === activeTab)?.products || [];
+  console.log('activeProducts: ', activeProducts);
 
   return (
     <Section className='pb-10.5 md:pb-12.5'>
@@ -43,7 +45,7 @@ export function ProductTabs() {
         ))}
       </div>
 
-      <ScrollArea className='m-auto w-full max-w-87 sm:max-w-[100%]'>
+      <ScrollArea className='m-auto w-full max-w-87 md:max-w-167 lg:max-w-full'>
         <div className='flex gap-5 pb-4'>
           {activeProducts.map(({ node: product }) => (
             <div
@@ -55,7 +57,8 @@ export function ProductTabs() {
                   id: product.id,
                   title: product.title,
                   featuredImage: product.featuredImage,
-                  priceRange: product.priceRange,
+                  oldPrice: product.priceRange.minVariantPrice.amount,
+                  price: product.compareAtPriceRange.minVariantPrice.amount,
                   availableForSale: product.availableForSale,
                 }}
                 onAddToCart={() => { }}

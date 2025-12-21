@@ -26,7 +26,7 @@ export const Recommended: FC = () => {
           </Typography>
 
           <Carousel
-            className='m-auto w-full max-w-87 sm:max-w-[100%]'
+            className='m-auto w-full max-w-87 md:max-w-167 lg:max-w-full'
             opts={{
               align: 'start',
               slidesToScroll: 'auto',
@@ -37,9 +37,16 @@ export const Recommended: FC = () => {
               <CarouselNext />
             </div>
             <CarouselContent>
-              {products.map((item, index) => (
+              {products.map((product, index) => (
                 <CarouselItem key={index} className='sm:basis-1/2 lg:basis-1/4'>
-                  <ProductCard item={item} />
+                  <ProductCard item={{
+                    id: product.id,
+                    title: product.title,
+                    featuredImage: product.featuredImage,
+                    oldPrice: product.priceRange.minVariantPrice.amount,
+                    price: product.compareAtPriceRange.minVariantPrice.amount,
+                    availableForSale: product.availableForSale,
+                  }} />
                 </CarouselItem>
               ))}
             </CarouselContent>

@@ -37,7 +37,7 @@ export const MainBannerSlide = ({ data, className }: BannerSlideProps) => {
             />
           </div>
 
-          <div className='md:items-strech w-fulzl relative mt-auto flex w-full flex-col items-center justify-end gap-5 text-center text-white md:flex-row md:justify-between md:self-end md:text-left'>
+          <div className='md:items-strech w-full relative mt-auto flex flex-col items-center justify-end gap-5 text-center text-white md:flex-row md:justify-between md:self-end md:text-left'>
             <div className='flex flex-col'>
               <h3 className='mb-3.5 max-w-131.5 text-[25px] leading-tight font-extrabold uppercase md:text-[35px] lg:text-[45px]'>
                 {title}
@@ -73,7 +73,7 @@ export const MainBannerSlide = ({ data, className }: BannerSlideProps) => {
             />
           </div>
 
-          <div className='md:items-strech w-fulzl relative mt-auto flex w-full flex-col items-center justify-end gap-5 text-center text-white md:flex-row md:justify-between md:self-end md:text-left'>
+          <div className='md:items-strech w-full relative mt-auto flex flex-col items-center justify-end gap-5 text-center text-white md:flex-row md:justify-between md:self-end md:text-left'>
             <div className='flex flex-col'>
               <h3 className='mb-3.5 max-w-131.5 text-[25px] leading-tight font-extrabold uppercase md:text-[35px] lg:text-[45px]'>
                 {title}
