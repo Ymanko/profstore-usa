@@ -35,7 +35,11 @@ export const ProductCard = ({ item, onAddToCart }: ProductCardProps) => {
             alt={featuredImage.altText || title}
             fill
             className='w-full object-cover'
-            sizes='(max-width: 768px) 100vw, 25vw'
+            sizes='
+            (max-width: 640px) 310px,
+            (max-width: 1024px) 50vw,
+            25vw
+            '
           />
         )}
         <button
