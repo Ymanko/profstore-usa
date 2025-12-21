@@ -24,7 +24,7 @@ export const ProductCard = ({ item, onAddToCart }: ProductCardProps) => {
 
   const currentPrice = parseInt(price);
   const previousPrice = parseInt(oldPrice);
-  const hasDiscount = previousPrice > currentPrice;
+  const hasDiscount = currentPrice !== 0 && previousPrice > currentPrice;
 
   return (
     <div className='flex h-full w-full flex-col rounded-lg border p-4'>
@@ -50,7 +50,7 @@ export const ProductCard = ({ item, onAddToCart }: ProductCardProps) => {
           <Icon name='heart' className='' width='18' height='18' />
         </button>
       </div>
-      <Typography variant='h3' as='h3' className='mb-1 line-clamp-2'>
+      <Typography variant='h3' as='h3' className='mb-1'>
         {title}
       </Typography>
       <Typography
@@ -63,23 +63,20 @@ export const ProductCard = ({ item, onAddToCart }: ProductCardProps) => {
       <div className='mt-auto flex items-center justify-between gap-3'>
         <Typography variant='body' className='font-bold'>
           {/* {priceRange.minVariantPrice.amount} $ */}
-          <div className='flex items-baseline gap-2'>
-            {/* Завжди показуємо актуальну ціну */}
-            <span className='text-foreground text-3xl leading-tight font-extrabold'>
-              {hasDiscount ? currentPrice : previousPrice}$
-            </span>
-
-            {/* Показуємо стару ціну тільки якщо вона більша */}
+          <div className='flex flex-col items-baseline gap-1'>
             {hasDiscount && (
               <span className='text- leading-[1.2] font-bold text-[#9f9f9f] line-through'>{previousPrice}$</span>
             )}
+            <span className='text-foreground text-3xl leading-tight font-extrabold'>
+              {hasDiscount ? currentPrice : previousPrice}$
+            </span>
           </div>
         </Typography>
 
         <button
           onClick={onAddToCart}
           disabled={!availableForSale}
-          className='hover:text-accent flex h-10 w-10 shrink-0 items-center justify-center rounded-[5px] bg-[linear-gradient(90deg,rgba(87,144,64,1),rgba(58,111,67,1)_100%)] text-white'
+          className=' self-end hover:text-accent flex h-10 w-10 shrink-0 align-self items-center justify-center rounded-[5px] bg-[linear-gradient(90deg,rgba(87,144,64,1),rgba(58,111,67,1)_100%)] text-white'
         >
           <Icon name='shoppingCart' className='' width='18' height='18' />
         </button>
