@@ -65,9 +65,9 @@ export const ProductCard = ({ item, onAddToCart }: ProductCardProps) => {
           {/* {priceRange.minVariantPrice.amount} $ */}
           <div className='flex flex-col items-baseline gap-1'>
             {hasDiscount && (
-              <span className='text- leading-[1.2] font-bold text-[#9f9f9f] line-through'>{previousPrice}$</span>
+              <span className='text-[16px] leading-[1.2] font-bold text-[#9f9f9f] line-through'>{previousPrice}$</span>
             )}
-            <span className='text-foreground text-3xl leading-tight font-extrabold'>
+            <span className='text-foreground text-[22px] leading-tight font-extrabold'>
               {hasDiscount ? currentPrice : previousPrice}$
             </span>
           </div>

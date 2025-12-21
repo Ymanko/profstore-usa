@@ -70,6 +70,10 @@
   --destructive: #dc2626;
 }
 
+body {
+  font-family: var(--font-montserrat), sans-serif;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
