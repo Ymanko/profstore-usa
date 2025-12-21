@@ -33,9 +33,8 @@ export function ProductTabs() {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`w-1/2 rounded-[10px] px-4 py-2 font-bold transition-colors md:max-w-[260px] ${
-              activeTab === tab.id ? 'bg-white text-[#3A6F43]' : 'bg-transparent text-white'
-            }`}
+            className={`w-1/2 rounded-[10px] px-4 py-2 font-bold transition-colors md:max-w-[260px] ${activeTab === tab.id ? 'bg-white text-[#3A6F43]' : 'bg-transparent text-white'
+              }`}
           >
             {tab.label}
           </button>
@@ -58,7 +57,6 @@ export function ProductTabs() {
                   availableForSale: product.availableForSale,
                 }}
                 onAddToCart={() => {
-                  console.log('Add to cart:', product.id);
                 }}
               />
             </div>

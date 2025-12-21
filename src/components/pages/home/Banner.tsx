@@ -17,9 +17,6 @@ export function Banner() {
     data: { bannerSlides },
   } = useSuspenseQuery(getHomePageContentQueryOptions);
 
-  console.log('bannerSlides: ', bannerSlides);
-  console.log('popularProducts: ', popularProducts);
-
   return (
     <Section className='pb-10.5 md:pt-7.5 md:pb-12.5'>
       <div className='flex gap-5'>
