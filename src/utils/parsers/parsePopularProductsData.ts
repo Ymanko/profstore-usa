@@ -14,6 +14,7 @@ export function parsePopularProductsData(products: ProductEdge[]) {
 
     return {
       productId: getLastSegment(node.id),
+      handle: node.handle,
       title: node.title,
       image: (imageRef && isMediaImage(imageRef) ? imageRef.image?.url : null) ?? null,
       price: node.compareAtPriceRange?.minVariantPrice.amount ?? null,
