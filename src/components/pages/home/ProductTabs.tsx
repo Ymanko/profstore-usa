@@ -43,7 +43,7 @@ export function ProductTabs() {
         ))}
       </div>
 
-      <ScrollArea className='m-auto w-full max-w-100 sm:max-w-[100%]'>
+      <ScrollArea className='m-auto w-full max-w-87 sm:max-w-[100%]'>
         <div className='flex gap-5 pb-4'>
           {activeProducts.map(({ node: product }) => (
             <div
