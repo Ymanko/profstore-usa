@@ -13,7 +13,9 @@ import type { FC } from 'react';
 export const Recommended: FC = () => {
   const {
     data: { title, products },
+
   } = useSuspenseQuery(getRecommendedQueryOptions);
+  console.log('products: ', products);
 
   return (
     <Section className='md: pb - 12.5 pb-10.5'>

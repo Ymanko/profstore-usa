@@ -53,8 +53,8 @@ export const ProductCard = ({ item, onAddToCart }: ProductCardProps) => {
         {availableForSale ? 'In stock' : 'Out of stock'}
       </Typography>
       <div className='mt-auto flex items-center justify-between gap-3'>
-        <Typography variant='body' className='font-semibold'>
-          {priceRange.minVariantPrice.amount} {priceRange.minVariantPrice.currencyCode}
+        <Typography variant='body' className='font-bold text-[22px]'>
+          {priceRange.minVariantPrice.amount} $
         </Typography>
 
         <button

@@ -16,15 +16,17 @@ export function Banner() {
   const {
     data: { bannerSlides },
   } = useSuspenseQuery(getHomePageContentQueryOptions);
+  console.log('bannerSlides: ', bannerSlides);
 
   return (
     <Section className='pb-10.5 md:pt-7.5 md:pb-12.5'>
       <div className='flex gap-5'>
         <AutoSlider
-          slides={bannerSlides.slice(1)}
+          slides={bannerSlides}
           className='max-w-245'
           dotClassName='bg-white/50'
           activeDotClassName='bg-white'
+          dotsContainerClassName='bottom-2 left-1/2 -translate-x-1/2'
         >
           {data => <MainBannerSlide data={data} />}
         </AutoSlider>
