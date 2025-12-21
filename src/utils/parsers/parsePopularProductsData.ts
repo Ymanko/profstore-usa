@@ -19,6 +19,7 @@ export function parsePopularProductsData(products: ProductEdge[]) {
       price: node.compareAtPriceRange?.minVariantPrice.amount ?? null,
       oldPrice: node.priceRange.minVariantPrice.amount,
       description: node.metafields?.find(m => m?.key === 'short_description')?.value ?? null,
+      availableForSale: node.availableForSale,
     };
   });
 }

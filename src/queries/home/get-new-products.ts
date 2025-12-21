@@ -30,6 +30,7 @@ const GET_NEW_PRODUCTS = `
               currencyCode
             }
           }
+          availableForSale
           featuredImage {
             url
             altText
