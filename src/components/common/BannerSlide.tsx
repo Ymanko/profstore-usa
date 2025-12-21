@@ -1,85 +1,87 @@
-import Image from "next/image";
-import React from "react";
+import Image from 'next/image';
+import Link from 'next/link';
+import React from 'react';
 
-import { Button } from "@/components/ui/Button";
-import { Typography } from "@/components/ui/Typography";
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
+import type { BannerSlide } from '@/queries/home/get-home-page-content';
 
-// Путь к твоему shadcn button
-
-interface BannerSlideProps {
-  title?: string;
-  subtitle?: string;
-  buttonText?: string;
-  imageSrc: string; // Ссылка на прозрачное PNG изображение кухни
-  onButtonClick?: () => void;
+type BannerSlideProps = {
+  data: BannerSlide;
   className?: string;
-}
+};
 
-export const BannerSlide: React.FC<BannerSlideProps> = ({
-  title = "COMPLEX EQUIPMENT",
-  subtitle = "professional kitchen",
-  buttonText = "Catalog",
-  imageSrc,
-  onButtonClick,
-  className,
-}) => {
+export const MainBannerSlide = ({ data, className }: BannerSlideProps) => {
+  const { title, subtitle, buttonText, image, imageAlt, buttonLink } = data;
+
   return (
-    <div
-      className={cn(
-        "relative w-full max-w-245 h-102 overflow-hidden rounded-[20px] bg-brand-section-bg",
-        "flex flex-col md:flex-row items-center justify-end",
-        "p-7.5", // Mobile padding vs Desktop reset
-        className
+    <>
+      {buttonText ? (
+        <div
+          className={cn(
+            'bg-brand-section-bg relative flex h-102 w-full overflow-hidden rounded-[20px]',
+            'items-center justify-center md:justify-start',
+            'p-7.5 pb-15',
+            className,
+          )}
+        >
+          <div className='absolute inset-0 top-0 z-0 h-full w-full'>
+            <Image
+              src={image}
+              alt={imageAlt ? imageAlt : title}
+              fill
+              className='object-cover object-bottom drop-shadow-xl md:object-left-bottom'
+              sizes='(max-width: 768px) 100vw, 50vw'
+              priority
+            />
+          </div>
+
+          <div className='md:items-strech w-fulzl relative mt-auto flex w-full flex-col items-center justify-end gap-5 text-center text-white md:flex-row md:justify-between md:self-end md:text-left'>
+            <div className='flex flex-col'>
+              <h3 className='mb-3.5 max-w-131.5 text-[25px] leading-tight font-extrabold uppercase md:text-[35px] lg:text-[45px]'>
+                {title}
+              </h3>
+              <p className='md:text-[20px]'>{subtitle}</p>
+            </div>
+            <Link
+              href={buttonLink ? buttonLink : '/'}
+              className='bg-secondary hover:bg-secondary/90 flex h-auto min-w-59 justify-center rounded-lg px-4 py-4 text-lg font-medium text-white shadow-sm transition-all hover:scale-105'
+            >
+              {buttonText || 'Click ME'}
+            </Link>
+          </div>
+        </div>
+      ) : (
+        <Link
+          href={buttonLink ? buttonLink : '/'}
+          className={cn(
+            'bg-brand-section-bg relative flex h-102 w-full overflow-hidden rounded-[20px]',
+            'items-center justify-center md:justify-start',
+            'p-7.5 pb-15',
+            className,
+          )}
+        >
+          <div className='absolute inset-0 top-0 z-0 h-full w-full'>
+            <Image
+              src={image}
+              alt={imageAlt ? imageAlt : title}
+              fill
+              className='object-cover object-bottom drop-shadow-xl md:object-left-bottom'
+              sizes='(max-width: 768px) 100vw, 50vw'
+              priority
+            />
+          </div>
+
+          <div className='md:items-strech w-fulzl relative mt-auto flex w-full flex-col items-center justify-end gap-5 text-center text-white md:flex-row md:justify-between md:self-end md:text-left'>
+            <div className='flex flex-col'>
+              <h3 className='mb-3.5 max-w-131.5 text-[25px] leading-tight font-extrabold uppercase md:text-[35px] lg:text-[45px]'>
+                {title}
+              </h3>
+              <p className='md:text-[20px]'>{subtitle}</p>
+            </div>
+          </div>
+        </Link>
       )}
-    >
-      <div className="absolute z-0 top-0 w-full h-full md:inset-0">
-        <Image
-          src={imageSrc}
-          alt="Professional Kitchen Equipment"
-          fill
-          className="object-cover object-bottom md:object-left-bottom drop-shadow-xl"
-          sizes="(max-width: 768px) 100vw, 50vw"
-          priority // Так как это баннер, лучше грузить сразу
-        />
-      </div>
-      <div className="relative flex flex-col items-center md:items-start text-center md:text-left w-fulzl">
-        {/* <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold uppercase text-primary-dark tracking-tight leading-tight mb-2 md:mb-4">
-          {title}
-        </h2> */}
-        <Typography
-          variant="h1"
-          as="h3"
-          className="
-            mb-3.5
-            text-[25px] leading-tight
-            font-extrabold
-            text-[#3a6f43]
-            uppercase
-
-            md:max-w-80 md:text-[45px] md:leading-[1.22]
-            md:max-w-97 lg:text-[55px] lg:leading-[1.22]
-          "
-        >
-          {title}
-        </Typography>
-
-        <Typography
-          variant="h4"
-          className="mb-5 leading-tight text-center text-[#1e1e1e]"
-        >
-          {subtitle}
-        </Typography>
-
-        <Button
-          onClick={onButtonClick}
-          className="min-w-59 bg-secondary hover:bg-secondary/90 text-white font-medium text-lg px-16 py-4 h-auto rounded-lg shadow-sm transition-all hover:scale-105"
-        >
-          {buttonText}
-        </Button>
-      </div>
-
-    </div>
+    </>
   );
 };

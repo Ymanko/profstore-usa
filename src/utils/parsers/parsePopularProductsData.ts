@@ -16,8 +16,8 @@ export function parsePopularProductsData(products: ProductEdge[]) {
       productId: getLastSegment(node.id),
       title: node.title,
       image: (imageRef && isMediaImage(imageRef) ? imageRef.image?.url : null) ?? null,
-      price: node.priceRange.minVariantPrice.amount,
-      oldPrice: node.compareAtPriceRange?.minVariantPrice.amount ?? null,
+      price: node.compareAtPriceRange?.minVariantPrice.amount ?? null,
+      oldPrice: node.priceRange.minVariantPrice.amount,
       description: node.metafields?.find(m => m?.key === 'short_description')?.value ?? null,
     };
   });

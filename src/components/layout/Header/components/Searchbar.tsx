@@ -93,7 +93,10 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
           align='start'
           sideOffset={isMobile ? 90 : 20}
         >
-          <AppContainer className='flex h-full w-full overflow-auto' onClick={e => e.stopPropagation()}>
+          <AppContainer
+            className='flex h-full w-full overflow-auto'
+            onClick={e => activeCategory && activeCategory?.items?.length > 0 && e.stopPropagation()}
+          >
             {/* Desktop Sidebar */}
             <div className='bg-muted border-secondary relative hidden shrink-0 border-t-5 py-4 shadow-[inset_-10px_0_10px_0_rgba(0,0,0,0.1)] md:block'>
               <List
@@ -108,9 +111,9 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
                         'from-sidebar-active-20 to-muted-20 text-sidebar-active bg-gradient-to-r',
                     )}
                     onMouseEnter={() => {
-                      if (category.items && category.items.length > 0) {
-                        setActiveId(category.id);
-                      }
+                      setActiveId(category.id);
+                      // if (category.items && category.items.length > 0) {
+                      // }
                     }}
                     onClick={() => {
                       if (!category.items || category.items.length === 0) {

@@ -9,7 +9,6 @@ import { ScrollArea, ScrollBar } from '@/components/ui/Scroll-Area';
 import { Typography } from '@/components/ui/Typography';
 import { getNewProductsQueryOptions } from '@/queries/home/get-new-products';
 import { getSaleHitsQueryOptions } from '@/queries/home/get-sale-hits';
-// import { ScrollAreaViewport } from '@radix-ui/react-scroll-area';
 
 type Tab = 'new' | 'saleHits';
 
@@ -34,21 +33,16 @@ export function ProductTabs() {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`w-1/2 rounded-[10px] px-4 py-2 font-bold transition-colors md:max-w-[260px] ${activeTab === tab.id ? 'bg-white text-[#3A6F43]' : 'bg-transparent text-white'
-              }`}
+            className={`w-1/2 rounded-[10px] px-4 py-2 font-bold transition-colors md:max-w-[260px] ${
+              activeTab === tab.id ? 'bg-white text-[#3A6F43]' : 'bg-transparent text-white'
+            }`}
           >
             {tab.label}
           </button>
         ))}
       </div>
 
-      <ScrollArea className=''>
-        {/* <ScrollAreaViewport
-          onWheel={(e) => {
-            if (e.deltaY === 0) return;
-            e.currentTarget.scrollLeft += e.deltaY;
-          }}
-        > */}
+      <ScrollArea className='m-auto w-full max-w-100 sm:max-w-[100%]'>
         <div className='flex gap-5 pb-4'>
           {activeProducts.map(({ node: product }) => (
             <div
@@ -70,7 +64,6 @@ export function ProductTabs() {
             </div>
           ))}
         </div>
-        {/* </ScrollAreaViewport> */}
         <ScrollBar orientation='horizontal' />
       </ScrollArea>
 
