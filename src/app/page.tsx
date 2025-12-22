@@ -38,7 +38,7 @@ export default async function Home() {
   const getHomePageContent = queryClient.getQueryData(getHomePageContentQueryOptions.queryKey);
 
   return (
-    <PageWrapper className='pt-4.5'>
+    <PageWrapper className=''>
       <Typography variant='h1' className='sr-only'>
         Welcome to ProfStore
       </Typography>
