@@ -128,7 +128,7 @@ export function PopularProductBanner({ product }: PopularProductBannerProps) {
           />
         </div>
 
-        <div className='col-span-2 ml-5 flex flex-col items-baseline gap-7 relative'>
+        <div className='relative col-span-2 ml-5 flex flex-col items-baseline gap-7'>
           {/*Price*/}
           <div className='flex items-baseline gap-3'>
             {discount > 0 ? (

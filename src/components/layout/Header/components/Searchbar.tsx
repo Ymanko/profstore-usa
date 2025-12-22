@@ -95,10 +95,13 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
         >
           <AppContainer
             className='flex h-full w-full overflow-auto'
-            onClick={e => activeCategory && activeCategory?.items?.length > 0 && e.stopPropagation()}
+            // onClick={e => e.stopPropagation()}
           >
             {/* Desktop Sidebar */}
-            <div className='bg-muted border-secondary relative hidden shrink-0 border-t-5 py-4 shadow-[inset_-10px_0_10px_0_rgba(0,0,0,0.1)] md:block'>
+            <div
+              onClick={e => e.stopPropagation()}
+              className='bg-muted border-secondary relative hidden shrink-0 border-t-5 py-4 shadow-[inset_-10px_0_10px_0_rgba(0,0,0,0.1)] md:block'
+            >
               <List
                 data={categories}
                 renderItem={category => (
@@ -141,6 +144,7 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
               type='single'
               collapsible
               className='bg-background border-secondary w-full border-t-5 md:hidden'
+              onClick={e => e.stopPropagation()}
             >
               <div className='py-4'>
                 {categories.map(category => {
@@ -210,7 +214,10 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
 
             {/* Desktop Content*/}
             {activeCategory?.items && activeCategory.items.length > 0 && (
-              <div className='bg-background border-secondary relative hidden flex-1 border-t-5 p-10 md:block xl:px-[70px] xl:py-[35px]'>
+              <div
+                onClick={e => e.stopPropagation()}
+                className='bg-background border-secondary relative hidden flex-1 border-t-5 p-10 md:block xl:px-[70px] xl:py-[35px]'
+              >
                 <button
                   onClick={() => setIsCatalogOpen(false)}
                   className='hover:bg-sidebar-active/10 absolute top-2 right-2 rounded-sm p-1 opacity-70 transition-opacity hover:opacity-100'
