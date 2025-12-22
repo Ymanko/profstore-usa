@@ -2,13 +2,14 @@
 
 import Autoplay from 'embla-carousel-autoplay';
 import useEmblaCarousel from 'embla-carousel-react';
-import { useCallback, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 
+import { List } from '@/components/common/List';
 import { cn } from '@/lib/utils';
 
 type AutoSliderProps<T> = {
   slides: T[];
-  children: (item: T, index: number) => React.ReactNode;
+  renderSlide: (item: T, index: number) => React.ReactNode;
   className?: string; // Клас для обгортки самого слайдера
   dotsContainerClassName?: string; // Клас для позиціонування контейнера точок
   dotClassName?: string; // Базовий клас для кожної точки
@@ -18,7 +19,7 @@ type AutoSliderProps<T> = {
 export function AutoSlider<T>({
   slides,
   className,
-  children,
+  renderSlide,
   dotsContainerClassName,
   dotClassName,
   activeDotClassName,
@@ -43,13 +44,13 @@ export function AutoSlider<T>({
   return (
     <div className={cn('group relative h-full w-full max-w-full overflow-hidden', className)}>
       <div ref={emblaRef} className='h-full overflow-hidden'>
-        <div className='flex h-full'>
-          {slides.map((item, index) => (
-            <div key={index} className='h-full w-full shrink-0'>
-              {children(item, index)}
-            </div>
-          ))}
-        </div>
+        <List
+          data={slides}
+          renderItem={(item, index) => <Fragment key={index}>{renderSlide(item, index)}</Fragment>}
+          keyExtractor={(_, index) => index.toString()}
+          className='flex h-full gap-4'
+          itemClassName='h-full w-full shrink-0'
+        />
       </div>
 
       <div
@@ -64,10 +65,10 @@ export function AutoSlider<T>({
             type='button'
             onClick={() => emblaApi?.scrollTo(index)}
             className={cn(
-              'h-2.5 w-2.5 rounded-full transition-all',
+              'size-2.5 rounded-full transition-all',
               dotClassName || 'bg-primary/50',
               index === selectedIndex && (activeDotClassName || 'bg-primary'),
-              index === selectedIndex && 'h-3.5 w-3.5',
+              index === selectedIndex && 'size-3.5',
             )}
           />
         ))}
