@@ -22,17 +22,20 @@ export function Banner() {
       <div className='flex gap-5'>
         <AutoSlider
           slides={bannerSlides}
-          className='max-w-245'
+          className='h-full max-w-245'
           dotClassName='bg-white/50'
           activeDotClassName='bg-white'
           dotsContainerClassName='bottom-2 left-1/2 -translate-x-1/2'
-        >
-          {data => <MainBannerSlide data={data} />}
-        </AutoSlider>
+          renderSlide={data => <MainBannerSlide data={data} />}
+        />
+
         <div className='relative hidden shrink-0 xl:block'>
-          <AutoSlider slides={popularProducts} className='max-w-108.75'>
-            {product => <PopularProductBanner product={product} />}
-          </AutoSlider>
+          <AutoSlider
+            slides={popularProducts}
+            className='w-full max-w-108.75'
+            renderSlide={product => <PopularProductBanner product={product} />}
+            dotsContainerClassName='bottom-3 left-1/2 -translate-x-1/2'
+          />
         </div>
 
         {popularProducts.length === 0 && (

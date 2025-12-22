@@ -21,9 +21,10 @@ export const MainBannerSlide = ({ data, className }: BannerSlideProps) => {
       {buttonText ? (
         <div
           className={cn(
-            'bg-brand-section-bg relative flex h-102 w-full overflow-hidden rounded-[20px]',
+            'bg-brand-section-bg relative flex w-full overflow-hidden rounded-[20px]',
             'items-center justify-center md:justify-start',
             'p-7.5 pb-15',
+            'aspect-[345/425] md:aspect-[668/380] xl:aspect-[981/408]',
             className,
           )}
         >
@@ -33,9 +34,9 @@ export const MainBannerSlide = ({ data, className }: BannerSlideProps) => {
               alt={imageAlt ? imageAlt : title}
               fill
               className='object-cover object-center'
-              sizes='(max-width: 1280px) 100vw, 70vw'
+              sizes='(max-width: 768px) 345px, (max-width: 1280px) 668px, 981px'
               priority
-              quality={90}
+              quality={95}
             />
           </div>
 
@@ -61,9 +62,10 @@ export const MainBannerSlide = ({ data, className }: BannerSlideProps) => {
         <Link
           href={buttonLink ? buttonLink : '/'}
           className={cn(
-            'bg-brand-section-bg relative flex h-102 w-full overflow-hidden rounded-[20px]',
+            'bg-brand-section-bg relative flex w-full overflow-hidden rounded-[20px]',
             'items-center justify-center md:justify-start',
             'p-7.5 pb-15',
+            'aspect-[345/425] md:aspect-[668/380] xl:aspect-[981/408]',
             className,
           )}
         >
@@ -73,9 +75,9 @@ export const MainBannerSlide = ({ data, className }: BannerSlideProps) => {
               alt={imageAlt ? imageAlt : title}
               fill
               className='object-cover object-center'
-              sizes='(max-width: 1280px) 100vw, 70vw'
+              sizes='(max-width: 768px) 345px, (max-width: 1280px) 668px, 981px'
               priority
-              quality={90}
+              quality={95}
             />
           </div>
 

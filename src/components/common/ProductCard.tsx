@@ -35,11 +35,7 @@ export const ProductCard = ({ item, onAddToCart }: ProductCardProps) => {
             alt={featuredImage.altText || title}
             fill
             className='w-full object-cover'
-            sizes='
-            (max-width: 640px) 310px,
-            (max-width: 1024px) 50vw,
-            25vw
-            '
+            sizes='(max-width: 640px) 310px, (max-width: 1024px) 50vw, 25vw'
           />
         )}
         <button
@@ -63,14 +59,14 @@ export const ProductCard = ({ item, onAddToCart }: ProductCardProps) => {
       <div className='mt-auto flex items-center justify-between gap-3'>
         <Typography variant='body' className='font-bold'>
           {/* {priceRange.minVariantPrice.amount} $ */}
-          <div className='flex flex-col items-baseline gap-1'>
+          <span className='flex flex-col items-baseline gap-1'>
             {hasDiscount && (
               <span className='text-[16px] leading-[1.2] font-bold text-[#9f9f9f] line-through'>{previousPrice}$</span>
             )}
             <span className='text-foreground text-[22px] leading-tight font-extrabold'>
               {hasDiscount ? currentPrice : previousPrice}$
             </span>
-          </div>
+          </span>
         </Typography>
 
         <button
