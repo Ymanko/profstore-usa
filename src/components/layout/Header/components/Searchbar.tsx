@@ -95,10 +95,13 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
         >
           <AppContainer
             className='flex h-full w-full overflow-auto'
-          // onClick={e => e.stopPropagation()}
+            // onClick={e => e.stopPropagation()}
           >
             {/* Desktop Sidebar */}
-            <div onClick={e => e.stopPropagation()} className='bg-muted border-secondary relative hidden shrink-0 border-t-5 py-4 shadow-[inset_-10px_0_10px_0_rgba(0,0,0,0.1)] md:block'>
+            <div
+              onClick={e => e.stopPropagation()}
+              className='bg-muted border-secondary relative hidden shrink-0 border-t-5 py-4 shadow-[inset_-10px_0_10px_0_rgba(0,0,0,0.1)] md:block'
+            >
               <List
                 data={categories}
                 renderItem={category => (
@@ -108,7 +111,7 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
                       'flex w-full items-center gap-3 px-5 py-3 text-left transition-colors',
                       'from-sidebar-active-20 to-muted-20 hover:text-sidebar-active hover:bg-gradient-to-r',
                       activeId === category.id &&
-                      'from-sidebar-active-20 to-muted-20 text-sidebar-active bg-gradient-to-r',
+                        'from-sidebar-active-20 to-muted-20 text-sidebar-active bg-gradient-to-r',
                     )}
                     onMouseEnter={() => {
                       setActiveId(category.id);
@@ -211,7 +214,10 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
 
             {/* Desktop Content*/}
             {activeCategory?.items && activeCategory.items.length > 0 && (
-              <div onClick={e => e.stopPropagation()} className='bg-background border-secondary relative hidden flex-1 border-t-5 p-10 md:block xl:px-[70px] xl:py-[35px]'>
+              <div
+                onClick={e => e.stopPropagation()}
+                className='bg-background border-secondary relative hidden flex-1 border-t-5 p-10 md:block xl:px-[70px] xl:py-[35px]'
+              >
                 <button
                   onClick={() => setIsCatalogOpen(false)}
                   className='hover:bg-sidebar-active/10 absolute top-2 right-2 rounded-sm p-1 opacity-70 transition-opacity hover:opacity-100'
