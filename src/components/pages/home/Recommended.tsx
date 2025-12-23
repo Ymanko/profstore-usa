@@ -17,7 +17,7 @@ export const Recommended: FC = () => {
 
   return (
     <Section className='py-2.5'>
-      <div className='border-accent border-t-3 pt-5'>
+      <div className='border-accent border-t-3 pt-3.5'>
         <div className='relative'>
           <Typography variant='h2' as='h2' className='mb-5'>
             {title}
