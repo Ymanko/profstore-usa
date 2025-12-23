@@ -22,9 +22,9 @@ export const MainBannerSlide = ({ data, className }: BannerSlideProps) => {
         <div
           className={cn(
             'bg-brand-section-bg relative flex w-full overflow-hidden rounded-[20px]',
-            'items-center justify-center md:justify-start',
-            'p-7.5 pb-15',
-            'aspect-[345/425] md:aspect-[668/380] xl:aspect-[981/408]',
+            'items-end justify-center md:justify-start',
+            'p-7.5 pb-15 max-[384px]:p-5 max-[384px]:pb-7.5',
+            'aspect-[495/414] md:aspect-[668/380] xl:aspect-[981/408]',
             className,
           )}
         >
@@ -39,8 +39,12 @@ export const MainBannerSlide = ({ data, className }: BannerSlideProps) => {
               quality={95}
             />
           </div>
-
-          <div className='md:items-strech relative mt-auto flex w-full flex-col items-center justify-end gap-5 text-center text-white md:flex-row md:justify-between md:self-end md:text-left'>
+          <Link
+            href={buttonLink ? buttonLink : '/'}
+            aria-label={title}
+            className="absolute inset-0 z-10 before:absolute before:inset-0 before:content-[''] md:hidden"
+          ></Link>
+          <div className='md:items-strech relative flex w-full flex-col items-center justify-end gap-5 text-center text-white md:flex-row md:justify-between md:self-end md:text-left'>
             <div className='flex flex-col'>
               <Typography
                 as='h3'
@@ -52,7 +56,7 @@ export const MainBannerSlide = ({ data, className }: BannerSlideProps) => {
             </div>
             <Link
               href={buttonLink ? buttonLink : '/'}
-              className='bg-secondary hover:bg-secondary/90 flex h-auto min-w-59 justify-center rounded-lg px-4 py-4 text-lg font-medium text-white shadow-sm transition-all hover:scale-105'
+              className='bg-secondary hover:bg-secondary/90 hidden h-auto min-w-59 justify-center rounded-lg px-4 py-4 text-lg font-medium text-white shadow-sm transition-all hover:scale-105 md:flex'
             >
               {buttonText || 'Click ME'}
             </Link>
@@ -65,7 +69,7 @@ export const MainBannerSlide = ({ data, className }: BannerSlideProps) => {
             'bg-brand-section-bg relative flex w-full overflow-hidden rounded-[20px]',
             'items-center justify-center md:justify-start',
             'p-7.5 pb-15',
-            'aspect-[345/425] md:aspect-[668/380] xl:aspect-[981/408]',
+            'aspect-[495/414] md:aspect-[668/380] xl:aspect-[981/408]',
             className,
           )}
         >

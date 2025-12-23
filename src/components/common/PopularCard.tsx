@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 
-import { Card } from '@/components/ui/Card';
+// import { Card } from '@/components/ui/Card';
 import { cn } from '@/lib/utils';
 
 import { Button } from '../ui/Button';

@@ -56,9 +56,9 @@ export default async function Home() {
       <ProductTabs />
 
       {/*Description*/}
-      <Section className='pb-10.5 md:pb-12.5'>
+      <Section className='pt-2.5 pb-5'>
         {getHomePageContent?.descriptionTitle && (
-          <Typography variant='h2' as='h2' className='mb-4 text-[27px] md:mb-[18px] md:text-3xl lg:mb-6'>
+          <Typography variant='h2' as='h2' className='mb-5 text-[27px] md:mb-[18px] md:text-3xl'>
             {getHomePageContent?.descriptionTitle}
           </Typography>
         )}

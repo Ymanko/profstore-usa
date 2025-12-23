@@ -16,8 +16,8 @@ export const Recommended: FC = () => {
   } = useSuspenseQuery(getRecommendedQueryOptions);
 
   return (
-    <Section className='md: pb - 12.5 pb-10.5'>
-      <div className='border-accent border-t-3 pt-10.5 md:pt-12.5 lg:pt-15'>
+    <Section className='py-2.5'>
+      <div className='border-accent border-t-3 pt-5'>
         <div className='relative'>
           <Typography variant='h2' as='h2' className='mb-5'>
             {title}
