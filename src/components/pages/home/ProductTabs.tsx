@@ -26,9 +26,9 @@ export function ProductTabs() {
   const activeProducts = tabs.find(tab => tab.id === activeTab)?.products || [];
 
   return (
-    <Section className='pb-10.5 md:pb-12.5'>
+    <Section className='py-2.5'>
       {/* Tabs */}
-      <div className='mb-8 flex gap-2.5 rounded-[10px] bg-[#B6CEB4] p-1.5'>
+      <div className='mb-5 flex gap-2.5 rounded-[10px] bg-[#B6CEB4] p-1.5'>
         {tabs.map(tab => (
           <button
             key={tab.id}

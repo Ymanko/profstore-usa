@@ -22,7 +22,7 @@ function renderNode(node: RichTextNode, index: number): React.ReactNode {
 
     case 'paragraph':
       return (
-        <Typography key={index} variant='body' className='mb-4'>
+        <Typography key={index} variant='body' className='mb-4 last:mb-0'>
           {node.children?.map((child, i) => renderNode(child, i))}
         </Typography>
       );
@@ -30,7 +30,7 @@ function renderNode(node: RichTextNode, index: number): React.ReactNode {
     case 'heading':
       const headingVariant = `h${node.level}` as 'h1' | 'h2' | 'h3' | 'h4';
       return (
-        <Typography key={index} variant={headingVariant} as={headingVariant} className='mb-4'>
+        <Typography key={index} variant={headingVariant} as={headingVariant} className='mb-4 last:mb-0'>
           {node.children?.map((child, i) => renderNode(child, i))}
         </Typography>
       );
@@ -60,7 +60,7 @@ function renderNode(node: RichTextNode, index: number): React.ReactNode {
 export function RichText({ content }: { content: string }) {
   try {
     const data: RichTextRoot = JSON.parse(content);
-    return <div className='prose max-w-none'>{data.children?.map((child, i) => renderNode(child, i))}</div>;
+    return <div className='prose max-w-none space-y-4'>{data.children?.map((child, i) => renderNode(child, i))}</div>;
   } catch (_error) {
     return <div>{content}</div>;
   }

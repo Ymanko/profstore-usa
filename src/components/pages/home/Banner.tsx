@@ -18,7 +18,7 @@ export function Banner() {
   } = useSuspenseQuery(getHomePageContentQueryOptions);
 
   return (
-    <Section className='pb-7.5 md:pt-7.5 md:pb-7.5'>
+    <Section className='pt-5 pb-2.5'>
       <div className='flex gap-5'>
         <AutoSlider
           slides={bannerSlides}

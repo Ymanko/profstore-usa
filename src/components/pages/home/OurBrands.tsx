@@ -26,7 +26,7 @@ export const OurBrands: FC<OurBrandsProps> = ({ brands }: OurBrandsProps) => {
   // } = useSuspenseQuery(getOurBrandsQueryOptions);
 
   return (
-    <Section className='bg-brand-section-bg py-10.5 md:py-12.5'>
+    <Section className='bg-brand-section-bg py-5'>
       {/* <div className="pt-10.5 md:pt-12.5 lg:pt-15 border-t-3 border-accent"> */}
       <div className='relative'>
         <Typography variant='h2' as='h2' className='mb-5'>
