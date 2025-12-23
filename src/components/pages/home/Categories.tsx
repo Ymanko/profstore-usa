@@ -12,7 +12,7 @@ export function Categories() {
   const { data: categories } = useSuspenseQuery(getCategoriesQueryOptions);
 
   return (
-    <Section className='py-2.5 pb-3.5'>
+    <Section className='py-2.5'>
       <div className='relative'>
         <Typography variant='h2' as='h2' className='mb-5'>
           Categories
