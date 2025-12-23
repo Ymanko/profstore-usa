@@ -23,7 +23,7 @@ export const MainBannerSlide = ({ data, className }: BannerSlideProps) => {
           className={cn(
             'bg-brand-section-bg relative flex w-full overflow-hidden rounded-[20px]',
             'items-end justify-center md:justify-start',
-            'p-7.5 pb-15',
+            'p-7.5 pb-15 max-[384px]:p-5 max-[384px]:pb-7.5',
             'aspect-[495/414] md:aspect-[668/380] xl:aspect-[981/408]',
             className,
           )}

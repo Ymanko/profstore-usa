@@ -21,7 +21,7 @@ export function Banner() {
     <Section className='pt-5 pb-2.5'>
       <div className='flex gap-5'>
         <AutoSlider
-          slides={bannerSlides}
+          slides={bannerSlides.slice(0, 1)}
           className='h-full max-w-245'
           dotClassName='bg-white/50'
           activeDotClassName='bg-white'
