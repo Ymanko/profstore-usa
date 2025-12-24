@@ -9,14 +9,14 @@ import { RichText } from '@/shared/components/common/rich-text';
 import { Section } from '@/shared/components/common/section';
 import { Show } from '@/shared/components/common/show';
 import { Typography } from '@/shared/components/ui/typography';
-import { getCategoryByHandleQueryOptions } from '@/shared/queries/categories/get-category-by-handle';
+import { getCategoryQueryOptions } from '@/shared/queries/categories/get-category';
 
 type CategoryDetailProps = {
   handle: string;
 };
 
 export function CategoryDetail({ handle }: CategoryDetailProps) {
-  const { data: category } = useSuspenseQuery(getCategoryByHandleQueryOptions(handle));
+  const { data: category } = useSuspenseQuery(getCategoryQueryOptions(handle));
 
   if (!category) {
     return (

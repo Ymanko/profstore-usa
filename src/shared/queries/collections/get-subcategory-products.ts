@@ -3,8 +3,8 @@ import { queryOptions } from '@tanstack/react-query';
 import { STALE_TIME } from '@/shared/constants/stale-time';
 import { serverGraphqlFetcher } from '@/shared/lib/graphql/server-graphql-fetcher';
 
-const GET_COLLECTION_PRODUCTS = `
-  query GetCollectionProducts(
+const GET_SUBCATEGORY_PRODUCTS = `
+  query GetSubcategoryProducts(
     $handle: String!
     $first: Int = 24
     $after: String
@@ -133,7 +133,7 @@ type ProductFilter = {
   variantMetafield?: { namespace: string; key: string; value: string };
 };
 
-export type CollectionProductsParams = {
+export type SubcategoryProductsParams = {
   handle: string;
   first?: number;
   after?: string | null;
@@ -222,7 +222,7 @@ type Product = {
   };
 };
 
-type CollectionProductsData = {
+type SubcategoryProductsData = {
   collection: {
     id: string;
     handle: string;
@@ -248,17 +248,13 @@ type CollectionProductsData = {
   } | null;
 };
 
-export const getCollectionProductsQueryOptions = (params: CollectionProductsParams) =>
+export const getSubcategoryProductsQueryOptions = (params: SubcategoryProductsParams) =>
   queryOptions({
-    queryKey: ['collection', params.handle, 'products', params],
+    queryKey: ['subcategory', params.handle, 'products', params],
     queryFn: () => {
-      return serverGraphqlFetcher<CollectionProductsData>(
-        GET_COLLECTION_PRODUCTS,
-        params,
-        {
-          tags: ['collection', params.handle],
-        },
-      );
+      return serverGraphqlFetcher<SubcategoryProductsData>(GET_SUBCATEGORY_PRODUCTS, params, {
+        tags: ['collection', params.handle],
+      });
     },
     staleTime: STALE_TIME.ONE_MINUTE,
   });

@@ -3,8 +3,8 @@ import { queryOptions } from '@tanstack/react-query';
 import { STALE_TIME } from '@/shared/constants/stale-time';
 import { serverGraphqlFetcher } from '@/shared/lib/graphql/server-graphql-fetcher';
 
-const GET_CATEGORY_BY_HANDLE = `
-  query GetCategoryByHandle($handle: String!) {
+const GET_CATEGORY = `
+  query GetCategory($handle: String!) {
     metaobject(handle: { type: "category", handle: $handle }) {
       id
       handle
@@ -67,16 +67,16 @@ type MetaobjectNode = {
   fields: MetaobjectField[];
 };
 
-type CategoryByHandleData = {
+type CategoryData = {
   metaobject: MetaobjectNode | null;
 };
 
-export const getCategoryByHandleQueryOptions = (handle: string) =>
+export const getCategoryQueryOptions = (handle: string) =>
   queryOptions({
     queryKey: ['category', handle],
     queryFn: () => {
-      return serverGraphqlFetcher<CategoryByHandleData>(
-        GET_CATEGORY_BY_HANDLE,
+      return serverGraphqlFetcher<CategoryData>(
+        GET_CATEGORY,
         { handle },
         {
           tags: ['category', handle],

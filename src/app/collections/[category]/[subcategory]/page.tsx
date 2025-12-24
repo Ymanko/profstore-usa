@@ -1,7 +1,7 @@
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 
 import { CollectionProducts } from '@/features/collections/collection-products';
-import { getCollectionProductsQueryOptions } from '@/shared/queries/collections/get-collection-products';
+import { getSubcategoryProductsQueryOptions } from '@/shared/queries/collections/get-subcategory-products';
 
 type SubcategoryPageProps = {
   params: Promise<{ category: string; subcategory: string }>;
@@ -12,7 +12,7 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
   const queryClient = new QueryClient();
 
   await queryClient.ensureQueryData(
-    getCollectionProductsQueryOptions({
+    getSubcategoryProductsQueryOptions({
       handle: subcategory,
       first: 24,
     }),

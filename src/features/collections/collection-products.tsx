@@ -7,7 +7,7 @@ import { ProductCard } from '@/shared/components/common/product-card';
 import { Section } from '@/shared/components/common/section';
 import { Show } from '@/shared/components/common/show';
 import { Typography } from '@/shared/components/ui/typography';
-import { getCollectionProductsQueryOptions } from '@/shared/queries/collections/get-collection-products';
+import { getSubcategoryProductsQueryOptions } from '@/shared/queries/collections/get-subcategory-products';
 
 type CollectionProductsProps = {
   handle: string;
@@ -15,7 +15,7 @@ type CollectionProductsProps = {
 
 export function CollectionProducts({ handle }: CollectionProductsProps) {
   const { data } = useSuspenseQuery(
-    getCollectionProductsQueryOptions({
+    getSubcategoryProductsQueryOptions({
       handle,
       first: 24,
     }),
