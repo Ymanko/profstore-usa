@@ -7,7 +7,7 @@ import type { QueryRoot } from '@/lib/graphql/graphql';
 
 const GET_CATEGORIES = `
   query GetCategories {
-    collections(first: 10, sortKey: TITLE) {
+    collections(first: 20, sortKey: TITLE) {
       edges {
         node {
           id
@@ -36,5 +36,8 @@ export const getCategoriesQueryOptions = queryOptions({
     );
   },
   staleTime: STALE_TIME.ONE_HOUR,
-  select: data => data.collections?.edges ?? [],
+  select: data => {
+    const excludeHandles = ['popular', 'recommended', 'sale-hits'];
+    return data.collections?.edges.filter(edge => !excludeHandles.includes(edge.node.handle)) ?? [];
+  },
 });
