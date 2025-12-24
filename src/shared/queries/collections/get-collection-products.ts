@@ -39,8 +39,10 @@ const GET_COLLECTION_PRODUCTS = `
             count
             input
             image {
-              url
-              altText
+              image {
+                url
+                altText
+              }
             }
             swatch {
               color
@@ -146,8 +148,10 @@ type FilterValue = {
   count: number;
   input: string;
   image?: {
-    url: string;
-    altText?: string;
+    image?: {
+      url: string;
+      altText?: string;
+    } | null;
   } | null;
   swatch?: {
     color?: string | null;
