@@ -1,5 +1,4 @@
-import { PageWrapper } from '@/shared/components/common/page-wrapper';
-import { Typography } from '@/shared/components/ui/typography';
+import { redirect } from 'next/navigation';
 
 import type { Metadata } from 'next';
 
@@ -9,9 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default async function CollectionsPage() {
-  return (
-    <PageWrapper>
-      <Typography variant='h1'>CollectionsPage</Typography>
-    </PageWrapper>
-  );
+  redirect('/');
 }

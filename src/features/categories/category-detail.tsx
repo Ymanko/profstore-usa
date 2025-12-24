@@ -3,9 +3,11 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { CategoryCard } from '@/shared/components/common/category-card';
+import { List } from '@/shared/components/common/list';
 import { PageWrapper } from '@/shared/components/common/page-wrapper';
 import { RichText } from '@/shared/components/common/rich-text';
 import { Section } from '@/shared/components/common/section';
+import { Show } from '@/shared/components/common/show';
 import { Typography } from '@/shared/components/ui/typography';
 import { getCategoryByHandleQueryOptions } from '@/shared/queries/categories/get-category-by-handle';
 
@@ -19,7 +21,7 @@ export function CategoryDetail({ handle }: CategoryDetailProps) {
   if (!category) {
     return (
       <Section className='py-10'>
-        <Typography variant='body-lg' className='text-center text-gray-500'>
+        <Typography variant='body-lg' className='text-muted-foreground text-center'>
           Category not found
         </Typography>
       </Section>
@@ -33,35 +35,34 @@ export function CategoryDetail({ handle }: CategoryDetailProps) {
           {category.title}
         </Typography>
 
-        {category.description && (
+        <Show
+          when={category.subCollections.length > 0}
+          fallback={
+            <Typography variant='body-lg' className='text-muted-foreground text-center'>
+              No categories available
+            </Typography>
+          }
+        >
+          <List
+            data={category.subCollections}
+            keyExtractor={item => item.id}
+            renderItem={subCollection => (
+              <CategoryCard
+                key={subCollection.id}
+                href={`/collections/${subCollection.handle}`}
+                title={subCollection.title}
+                image={subCollection.image?.url || ''}
+                alt={subCollection.image?.altText || subCollection.title}
+              />
+            )}
+          />
+        </Show>
+
+        <Show when={category.description}>
           <div className='mb-8'>
             <RichText content={category.description} />
           </div>
-        )}
-
-        <div>
-          <Typography variant='h2' as='h2' className='mb-5'>
-            Subcategories
-          </Typography>
-
-          {category.subCollections.length > 0 ? (
-            <div className='grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
-              {category.subCollections.map(subCollection => (
-                <CategoryCard
-                  key={subCollection.id}
-                  href={`/collections/${subCollection.handle}`}
-                  title={subCollection.title}
-                  image={subCollection.image?.url || ''}
-                  alt={subCollection.image?.altText || subCollection.title}
-                />
-              ))}
-            </div>
-          ) : (
-            <Typography variant='body-lg' className='text-center text-gray-500'>
-              No subcategories available
-            </Typography>
-          )}
-        </div>
+        </Show>
       </div>
     </PageWrapper>
   );
