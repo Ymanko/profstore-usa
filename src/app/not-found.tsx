@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { Typography } from '@/components/ui/Typography';
+import { Typography } from '@/shared/components/ui/typography';
 
 export default function NotFound() {
   return (

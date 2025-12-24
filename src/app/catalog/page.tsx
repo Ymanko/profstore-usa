@@ -1,10 +1,10 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
-import { PageWrapper } from '@/components/common/PageWrapper';
-import { CatalogProducts } from '@/components/pages/catalog/CatalogProducts';
-import { Typography } from '@/components/ui/Typography';
-import { getQueryClient } from '@/lib/tanstack/get-query-client';
-import { getProductsQueryOptions } from '@/queries/get-products';
+import { CatalogProducts } from '@/features/catalog/catalog-products';
+import { PageWrapper } from '@/shared/components/common/page-wrapper';
+import { Typography } from '@/shared/components/ui/typography';
+import { getQueryClient } from '@/shared/lib/tanstack/get-query-client';
+import { getProductsQueryOptions } from '@/shared/queries/get-products';
 
 import type { Metadata } from 'next';
 

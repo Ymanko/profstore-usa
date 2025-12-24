@@ -1,5 +1,5 @@
-import { PageWrapper } from '@/components/common/PageWrapper';
-import { Typography } from '@/components/ui/Typography';
+import { PageWrapper } from '@/shared/components/common/page-wrapper';
+import { Typography } from '@/shared/components/ui/typography';
 
 import type { Metadata } from 'next';
 

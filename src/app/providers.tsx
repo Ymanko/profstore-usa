@@ -4,7 +4,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { throttle } from 'nuqs';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
-import { getQueryClient } from '@/lib/tanstack/get-query-client';
+import { getQueryClient } from '@/shared/lib/tanstack/get-query-client';
 
 import type { ReactNode } from 'react';
 
