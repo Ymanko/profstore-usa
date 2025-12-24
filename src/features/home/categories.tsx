@@ -37,8 +37,9 @@ export function Categories() {
                 <CategoryCard
                   href={`/collections/${category.handle}`}
                   title={category.title}
-                  image={category?.image?.url || ''}
-                  alt={category?.image?.altText || category.title}
+                  image={category?.image?.url ?? ''}
+                  alt={category?.image?.altText ?? category.title}
+                  titleClassName='text-[17px] break-all whitespace-normal uppercase'
                 />
               </CarouselItem>
             ))}

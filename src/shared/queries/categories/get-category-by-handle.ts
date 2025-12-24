@@ -11,6 +11,7 @@ const GET_CATEGORY_BY_HANDLE = `
       fields {
         key
         value
+        type
         reference {
           ... on MediaImage {
             image {
@@ -43,6 +44,7 @@ const GET_CATEGORY_BY_HANDLE = `
 type MetaobjectField = {
   key: string;
   value: string;
+  type: string;
   reference?: {
     image?: { url: string; altText?: string };
   } | null;

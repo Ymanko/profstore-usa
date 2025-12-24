@@ -18,6 +18,8 @@ type CategoryDetailProps = {
 export function CategoryDetail({ handle }: CategoryDetailProps) {
   const { data: category } = useSuspenseQuery(getCategoryByHandleQueryOptions(handle));
 
+  console.log('CategoryDetail render:', { handle, category });
+
   if (!category) {
     return (
       <Section className='py-10'>
@@ -53,8 +55,10 @@ export function CategoryDetail({ handle }: CategoryDetailProps) {
                 title={subCollection.title}
                 image={subCollection.image?.url || ''}
                 alt={subCollection.image?.altText || subCollection.title}
+                titleClassName='text-[17px]'
               />
             )}
+            className='grid grid-cols-2 gap-3.5 md:grid-cols-3 md:gap-5 xl:grid-cols-6'
           />
         </Show>
 

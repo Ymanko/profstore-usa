@@ -17,7 +17,7 @@ const typographyVariants = cva('text-balance font-montserrat', {
       h2: 'font-bold text-3xl',
 
       // Card Titles (18px)
-      h3: 'text-lg font-semibold',
+      h3: 'text-lg font-normal',
 
       // Mobile Menu (17px)
       h4: 'text-[17px] font-light',
