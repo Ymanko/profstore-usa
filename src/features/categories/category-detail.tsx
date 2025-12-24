@@ -18,8 +18,6 @@ type CategoryDetailProps = {
 export function CategoryDetail({ handle }: CategoryDetailProps) {
   const { data: category } = useSuspenseQuery(getCategoryByHandleQueryOptions(handle));
 
-  console.log('CategoryDetail render:', { handle, category });
-
   if (!category) {
     return (
       <Section className='py-10'>
@@ -51,7 +49,7 @@ export function CategoryDetail({ handle }: CategoryDetailProps) {
             renderItem={subCollection => (
               <CategoryCard
                 key={subCollection.id}
-                href={`/collections/${subCollection.handle}`}
+                href={`/collections/${category.handle}/${subCollection.handle}`}
                 title={subCollection.title}
                 image={subCollection.image?.url || ''}
                 alt={subCollection.image?.altText || subCollection.title}

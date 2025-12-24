@@ -4,18 +4,18 @@ import { CategoryDetail } from '@/features/categories/category-detail';
 import { getCategoryByHandleQueryOptions } from '@/shared/queries/categories/get-category-by-handle';
 
 type CategoryPageProps = {
-  params: Promise<{ handle: string }>;
+  params: Promise<{ category: string }>;
 };
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
-  const { handle } = await params;
+  const { category } = await params;
   const queryClient = new QueryClient();
 
-  await queryClient.ensureQueryData(getCategoryByHandleQueryOptions(handle));
+  await queryClient.ensureQueryData(getCategoryByHandleQueryOptions(category));
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <CategoryDetail handle={handle} />
+      <CategoryDetail handle={category} />
     </HydrationBoundary>
   );
 }
