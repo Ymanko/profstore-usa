@@ -32,24 +32,11 @@ const GET_SUBCATEGORY_PRODUCTS = `
           id
           label
           type
-          presentation
           values {
             id
             label
             count
             input
-            image {
-              image {
-                url
-                altText
-              }
-            }
-            swatch {
-              color
-              image {
-                url
-              }
-            }
           }
         }
         edges {
@@ -147,25 +134,12 @@ type FilterValue = {
   label: string;
   count: number;
   input: string;
-  image?: {
-    image?: {
-      url: string;
-      altText?: string;
-    } | null;
-  } | null;
-  swatch?: {
-    color?: string | null;
-    image?: {
-      url: string;
-    } | null;
-  } | null;
 };
 
 type Filter = {
   id: string;
   label: string;
   type: 'LIST' | 'PRICE_RANGE' | 'BOOLEAN';
-  presentation?: 'IMAGE' | 'SWATCH' | 'TEXT' | null;
   values: FilterValue[];
 };
 
