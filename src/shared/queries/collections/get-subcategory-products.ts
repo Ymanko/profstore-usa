@@ -129,14 +129,14 @@ export type SubcategoryProductsParams = {
   reverse?: boolean;
 };
 
-type FilterValue = {
+export type FilterValue = {
   id: string;
   label: string;
   count: number;
   input: string;
 };
 
-type Filter = {
+export type Filter = {
   id: string;
   label: string;
   type: 'LIST' | 'PRICE_RANGE' | 'BOOLEAN';

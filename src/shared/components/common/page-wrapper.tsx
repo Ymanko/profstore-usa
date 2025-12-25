@@ -5,7 +5,7 @@ import type { ComponentPropsWithoutRef, FC } from 'react';
 
 export const PageWrapper: FC<ComponentPropsWithoutRef<'section'>> = ({ children, className, ...props }) => {
   return (
-    <section className={cn('pt-4', className)} {...props}>
+    <section className={cn('py-4', className)} {...props}>
       <div className='container'>
         <div className='space-y-7.5'>
           <PageBreadcrumb />

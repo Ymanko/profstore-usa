@@ -39,6 +39,9 @@ const typographyVariants = cva('text-balance font-montserrat', {
 
       // Muted Text
       muted: 'font-inter text-sm leading-5 font-normal text-muted-foreground',
+
+      // Bold Text
+      bold: 'text-lg font-bold',
     },
   },
   defaultVariants: {
