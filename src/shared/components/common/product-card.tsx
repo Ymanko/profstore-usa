@@ -37,7 +37,6 @@ export const ProductCard: FC<ProductCardProps> = ({ product, onAddToCart, onAddT
 
         <button
           onClick={() => (onAddToFavorites ? onAddToFavorites(id) : null)}
-          disabled={!availableForSale}
           className='text-muted-foreground hover:text-accent absolute top-0 right-0 flex size-10 items-center justify-center rounded-md transition-colors duration-200'
           aria-label='Add to favorites'
         >
@@ -77,7 +76,6 @@ export const ProductCard: FC<ProductCardProps> = ({ product, onAddToCart, onAddT
 
         <button
           onClick={() => (onAddToCart ? onAddToCart(id) : null)}
-          disabled={!availableForSale}
           className='hover:text-accent flex size-10 shrink-0 items-center justify-center rounded-md bg-linear-to-r from-[rgb(87,144,64)] to-[rgb(58,111,67)] text-white transition-colors duration-200 disabled:opacity-50'
           aria-label='Add to cart'
         >
