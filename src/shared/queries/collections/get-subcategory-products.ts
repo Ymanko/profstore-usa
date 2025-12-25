@@ -143,7 +143,7 @@ type Filter = {
   values: FilterValue[];
 };
 
-type Product = {
+export type Product = {
   id: string;
   handle: string;
   title: string;
@@ -169,9 +169,9 @@ type Product = {
   };
   featuredImage?: {
     url: string;
-    altText?: string;
-    width?: number;
-    height?: number;
+    altText?: string | null;
+    width?: number | null;
+    height?: number | null;
   } | null;
   variants: {
     edges: Array<{

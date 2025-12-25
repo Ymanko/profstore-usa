@@ -41,18 +41,9 @@ export const Recommended: FC = () => {
               <CarouselNext />
             </div>
             <CarouselContent>
-              {products.map((product, index) => (
-                <CarouselItem key={index} className='sm:basis-1/2 lg:basis-1/4'>
-                  <ProductCard
-                    item={{
-                      id: product.id,
-                      title: product.title,
-                      featuredImage: product.featuredImage,
-                      oldPrice: product.priceRange.minVariantPrice.amount,
-                      price: product.compareAtPriceRange.minVariantPrice.amount,
-                      availableForSale: product.availableForSale,
-                    }}
-                  />
+              {products.map(product => (
+                <CarouselItem key={product.id} className='sm:basis-1/2 lg:basis-1/4'>
+                  <ProductCard product={product} />
                 </CarouselItem>
               ))}
             </CarouselContent>

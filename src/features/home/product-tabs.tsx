@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 import { ProductCard } from '@/shared/components/common/product-card';
 import { Section } from '@/shared/components/common/section';
+import { Show } from '@/shared/components/common/show';
 import { ScrollArea, ScrollBar } from '@/shared/components/ui/scroll-area';
 import { Typography } from '@/shared/components/ui/typography';
 import { getNewProductsQueryOptions } from '@/shared/queries/home/get-new-products';
@@ -46,28 +47,18 @@ export function ProductTabs() {
         <div className='flex gap-5 pb-4'>
           {activeProducts.map(({ node: product }) => (
             <div key={product.id} className='w-full shrink-0 sm:w-[calc((100%-20px)/2)] lg:w-[calc((100%-60px)/4)]'>
-              <ProductCard
-                item={{
-                  id: product.id,
-                  title: product.title,
-                  featuredImage: product.featuredImage,
-                  oldPrice: product.priceRange.minVariantPrice.amount,
-                  price: product.compareAtPriceRange.minVariantPrice.amount,
-                  availableForSale: product.availableForSale,
-                }}
-                onAddToCart={() => {}}
-              />
+              <ProductCard product={product} />
             </div>
           ))}
         </div>
         <ScrollBar orientation='horizontal' />
       </ScrollArea>
 
-      {activeProducts.length === 0 && (
+      <Show when={activeProducts.length === 0}>
         <Typography variant='body-lg' className='text-center text-gray-500'>
           No products found
         </Typography>
-      )}
+      </Show>
     </Section>
   );
 }

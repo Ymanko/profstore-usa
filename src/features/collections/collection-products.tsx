@@ -2,6 +2,7 @@
 
 import { useSuspenseQuery } from '@tanstack/react-query';
 
+import { List } from '@/shared/components/common/list';
 import { PageWrapper } from '@/shared/components/common/page-wrapper';
 import { ProductCard } from '@/shared/components/common/product-card';
 import { Section } from '@/shared/components/common/section';
@@ -59,12 +60,14 @@ export function CollectionProducts({ handle }: CollectionProductsProps) {
               <Typography variant='h3' as='h3' className='mb-4'>
                 Filters
               </Typography>
+
               <div className='space-y-4'>
                 {filters.map(filter => (
                   <div key={filter.id} className='border-b pb-4'>
                     <Typography variant='body' className='mb-2 font-semibold'>
                       {filter.label}
                     </Typography>
+
                     <div className='space-y-2'>
                       {filter.values.map(value => (
                         <label key={value.id} className='flex cursor-pointer items-center gap-2'>
@@ -97,21 +100,12 @@ export function CollectionProducts({ handle }: CollectionProductsProps) {
                 </Typography>
               }
             >
-              <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3'>
-                {products.map(product => (
-                  <ProductCard
-                    key={product.id}
-                    item={{
-                      id: product.id,
-                      title: product.title,
-                      featuredImage: product.featuredImage,
-                      price: product.compareAtPriceRange.minVariantPrice.amount,
-                      oldPrice: product.priceRange.minVariantPrice.amount,
-                      availableForSale: product.availableForSale,
-                    }}
-                  />
-                ))}
-              </div>
+              <List
+                data={products}
+                renderItem={product => <ProductCard product={product} />}
+                keyExtractor={product => product.id}
+                className='grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3'
+              />
             </Show>
 
             {/* Pagination will be here */}

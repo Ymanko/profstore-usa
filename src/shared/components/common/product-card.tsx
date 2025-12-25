@@ -1,80 +1,87 @@
 import Image from 'next/image';
 
+import { Show } from '@/shared/components/common/show';
 import { Icon } from '@/shared/components/ui/icon';
 import { Typography } from '@/shared/components/ui/typography';
+import { cn } from '@/shared/lib/utils';
 
-type FeaturedImage = {
-  url: string;
-  altText?: string | null;
-};
+import type { Product } from '@/shared/queries/collections/get-subcategory-products';
+import type { ComponentPropsWithoutRef, FC } from 'react';
 
-type ProductCardProps = {
-  item: {
-    id: string;
-    title: string;
-    featuredImage?: FeaturedImage | null;
-    price: string;
-    oldPrice: string;
-    availableForSale: boolean;
-  };
-  onAddToCart?: () => void;
-};
+interface ProductCardProps extends ComponentPropsWithoutRef<'div'> {
+  product: Product;
+  onAddToCart?: (productId: string) => void;
+  onAddToFavorites?: (productId: string) => void;
+}
 
-export const ProductCard = ({ item, onAddToCart }: ProductCardProps) => {
-  const { title, featuredImage, price, oldPrice, availableForSale } = item;
+export const ProductCard: FC<ProductCardProps> = ({ product, onAddToCart, onAddToFavorites, className }) => {
+  const { id, title, featuredImage, availableForSale, priceRange, compareAtPriceRange } = product;
 
-  const currentPrice = parseInt(price);
-  const previousPrice = parseInt(oldPrice);
+  const currentPrice = parseFloat(compareAtPriceRange.minVariantPrice.amount);
+  const previousPrice = parseFloat(priceRange.minVariantPrice.amount);
   const hasDiscount = currentPrice !== 0 && previousPrice > currentPrice;
 
   return (
-    <div className='flex h-full w-full flex-col rounded-lg border p-4'>
-      <div className='relative mb-3.5 aspect-square w-full overflow-hidden border-b pb-5'>
-        {featuredImage && (
+    <div className={cn('grid h-full gap-4 rounded-lg border p-4', className)}>
+      <div className='relative h-60 w-full overflow-hidden'>
+        <Show when={featuredImage}>
           <Image
-            src={featuredImage.url}
-            alt={featuredImage.altText || title}
-            fill
-            className='w-full object-cover'
-            sizes='(max-width: 640px) 310px, (max-width: 1024px) 50vw, 25vw'
+            src={featuredImage?.url ?? ''}
+            alt={featuredImage?.altText ?? title}
+            className='h-full w-full object-contain'
+            width={304}
+            height={240}
+            loading='lazy'
           />
-        )}
-        <button
-          onClick={onAddToCart}
-          disabled={!availableForSale}
-          className='bg-transpatent text-#0F0F0F hover:text-accent absolute top-0 right-0 flex h-10 w-10 items-center justify-center rounded-[5px] opacity-30 hover:opacity-100'
-        >
-          <Icon name='heart' className='' width='18' height='18' />
-        </button>
-      </div>
-      <Typography variant='h3' as='h3' className='mb-1'>
-        {title}
-      </Typography>
-      <Typography
-        variant='body'
-        className={`mb-3 flex items-center gap-2 text-sm ${availableForSale ? 'text-muted-foreground' : 'text-red-600'}`}
-      >
-        <Icon name='checkmarkSmall' className='' width='22' height='22' />{' '}
-        {availableForSale ? 'In stock' : 'Out of stock'}
-      </Typography>
-      <div className='mt-auto flex items-center justify-between gap-3'>
-        <Typography variant='body' className='font-bold'>
-          <span className='flex flex-col items-baseline gap-1'>
-            {hasDiscount && (
-              <span className='text-[16px] leading-[1.2] font-bold text-[#9f9f9f] line-through'>{previousPrice}$</span>
-            )}
-            <span className='text-foreground text-[22px] leading-tight font-extrabold'>
-              {hasDiscount ? currentPrice : previousPrice}$
-            </span>
-          </span>
-        </Typography>
+        </Show>
 
         <button
-          onClick={onAddToCart}
+          onClick={() => (onAddToFavorites ? onAddToFavorites(id) : null)}
           disabled={!availableForSale}
-          className='hover:text-accent align-self flex h-10 w-10 shrink-0 items-center justify-center self-end rounded-[5px] bg-[linear-gradient(90deg,rgba(87,144,64,1),rgba(58,111,67,1)_100%)] text-white'
+          className='text-muted-foreground hover:text-accent absolute top-0 right-0 flex size-10 items-center justify-center rounded-md transition-colors duration-200'
+          aria-label='Add to favorites'
         >
-          <Icon name='shoppingCart' className='' width='18' height='18' />
+          <Icon name='heart' width={18} height={18} />
+        </button>
+      </div>
+
+      <div className='space-y-2.5 border-t pt-3.75'>
+        <Typography variant='h3' as='h3' className='line-clamp-1 font-semibold'>
+          {title}
+        </Typography>
+
+        <Typography
+          variant='body'
+          className={cn(
+            'flex items-center gap-2 text-base',
+            availableForSale ? 'text-muted-foreground' : 'text-rose-600',
+          )}
+        >
+          <Icon name='checkmarkSmall' width={22} height={22} />
+          {availableForSale ? 'In stock' : 'Out of stock'}
+        </Typography>
+      </div>
+
+      <div className='mt-auto flex items-center justify-between gap-3'>
+        <div className='space-y-1'>
+          <Show when={hasDiscount}>
+            <Typography variant='body' className='text-muted-foreground text-base font-bold line-through'>
+              {previousPrice}$
+            </Typography>
+          </Show>
+
+          <Typography variant='body' className='text-foreground text-[22px] leading-tight font-extrabold'>
+            {hasDiscount ? currentPrice : previousPrice} $
+          </Typography>
+        </div>
+
+        <button
+          onClick={() => (onAddToCart ? onAddToCart(id) : null)}
+          disabled={!availableForSale}
+          className='hover:text-accent flex size-10 shrink-0 items-center justify-center rounded-md bg-linear-to-r from-[rgb(87,144,64)] to-[rgb(58,111,67)] text-white transition-colors duration-200 disabled:opacity-50'
+          aria-label='Add to cart'
+        >
+          <Icon name='shoppingCart' width={18} height={18} />
         </button>
       </div>
     </div>
