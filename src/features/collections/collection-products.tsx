@@ -14,6 +14,8 @@ import { useLayoutMode } from '@/shared/hooks/use-layout-mode';
 import { cn } from '@/shared/lib/utils';
 import { getSubcategoryProductsQueryOptions } from '@/shared/queries/collections/get-subcategory-products';
 
+import { PriceRangeFilter } from './components/price-range-filter';
+
 import type { SubcategoryProductsParams } from '@/shared/queries/collections/get-subcategory-products';
 
 type CollectionProductsProps = {
@@ -29,6 +31,8 @@ export function CollectionProducts({ handle }: CollectionProductsProps) {
       reverse: parseAsInteger.withDefault(0),
       show: parseAsInteger.withDefault(12),
       f: parseAsString.withDefault(''),
+      minPrice: parseAsInteger,
+      maxPrice: parseAsInteger,
     },
     {
       history: 'push',
@@ -43,13 +47,30 @@ export function CollectionProducts({ handle }: CollectionProductsProps) {
 
   // Decode filters from base64
   const selectedFilters: SubcategoryProductsParams['filters'] = (() => {
-    if (!params.f) return [];
-    try {
-      const decoded = atob(params.f);
-      return JSON.parse(decoded);
-    } catch {
-      return [];
+    const filters = [];
+
+    // Add other filters from base64
+    if (params.f) {
+      try {
+        const decoded = atob(params.f);
+        const parsedFilters = JSON.parse(decoded);
+        filters.push(...parsedFilters);
+      } catch {
+        // Ignore parse errors
+      }
     }
+
+    // Add price filter if present
+    if (params.minPrice !== null || params.maxPrice !== null) {
+      filters.push({
+        price: {
+          min: params.minPrice ?? undefined,
+          max: params.maxPrice ?? undefined,
+        },
+      });
+    }
+
+    return filters;
   })();
 
   const { data, isFetching } = useSuspenseQuery(
@@ -74,7 +95,23 @@ export function CollectionProducts({ handle }: CollectionProductsProps) {
 
   const { collection } = data;
   const products = collection.products.edges.map(edge => edge.node);
-  const filters = collection.products.filters.filter(f => f.type !== 'PRICE_RANGE'); // Exclude price filter for now
+  const priceFilter = collection.products.filters.find(f => f.type === 'PRICE_RANGE');
+  const otherFilters = collection.products.filters.filter(f => f.type !== 'PRICE_RANGE');
+
+  // Get min/max prices from price filter
+  const priceRange = priceFilter?.values[0]
+    ? (() => {
+        try {
+          const data = JSON.parse(priceFilter.values[0].input);
+          return {
+            min: Math.floor(data.price?.min ?? 0),
+            max: Math.ceil(data.price?.max ?? 1000),
+          };
+        } catch {
+          return { min: 0, max: 1000 };
+        }
+      })()
+    : { min: 0, max: 1000 };
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value as 'BEST_SELLING' | 'PRICE_ASC' | 'PRICE_DESC' | 'CREATED';
@@ -104,7 +141,7 @@ export function CollectionProducts({ handle }: CollectionProductsProps) {
   const handleFilterChange = (filterInput: string, checked: boolean) => {
     try {
       const filterValue = JSON.parse(filterInput);
-      const currentFilters = selectedFilters || [];
+      const currentFilters = selectedFilters?.filter(f => !('price' in f)) || [];
       let updatedFilters: NonNullable<SubcategoryProductsParams['filters']>;
 
       if (checked) {
@@ -122,6 +159,13 @@ export function CollectionProducts({ handle }: CollectionProductsProps) {
       // eslint-disable-next-line no-console
       console.error('Failed to parse filter:', error);
     }
+  };
+
+  const handlePriceChange = (min: number, max: number) => {
+    setParams({
+      minPrice: min !== priceRange.min ? min : null,
+      maxPrice: max !== priceRange.max ? max : null,
+    });
   };
 
   // Get sort select value
@@ -143,35 +187,48 @@ export function CollectionProducts({ handle }: CollectionProductsProps) {
         <div className='xl:grid xl:grid-cols-[auto_1fr] xl:items-start xl:gap-5'>
           {/* Filters*/}
           <div className='bg-sidebar animate-fade-in w-86 rounded-[10px] px-4.5 py-6 shadow-xs'>
-            <List
-              data={filters}
-              renderItem={filter => (
-                <div key={filter.id} className='space-y-2 border-b pb-4 last:border-0 last:pb-0'>
-                  <Typography variant='bold'>{filter.label}</Typography>
+            <div className='custom-scrollbar space-y-6 overflow-y-auto pr-2'>
+              {/* Price Filter - Always First */}
+              <div className='border-b pb-4'>
+                <PriceRangeFilter
+                  min={priceRange.min}
+                  max={priceRange.max}
+                  currentMin={params.minPrice ?? undefined}
+                  currentMax={params.maxPrice ?? undefined}
+                  onPriceChange={handlePriceChange}
+                />
+              </div>
 
-                  <div className='space-y-2'>
-                    {filter.values.map(value => {
-                      const isChecked = (selectedFilters || []).some(f => JSON.stringify(f) === value.input);
+              {/* Other Filters */}
+              <List
+                data={otherFilters}
+                renderItem={filter => (
+                  <div key={filter.id} className='space-y-2 border-b pb-4 last:border-0 last:pb-0'>
+                    <Typography variant='bold'>{filter.label}</Typography>
 
-                      return (
-                        <label key={value.id} className='flex cursor-pointer items-center gap-2'>
-                          <input
-                            type='checkbox'
-                            className='size-3.5'
-                            checked={isChecked}
-                            onChange={e => handleFilterChange(value.input, e.target.checked)}
-                          />
-                          <Typography className='flex-1'>{value.label}</Typography>
-                          <Typography className='text-muted-foreground'>({value.count})</Typography>
-                        </label>
-                      );
-                    })}
+                    <div className='space-y-2'>
+                      {filter.values.map(value => {
+                        const isChecked = (selectedFilters || []).some(f => JSON.stringify(f) === value.input);
+
+                        return (
+                          <label key={value.id} className='flex cursor-pointer items-center gap-2'>
+                            <input
+                              type='checkbox'
+                              className='size-3.5'
+                              checked={isChecked}
+                              onChange={e => handleFilterChange(value.input, e.target.checked)}
+                            />
+                            <Typography className='flex-1'>{value.label}</Typography>
+                            <Typography className='text-muted-foreground'>({value.count})</Typography>
+                          </label>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              )}
-              keyExtractor={filter => filter.id}
-              className='custom-scrollbar space-y-6 overflow-y-auto pr-2'
-            />
+                )}
+                keyExtractor={filter => filter.id}
+              />
+            </div>
           </div>
 
           {/* Products Grid*/}

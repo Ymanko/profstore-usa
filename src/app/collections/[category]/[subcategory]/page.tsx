@@ -14,7 +14,7 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
   await queryClient.ensureQueryData(
     getSubcategoryProductsQueryOptions({
       handle: subcategory,
-      first: 24,
+      first: 12,
     }),
   );
 
