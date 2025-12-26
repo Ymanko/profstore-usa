@@ -3,6 +3,7 @@
 import { useCallback, useState } from 'react';
 import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
+import { useUpdateEffect } from 'react-use';
 
 import { Input } from '@/shared/components/ui/input';
 import { Typography } from '@/shared/components/ui/typography';
@@ -10,64 +11,60 @@ import { Typography } from '@/shared/components/ui/typography';
 import type { FC } from 'react';
 
 interface PriceRangeFilterProps {
-  min: number;
-  max: number;
+  baseMin: number;
+  baseMax: number;
   currentMin?: number;
   currentMax?: number;
   onPriceChange?: (min: number, max: number) => void;
 }
 
-export const PriceRangeFilter: FC<PriceRangeFilterProps> = ({ min, max, currentMin, currentMax, onPriceChange }) => {
-  // Store original range to keep slider range constant
-  const [originalMin] = useState(min);
-  const [originalMax] = useState(max);
+export const PriceRangeFilter: FC<PriceRangeFilterProps> = ({
+  baseMin,
+  baseMax,
+  currentMin,
+  currentMax,
+  onPriceChange,
+}) => {
+  // Local state to track current values from slider
+  const [minValue, setMinValue] = useState(currentMin ?? baseMin);
+  const [maxValue, setMaxValue] = useState(currentMax ?? baseMax);
 
-  // Track if user is actively interacting
-  const [isInteracting, setIsInteracting] = useState(false);
-
-  // Local state for temporary values during interaction
-  const [localMin, setLocalMin] = useState(currentMin ?? min);
-  const [localMax, setLocalMax] = useState(currentMax ?? max);
-
-  // Use props when not interacting, local state when interacting
-  const displayMin = isInteracting ? localMin : (currentMin ?? originalMin);
-  const displayMax = isInteracting ? localMax : (currentMax ?? originalMax);
+  // Update local state when props change (after initial mount)
+  useUpdateEffect(() => {
+    setMinValue(currentMin ?? baseMin);
+    setMaxValue(currentMax ?? baseMax);
+  }, [currentMin, currentMax, baseMin, baseMax]);
 
   const handleMinChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setIsInteracting(true);
       const value = Number(e.target.value);
-      const newMin = Math.min(value, displayMax);
-      setLocalMin(newMin);
+      const newMin = Math.min(value, maxValue);
+      setMinValue(newMin);
     },
-    [displayMax],
+    [maxValue],
   );
 
   const handleMaxChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setIsInteracting(true);
       const value = Number(e.target.value);
-      const newMax = Math.max(value, displayMin);
-      setLocalMax(newMax);
+      const newMax = Math.max(value, minValue);
+      setMaxValue(newMax);
     },
-    [displayMin],
+    [minValue],
   );
 
   const handleSliderInput = useCallback((values: number[]) => {
-    setIsInteracting(true);
-    setLocalMin(values[0]);
-    setLocalMax(values[1]);
+    setMinValue(values[0]);
+    setMaxValue(values[1]);
   }, []);
 
   const handleBlur = useCallback(() => {
-    setIsInteracting(false);
-    onPriceChange?.(displayMin, displayMax);
-  }, [displayMin, displayMax, onPriceChange]);
+    onPriceChange?.(minValue, maxValue);
+  }, [minValue, maxValue, onPriceChange]);
 
   const handleThumbDragEnd = useCallback(() => {
-    setIsInteracting(false);
-    onPriceChange?.(displayMin, displayMax);
-  }, [displayMin, displayMax, onPriceChange]);
+    onPriceChange?.(minValue, maxValue);
+  }, [minValue, maxValue, onPriceChange]);
 
   return (
     <div className='space-y-4'>
@@ -76,28 +73,28 @@ export const PriceRangeFilter: FC<PriceRangeFilterProps> = ({ min, max, currentM
       <div className='grid grid-cols-2 gap-3'>
         <Input
           type='number'
-          value={displayMin}
+          value={minValue}
           onChange={handleMinChange}
           onBlur={handleBlur}
-          min={originalMin}
-          max={originalMax}
+          min={baseMin}
+          max={baseMax}
           className='bg-white text-center'
         />
         <Input
           type='number'
-          value={displayMax}
+          value={maxValue}
           onChange={handleMaxChange}
           onBlur={handleBlur}
-          min={originalMin}
-          max={originalMax}
+          min={baseMin}
+          max={baseMax}
           className='bg-white text-center'
         />
       </div>
 
       <RangeSlider
-        min={originalMin}
-        max={originalMax}
-        value={[displayMin, displayMax]}
+        value={[minValue, maxValue]}
+        min={baseMin}
+        max={baseMax}
         onInput={handleSliderInput}
         onThumbDragEnd={handleThumbDragEnd}
       />

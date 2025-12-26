@@ -203,5 +203,5 @@ body {
 }
 
 .range-slider__thumb {
-    @apply size-5! bg-white! border! border-primary!;
+    @apply size-5! bg-white! border! border-secondary!;
 }

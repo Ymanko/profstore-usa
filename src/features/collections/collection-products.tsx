@@ -3,6 +3,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { LayoutGrid, LayoutList, Loader2 } from 'lucide-react';
 import { parseAsInteger, parseAsString, parseAsStringEnum, useQueryStates } from 'nuqs';
+import { useSessionStorage } from 'react-use';
 
 import { List } from '@/shared/components/common/list';
 import { PageWrapper } from '@/shared/components/common/page-wrapper';
@@ -10,6 +11,7 @@ import { ProductCard } from '@/shared/components/common/product-card';
 import { Show } from '@/shared/components/common/show';
 import { NativeSelect, NativeSelectOption } from '@/shared/components/ui/native-select';
 import { Typography } from '@/shared/components/ui/typography';
+import { useIsMounted } from '@/shared/hooks/use-is-mounted';
 import { useLayoutMode } from '@/shared/hooks/use-layout-mode';
 import { cn } from '@/shared/lib/utils';
 import { getSubcategoryProductsQueryOptions } from '@/shared/queries/collections/get-subcategory-products';
@@ -38,6 +40,15 @@ export function CollectionProducts({ handle }: CollectionProductsProps) {
       history: 'push',
     },
   );
+
+  // Store original price range in session storage
+  const [originalPriceRange, setOriginalPriceRange] = useSessionStorage<{ min: number; max: number } | null>(
+    `price-range-${handle}`,
+    null,
+  );
+
+  // Track if component is mounted (client-side only)
+  const isMounted = useIsMounted();
 
   const { setMode, isGrid, isList } = useLayoutMode('grid');
 
@@ -94,6 +105,7 @@ export function CollectionProducts({ handle }: CollectionProductsProps) {
   }
 
   const { collection } = data;
+
   const products = collection.products.edges.map(edge => edge.node);
   const priceFilter = collection.products.filters.find(f => f.type === 'PRICE_RANGE');
   const otherFilters = collection.products.filters.filter(f => f.type !== 'PRICE_RANGE');
@@ -112,6 +124,14 @@ export function CollectionProducts({ handle }: CollectionProductsProps) {
         }
       })()
     : { min: 0, max: 1000 };
+
+  // Store original price range when no filters are applied (only once when no stored value)
+  if (!originalPriceRange && params.minPrice === null && params.maxPrice === null && isMounted) {
+    setOriginalPriceRange(priceRange);
+  }
+
+  // Use original range for slider, current range for reset logic
+  const basePriceRange = originalPriceRange ?? priceRange;
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value as 'BEST_SELLING' | 'PRICE_ASC' | 'PRICE_DESC' | 'CREATED';
@@ -162,9 +182,14 @@ export function CollectionProducts({ handle }: CollectionProductsProps) {
   };
 
   const handlePriceChange = (min: number, max: number) => {
+    // Only set to null if BOTH values are at original defaults, otherwise keep both
+    const isDefaultMin = min === basePriceRange.min;
+    const isDefaultMax = max === basePriceRange.max;
+    const bothDefault = isDefaultMin && isDefaultMax;
+
     setParams({
-      minPrice: min !== priceRange.min ? min : null,
-      maxPrice: max !== priceRange.max ? max : null,
+      minPrice: bothDefault ? null : min,
+      maxPrice: bothDefault ? null : max,
     });
   };
 
@@ -190,20 +215,35 @@ export function CollectionProducts({ handle }: CollectionProductsProps) {
             <div className='custom-scrollbar space-y-6 overflow-y-auto pr-2'>
               {/* Price Filter - Always First */}
               <div className='border-b pb-4'>
-                <PriceRangeFilter
-                  min={priceRange.min}
-                  max={priceRange.max}
-                  currentMin={params.minPrice ?? undefined}
-                  currentMax={params.maxPrice ?? undefined}
-                  onPriceChange={handlePriceChange}
-                />
+                <Show
+                  when={isMounted}
+                  fallback={
+                    <div className='space-y-3.5'>
+                      <Typography variant='bold'>Price</Typography>
+
+                      <div className='grid grid-cols-2 gap-3'>
+                        <div className='bg-muted-primary h-9 animate-pulse rounded' />
+                        <div className='bg-muted-primary h-9 animate-pulse rounded' />
+                      </div>
+                      <div className='bg-muted-primary h-1 animate-pulse rounded-full' />
+                    </div>
+                  }
+                >
+                  <PriceRangeFilter
+                    baseMin={basePriceRange.min}
+                    baseMax={basePriceRange.max}
+                    currentMin={params.minPrice ?? undefined}
+                    currentMax={params.maxPrice ?? undefined}
+                    onPriceChange={handlePriceChange}
+                  />
+                </Show>
               </div>
 
               {/* Other Filters */}
               <List
                 data={otherFilters}
                 renderItem={filter => (
-                  <div key={filter.id} className='space-y-2 border-b pb-4 last:border-0 last:pb-0'>
+                  <>
                     <Typography variant='bold'>{filter.label}</Typography>
 
                     <div className='space-y-2'>
@@ -224,9 +264,11 @@ export function CollectionProducts({ handle }: CollectionProductsProps) {
                         );
                       })}
                     </div>
-                  </div>
+                  </>
                 )}
                 keyExtractor={filter => filter.id}
+                className='space-y-3.5'
+                itemClassName='space-y-3.5 border-b pb-4 last:border-0'
               />
             </div>
           </div>
@@ -271,6 +313,7 @@ export function CollectionProducts({ handle }: CollectionProductsProps) {
                 >
                   <LayoutList size={24} />
                 </button>
+
                 <button
                   onClick={() => setMode('grid')}
                   className={cn(
