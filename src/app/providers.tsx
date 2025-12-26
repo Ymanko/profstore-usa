@@ -3,6 +3,7 @@
 import { QueryClientProvider } from '@tanstack/react-query';
 import { throttle } from 'nuqs';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
+import { ViewTransition } from 'react';
 
 import { getQueryClient } from '@/shared/lib/tanstack/get-query-client';
 
@@ -21,7 +22,7 @@ export default function Providers({ children }: { children: ReactNode }) {
           limitUrlUpdates: throttle(250),
         }}
       >
-        {children}
+        <ViewTransition>{children}</ViewTransition>
       </NuqsAdapter>
     </QueryClientProvider>
   );

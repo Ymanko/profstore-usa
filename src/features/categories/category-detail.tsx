@@ -30,7 +30,7 @@ export function CategoryDetail({ handle }: CategoryDetailProps) {
 
   return (
     <PageWrapper>
-      <div className='space-y-8'>
+      <div className='container space-y-8'>
         <Typography variant='h1' as='h1'>
           {category.title}
         </Typography>

@@ -20,9 +20,11 @@ export default async function CatalogPage() {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <PageWrapper>
-        <Typography variant='h1'>Catalog</Typography>
+        <div className='container space-y-8'>
+          <Typography variant='h1'>Catalog</Typography>
 
-        <CatalogProducts />
+          <CatalogProducts />
+        </div>
       </PageWrapper>
     </HydrationBoundary>
   );

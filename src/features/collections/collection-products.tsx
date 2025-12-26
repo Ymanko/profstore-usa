@@ -1,14 +1,14 @@
 'use client';
 
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { LayoutGrid, LayoutList } from 'lucide-react';
-import { useState } from 'react';
+import { LayoutGrid, LayoutList, Loader2 } from 'lucide-react';
+import { parseAsInteger, parseAsString, parseAsStringEnum, useQueryStates } from 'nuqs';
 
-import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select';
 import { List } from '@/shared/components/common/list';
 import { PageWrapper } from '@/shared/components/common/page-wrapper';
 import { ProductCard } from '@/shared/components/common/product-card';
 import { Show } from '@/shared/components/common/show';
+import { NativeSelect, NativeSelectOption } from '@/shared/components/ui/native-select';
 import { Typography } from '@/shared/components/ui/typography';
 import { useLayoutMode } from '@/shared/hooks/use-layout-mode';
 import { cn } from '@/shared/lib/utils';
@@ -21,13 +21,38 @@ type CollectionProductsProps = {
 };
 
 export function CollectionProducts({ handle }: CollectionProductsProps) {
-  const [sortKey, setSortKey] = useState<SubcategoryProductsParams['sortKey']>('BEST_SELLING');
-  const [reverse, setReverse] = useState(false);
-  const [productsPerPage, setProductsPerPage] = useState(24);
-  const [selectedFilters, setSelectedFilters] = useState<SubcategoryProductsParams['filters']>([]);
+  const [params, setParams] = useQueryStates(
+    {
+      sort: parseAsStringEnum(['BEST_SELLING', 'PRICE', 'CREATED', 'TITLE', 'RELEVANCE'] as const).withDefault(
+        'BEST_SELLING',
+      ),
+      reverse: parseAsInteger.withDefault(0),
+      show: parseAsInteger.withDefault(12),
+      f: parseAsString.withDefault(''),
+    },
+    {
+      history: 'push',
+    },
+  );
+
   const { setMode, isGrid, isList } = useLayoutMode('grid');
 
-  const { data } = useSuspenseQuery(
+  const sortKey = params.sort;
+  const reverse = params.reverse === 1;
+  const productsPerPage = params.show;
+
+  // Decode filters from base64
+  const selectedFilters: SubcategoryProductsParams['filters'] = (() => {
+    if (!params.f) return [];
+    try {
+      const decoded = atob(params.f);
+      return JSON.parse(decoded);
+    } catch {
+      return [];
+    }
+  })();
+
+  const { data, isFetching } = useSuspenseQuery(
     getSubcategoryProductsQueryOptions({
       handle,
       first: productsPerPage,
@@ -52,160 +77,176 @@ export function CollectionProducts({ handle }: CollectionProductsProps) {
   const filters = collection.products.filters.filter(f => f.type !== 'PRICE_RANGE'); // Exclude price filter for now
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
+    const value = e.target.value as 'BEST_SELLING' | 'PRICE_ASC' | 'PRICE_DESC' | 'CREATED';
+
     switch (value) {
-      case 'best-selling':
-        setSortKey('BEST_SELLING');
-        setReverse(false);
+      case 'BEST_SELLING':
+        setParams({ sort: 'BEST_SELLING', reverse: 0 });
         break;
-      case 'price-low-high':
-        setSortKey('PRICE');
-        setReverse(false);
+      case 'PRICE_ASC':
+        setParams({ sort: 'PRICE', reverse: 0 });
         break;
-      case 'price-high-low':
-        setSortKey('PRICE');
-        setReverse(true);
+      case 'PRICE_DESC':
+        setParams({ sort: 'PRICE', reverse: 1 });
         break;
-      case 'newest-arrivals':
-        setSortKey('CREATED');
-        setReverse(true);
+      case 'CREATED':
+        setParams({ sort: 'CREATED', reverse: 1 });
         break;
       default:
-        setSortKey('BEST_SELLING');
-        setReverse(false);
+        setParams({ sort: 'BEST_SELLING', reverse: 0 });
     }
   };
 
   const handleShowChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setProductsPerPage(parseInt(e.target.value));
+    setParams({ show: parseInt(e.target.value) });
   };
 
   const handleFilterChange = (filterInput: string, checked: boolean) => {
     try {
       const filterValue = JSON.parse(filterInput);
+      const currentFilters = selectedFilters || [];
+      let updatedFilters: NonNullable<SubcategoryProductsParams['filters']>;
 
       if (checked) {
         // Add filter
-        setSelectedFilters(prev => [...(prev || []), filterValue]);
+        updatedFilters = [...currentFilters, filterValue];
       } else {
-        // Remove filter - need to match the filter object
-        setSelectedFilters(prev => {
-          if (!prev) return [];
-          return prev.filter(f => JSON.stringify(f) !== JSON.stringify(filterValue));
-        });
+        // Remove filter
+        updatedFilters = currentFilters.filter(f => JSON.stringify(f) !== JSON.stringify(filterValue));
       }
+
+      // Encode to base64
+      const encoded = updatedFilters.length > 0 ? btoa(JSON.stringify(updatedFilters)) : '';
+      setParams({ f: encoded });
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Failed to parse filter:', error);
     }
   };
 
+  // Get sort select value
+  const getSortSelectValue = () => {
+    if (sortKey === 'BEST_SELLING') return 'BEST_SELLING';
+    if (sortKey === 'PRICE' && !reverse) return 'PRICE_ASC';
+    if (sortKey === 'PRICE' && reverse) return 'PRICE_DESC';
+    if (sortKey === 'CREATED') return 'CREATED';
+    return 'BEST_SELLING';
+  };
+
   return (
     <PageWrapper>
-      <Typography variant='h1' as='h1' className='mb-5.75'>
-        {collection.title}
-      </Typography>
+      <div className='container'>
+        <Typography variant='h1' as='h1' className='mb-5.75'>
+          {collection.title}
+        </Typography>
 
-      <div className='xl:grid xl:grid-cols-[auto_1fr] xl:items-start xl:gap-5'>
-        {/* Filters*/}
-        <div className='bg-sidebar w-86 rounded-[10px] px-4.5 py-6 shadow-xs'>
-          <List
-            data={filters}
-            renderItem={filter => (
-              <div key={filter.id} className='space-y-2 border-b pb-4 last:border-0 last:pb-0'>
-                <Typography variant='bold'>{filter.label}</Typography>
+        <div className='xl:grid xl:grid-cols-[auto_1fr] xl:items-start xl:gap-5'>
+          {/* Filters*/}
+          <div className='bg-sidebar animate-fade-in w-86 rounded-[10px] px-4.5 py-6 shadow-xs'>
+            <List
+              data={filters}
+              renderItem={filter => (
+                <div key={filter.id} className='space-y-2 border-b pb-4 last:border-0 last:pb-0'>
+                  <Typography variant='bold'>{filter.label}</Typography>
 
-                <div className='space-y-2'>
-                  {filter.values.map(value => {
-                    const isChecked = selectedFilters?.some(f => JSON.stringify(f) === value.input) || false;
+                  <div className='space-y-2'>
+                    {filter.values.map(value => {
+                      const isChecked = (selectedFilters || []).some(f => JSON.stringify(f) === value.input);
 
-                    return (
-                      <label key={value.id} className='flex cursor-pointer items-center gap-2'>
-                        <input
-                          type='checkbox'
-                          className='size-3.5'
-                          value={value.input}
-                          checked={isChecked}
-                          onChange={e => handleFilterChange(value.input, e.target.checked)}
-                        />
-                        <Typography className='flex-1'>{value.label}</Typography>
-                        <Typography className='text-muted-foreground'>({value.count})</Typography>
-                      </label>
-                    );
-                  })}
+                      return (
+                        <label key={value.id} className='flex cursor-pointer items-center gap-2'>
+                          <input
+                            type='checkbox'
+                            className='size-3.5'
+                            checked={isChecked}
+                            onChange={e => handleFilterChange(value.input, e.target.checked)}
+                          />
+                          <Typography className='flex-1'>{value.label}</Typography>
+                          <Typography className='text-muted-foreground'>({value.count})</Typography>
+                        </label>
+                      );
+                    })}
+                  </div>
                 </div>
+              )}
+              keyExtractor={filter => filter.id}
+              className='custom-scrollbar space-y-6 overflow-y-auto pr-2'
+            />
+          </div>
+
+          {/* Products Grid*/}
+          <div className='relative space-y-7.5'>
+            {isFetching && (
+              <div className='bg-background/50 absolute inset-0 z-10 flex items-center justify-center backdrop-blur-sm'>
+                <Loader2 className='text-primary size-8 animate-spin' />
               </div>
             )}
-            keyExtractor={filter => filter.id}
-            className='custom-scrollbar space-y-6 overflow-y-auto pr-2'
-          />
-        </div>
 
-        {/* Products Grid*/}
-        <div className='space-y-7.5'>
-          <header className='flex items-center justify-between'>
-            <div className='flex items-center gap-x-4'>
-              <Typography variant='bold'>Sort:</Typography>
-              <NativeSelect defaultValue='best-selling' onChange={handleSortChange}>
-                <NativeSelectOption value='best-selling'>Best Selling</NativeSelectOption>
-                <NativeSelectOption value='price-low-high'>Price: Low to High</NativeSelectOption>
-                <NativeSelectOption value='price-high-low'>Price: High to Low</NativeSelectOption>
-                <NativeSelectOption value='newest-arrivals'>Newest Arrivals</NativeSelectOption>
-              </NativeSelect>
-            </div>
+            <header className='animate-fade-in flex items-center justify-between'>
+              <div className='flex items-center gap-x-4'>
+                <Typography variant='bold'>Sort:</Typography>
+                <NativeSelect value={getSortSelectValue()} onChange={handleSortChange}>
+                  <NativeSelectOption value='BEST_SELLING'>Best Selling</NativeSelectOption>
+                  <NativeSelectOption value='PRICE_ASC'>Price: Low to High</NativeSelectOption>
+                  <NativeSelectOption value='PRICE_DESC'>Price: High to Low</NativeSelectOption>
+                  <NativeSelectOption value='CREATED'>Newest Arrivals</NativeSelectOption>
+                </NativeSelect>
+              </div>
 
-            <div className='flex items-center gap-x-4'>
-              <Typography variant='bold'>Show:</Typography>
-              <NativeSelect defaultValue='24' onChange={handleShowChange}>
-                <NativeSelectOption value='12'>12</NativeSelectOption>
-                <NativeSelectOption value='24'>24</NativeSelectOption>
-                <NativeSelectOption value='48'>48</NativeSelectOption>
-                <NativeSelectOption value='96'>96</NativeSelectOption>
-              </NativeSelect>
-            </div>
+              <div className='flex items-center gap-x-4'>
+                <Typography variant='bold'>Show:</Typography>
+                <NativeSelect value={productsPerPage.toString()} onChange={handleShowChange}>
+                  <NativeSelectOption value='12'>12</NativeSelectOption>
+                  <NativeSelectOption value='24'>24</NativeSelectOption>
+                  <NativeSelectOption value='48'>48</NativeSelectOption>
+                  <NativeSelectOption value='96'>96</NativeSelectOption>
+                </NativeSelect>
+              </div>
 
-            <div className='flex items-center gap-x-4'>
-              <button
-                onClick={() => setMode('list')}
+              <div className='flex items-center gap-x-4'>
+                <button
+                  onClick={() => setMode('list')}
+                  className={cn(
+                    'transition-colors',
+                    isList ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
+                  )}
+                  aria-label='List view'
+                >
+                  <LayoutList size={24} />
+                </button>
+                <button
+                  onClick={() => setMode('grid')}
+                  className={cn(
+                    'transition-colors',
+                    isGrid ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
+                  )}
+                  aria-label='Grid view'
+                >
+                  <LayoutGrid size={24} />
+                </button>
+              </div>
+            </header>
+
+            <Show
+              when={products.length > 0}
+              fallback={
+                <Typography variant='body-lg' className='text-muted-foreground py-20 text-center'>
+                  No products found
+                </Typography>
+              }
+            >
+              <List
+                data={products}
+                renderItem={product => <ProductCard product={product} view={isGrid ? 'grid' : 'list'} />}
+                keyExtractor={product => product.id}
                 className={cn(
-                  'transition-colors',
-                  isList ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
+                  'animate-fade-in gap-5',
+                  isGrid && 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3',
+                  isList && 'flex flex-col',
                 )}
-                aria-label='List view'
-              >
-                <LayoutList size={24} />
-              </button>
-              <button
-                onClick={() => setMode('grid')}
-                className={cn(
-                  'transition-colors',
-                  isGrid ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
-                )}
-                aria-label='Grid view'
-              >
-                <LayoutGrid size={24} />
-              </button>
-            </div>
-          </header>
-
-          <Show
-            when={products.length > 0}
-            fallback={
-              <Typography variant='body-lg' className='text-muted-foreground py-20 text-center'>
-                No products found
-              </Typography>
-            }
-          >
-            <List
-              data={products}
-              renderItem={product => <ProductCard product={product} />}
-              keyExtractor={product => product.id}
-              className={cn(
-                'gap-5',
-                isGrid && 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3',
-                isList && 'flex flex-col',
-              )}
-            />
-          </Show>
+              />
+            </Show>
+          </div>
         </div>
       </div>
     </PageWrapper>

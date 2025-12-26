@@ -6,12 +6,11 @@ import type { ComponentPropsWithoutRef, FC } from 'react';
 export const PageWrapper: FC<ComponentPropsWithoutRef<'section'>> = ({ children, className, ...props }) => {
   return (
     <section className={cn('py-4', className)} {...props}>
-      <div className='container'>
-        <div className='space-y-7.5'>
-          <PageBreadcrumb />
-          {children}
-        </div>
+      <div className='container space-y-7.5'>
+        <PageBreadcrumb />
       </div>
+
+      {children}
     </section>
   );
 };

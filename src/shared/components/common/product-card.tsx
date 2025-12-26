@@ -10,27 +10,47 @@ import type { ComponentPropsWithoutRef, FC } from 'react';
 
 interface ProductCardProps extends ComponentPropsWithoutRef<'div'> {
   product: Product;
+  view?: 'grid' | 'list';
   onAddToCart?: (productId: string) => void;
   onAddToFavorites?: (productId: string) => void;
 }
 
-export const ProductCard: FC<ProductCardProps> = ({ product, onAddToCart, onAddToFavorites, className }) => {
+export const ProductCard: FC<ProductCardProps> = ({
+  product,
+  view = 'grid',
+  onAddToCart,
+  onAddToFavorites,
+  className,
+}) => {
   const { id, title, featuredImage, availableForSale, priceRange, compareAtPriceRange } = product;
 
-  const currentPrice = parseFloat(compareAtPriceRange.minVariantPrice.amount);
-  const previousPrice = parseFloat(priceRange.minVariantPrice.amount);
+  const currentPrice = parseFloat(compareAtPriceRange?.minVariantPrice.amount);
+  const previousPrice = parseFloat(priceRange?.minVariantPrice.amount);
   const hasDiscount = currentPrice !== 0 && previousPrice > currentPrice;
 
+  const isListView = view === 'list';
+
   return (
-    <div className={cn('grid h-full gap-4 rounded-lg border p-4', className)}>
-      <div className='relative h-60 w-full overflow-hidden'>
+    <div
+      className={cn(
+        'gap-4 rounded-lg border p-4 transition-all duration-300',
+        isListView ? 'flex h-auto' : 'grid h-full',
+        className,
+      )}
+    >
+      <div
+        className={cn(
+          'relative overflow-hidden transition-all duration-300',
+          isListView ? 'h-40 w-40 shrink-0' : 'h-60 w-full',
+        )}
+      >
         <Show when={featuredImage}>
           <Image
             src={featuredImage?.url ?? ''}
             alt={featuredImage?.altText ?? title}
             className='h-full w-full object-contain'
-            width={304}
-            height={240}
+            width={isListView ? 160 : 304}
+            height={isListView ? 160 : 240}
             loading='lazy'
           />
         </Show>
@@ -44,43 +64,45 @@ export const ProductCard: FC<ProductCardProps> = ({ product, onAddToCart, onAddT
         </button>
       </div>
 
-      <div className='space-y-2.5 border-t pt-3.75'>
-        <Typography variant='h3' as='h3' className='line-clamp-1 font-semibold'>
-          {title}
-        </Typography>
+      <div className={cn('flex flex-col', isListView ? 'flex-1' : 'space-y-2.5 border-t pt-3.75')}>
+        <div className={cn(isListView && 'flex-1 space-y-2.5')}>
+          <Typography variant='h3' as='h3' className='line-clamp-1 font-semibold'>
+            {title}
+          </Typography>
 
-        <Typography
-          variant='body'
-          className={cn(
-            'flex items-center gap-2 text-base',
-            availableForSale ? 'text-muted-foreground' : 'text-rose-600',
-          )}
-        >
-          <Icon name='checkmarkSmall' width={22} height={22} />
-          {availableForSale ? 'In stock' : 'Out of stock'}
-        </Typography>
-      </div>
-
-      <div className='mt-auto flex items-center justify-between gap-3'>
-        <div className='space-y-1'>
-          <Show when={hasDiscount}>
-            <Typography variant='body' className='text-muted-foreground text-base font-bold line-through'>
-              {previousPrice}$
-            </Typography>
-          </Show>
-
-          <Typography variant='body' className='text-foreground text-[22px] leading-tight font-extrabold'>
-            {hasDiscount ? currentPrice : previousPrice} $
+          <Typography
+            variant='body'
+            className={cn(
+              'flex items-center gap-2 text-base',
+              availableForSale ? 'text-muted-foreground' : 'text-rose-600',
+            )}
+          >
+            <Icon name='checkmarkSmall' width={22} height={22} />
+            {availableForSale ? 'In stock' : 'Out of stock'}
           </Typography>
         </div>
 
-        <button
-          onClick={() => (onAddToCart ? onAddToCart(id) : null)}
-          className='hover:text-accent flex size-10 shrink-0 items-center justify-center rounded-md bg-linear-to-r from-[rgb(87,144,64)] to-[rgb(58,111,67)] text-white transition-colors duration-200 disabled:opacity-50'
-          aria-label='Add to cart'
-        >
-          <Icon name='shoppingCart' width={18} height={18} />
-        </button>
+        <div className={cn('flex items-center justify-between gap-3', isListView ? 'mt-auto' : 'mt-auto')}>
+          <div className='space-y-1'>
+            <Show when={hasDiscount}>
+              <Typography variant='body' className='text-muted-foreground text-base font-bold line-through'>
+                {previousPrice}$
+              </Typography>
+            </Show>
+
+            <Typography variant='body' className='text-foreground text-[22px] leading-tight font-extrabold'>
+              {hasDiscount ? currentPrice : previousPrice} $
+            </Typography>
+          </div>
+
+          <button
+            onClick={() => (onAddToCart ? onAddToCart(id) : null)}
+            className='hover:text-accent flex size-10 shrink-0 items-center justify-center rounded-md bg-linear-to-r from-[rgb(87,144,64)] to-[rgb(58,111,67)] text-white transition-colors duration-200 disabled:opacity-50'
+            aria-label='Add to cart'
+          >
+            <Icon name='shoppingCart' width={18} height={18} />
+          </button>
+        </div>
       </div>
     </div>
   );
