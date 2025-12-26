@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-import { Typography } from '@/components/ui/Typography';
+import { Typography } from '@/shared/components/ui/typography';
 
 interface ErrorPage {
   error: Error & { digest?: string };

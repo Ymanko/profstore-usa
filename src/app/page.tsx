@@ -1,19 +1,19 @@
-import { PageWrapper } from '@/components/common/PageWrapper';
-import { RichText } from '@/components/common/RichText';
-import { Section } from '@/components/common/Section';
-import { Banner } from '@/components/pages/home/Banner';
-import { Categories } from '@/components/pages/home/Categories';
-import { OurBrands } from '@/components/pages/home/OurBrands';
-import { ProductTabs } from '@/components/pages/home/ProductTabs';
-import { Recommended } from '@/components/pages/home/Recommended';
-import { Typography } from '@/components/ui/Typography';
-import { getQueryClient } from '@/lib/tanstack/get-query-client';
-import { getCategoriesQueryOptions } from '@/queries/home/get-categories';
-import { getHomePageContentQueryOptions } from '@/queries/home/get-home-page-content';
-import { getNewProductsQueryOptions } from '@/queries/home/get-new-products';
-import { getPopularProductsQueryOptions } from '@/queries/home/get-popular-products';
-import { getRecommendedQueryOptions } from '@/queries/home/get-recommended';
-import { getSaleHitsQueryOptions } from '@/queries/home/get-sale-hits';
+import { Banner } from '@/features/home/banner';
+import { Categories } from '@/features/home/categories';
+import { OurBrands } from '@/features/home/our-brands';
+import { ProductTabs } from '@/features/home/product-tabs';
+import { Recommended } from '@/features/home/recommended';
+import { PageWrapper } from '@/shared/components/common/page-wrapper';
+import { RichText } from '@/shared/components/common/rich-text';
+import { Section } from '@/shared/components/common/section';
+import { Typography } from '@/shared/components/ui/typography';
+import { getQueryClient } from '@/shared/lib/tanstack/get-query-client';
+import { getCategoriesQueryOptions } from '@/shared/queries/home/get-categories';
+import { getHomePageContentQueryOptions } from '@/shared/queries/home/get-home-page-content';
+import { getNewProductsQueryOptions } from '@/shared/queries/home/get-new-products';
+import { getPopularProductsQueryOptions } from '@/shared/queries/home/get-popular-products';
+import { getRecommendedQueryOptions } from '@/shared/queries/home/get-recommended';
+import { getSaleHitsQueryOptions } from '@/shared/queries/home/get-sale-hits';
 
 import type { Metadata } from 'next';
 
@@ -25,7 +25,6 @@ export const metadata: Metadata = {
 export default async function Home() {
   const queryClient = getQueryClient();
 
-  // Prefetch all home page data
   await Promise.all([
     queryClient.ensureQueryData(getHomePageContentQueryOptions),
     queryClient.ensureQueryData(getCategoriesQueryOptions),
@@ -38,14 +37,13 @@ export default async function Home() {
   const getHomePageContent = queryClient.getQueryData(getHomePageContentQueryOptions.queryKey);
 
   return (
-    <PageWrapper className=''>
+    <PageWrapper>
       <Typography variant='h1' className='sr-only'>
         Welcome to ProfStore
       </Typography>
 
       {/*MainBanner*/}
       <Banner />
-
       {/*Category*/}
       <Categories />
 
@@ -58,7 +56,7 @@ export default async function Home() {
       {/*Description*/}
       <Section className='pt-2.5 pb-5'>
         {getHomePageContent?.descriptionTitle && (
-          <Typography variant='h2' as='h2' className='mb-5 text-[27px] md:mb-[18px] md:text-3xl'>
+          <Typography variant='h2' as='h2' className='mb-5 text-[27px] md:mb-4.5 md:text-3xl'>
             {getHomePageContent?.descriptionTitle}
           </Typography>
         )}

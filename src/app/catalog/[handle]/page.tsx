@@ -1,8 +1,8 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
-import { ProductView } from '@/components/pages/product/ProductInfo';
-import { getQueryClient } from '@/lib/tanstack/get-query-client';
-import { getProductQueryOptions } from '@/queries/get-product';
+import { ProductView } from '@/features/product/product-info';
+import { getQueryClient } from '@/shared/lib/tanstack/get-query-client';
+import { getProductQueryOptions } from '@/shared/queries/get-product';
 
 type Props = {
   params: Promise<{ handle: string }>;

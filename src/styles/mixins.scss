@@ -1,5 +1,0 @@
-@mixin useMedia($mediaWidth, $mediaValue) {
-  @media (#{$mediaWidth}: #{$mediaValue}) {
-    @content;
-  }
-}
