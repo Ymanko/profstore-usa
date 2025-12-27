@@ -62,7 +62,7 @@ export function CategoryDetail({ handle }: CategoryDetailProps) {
 
         <Show when={category.description}>
           <div className='mb-8'>
-            <RichText content={category.description} />
+            <RichText schema={category.description} />
           </div>
         </Show>
       </div>

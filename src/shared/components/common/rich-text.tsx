@@ -1,67 +1,19 @@
-import React from 'react';
+import { convertSchemaToHtml } from '@thebeyondgroup/shopify-rich-text-renderer';
 
-import { Typography } from '@/shared/components/ui/typography';
+import type { Schema } from '@thebeyondgroup/shopify-rich-text-renderer';
+import type { FC } from 'react';
 
-type RichTextNode = {
-  type: string;
-  children?: RichTextNode[];
-  value?: string;
-  level?: number;
-  listType?: 'ordered' | 'unordered';
+type RichTextSchema = {
+  schema: string | Schema | Schema[];
 };
 
-type RichTextRoot = {
-  type: 'root';
-  children: RichTextNode[];
+export const RichText: FC<RichTextSchema> = ({ schema }) => {
+  const html = convertSchemaToHtml(schema, { scoped: true });
+
+  return (
+    <div
+      className='prose prose-base prose-p:mt-0 prose-h2:mt-0 prose-h3:mt-0 prose-h3:font-bold prose-li:marker:text-foreground text-foreground max-w-none'
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
 };
-
-function renderNode(node: RichTextNode, index: number): React.ReactNode {
-  switch (node.type) {
-    case 'text':
-      return node.value;
-
-    case 'paragraph':
-      return (
-        <Typography key={index} variant='body' className='mb-4 last:mb-0'>
-          {node.children?.map((child, i) => renderNode(child, i))}
-        </Typography>
-      );
-
-    case 'heading':
-      const headingVariant = `h${node.level}` as 'h1' | 'h2' | 'h3' | 'h4';
-      return (
-        <Typography key={index} variant={headingVariant} as={headingVariant} className='mb-4 last:mb-0'>
-          {node.children?.map((child, i) => renderNode(child, i))}
-        </Typography>
-      );
-
-    case 'list':
-      const ListTag = node.listType === 'ordered' ? 'ol' : 'ul';
-      const listStyle = node.listType === 'ordered' ? 'list-decimal' : 'list-disc';
-
-      return (
-        <ListTag key={index} className={`mb-4 ml-6 ${listStyle} font-montserrat`}>
-          {node.children?.map((child, i) => renderNode(child, i))}
-        </ListTag>
-      );
-
-    case 'list-item':
-      return (
-        <li key={index} className='font-montserrat mb-2'>
-          {node.children?.map((child, i) => renderNode(child, i))}
-        </li>
-      );
-
-    default:
-      return node.children?.map((child, i) => renderNode(child, i));
-  }
-}
-
-export function RichText({ content }: { content: string }) {
-  try {
-    const data: RichTextRoot = JSON.parse(content);
-    return <div className='prose max-w-none space-y-4'>{data.children?.map((child, i) => renderNode(child, i))}</div>;
-  } catch (_error) {
-    return <div>{content}</div>;
-  }
-}
