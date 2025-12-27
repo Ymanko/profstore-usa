@@ -1,5 +1,4 @@
 import '@/app/globals.css';
-
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Montserrat, Inter } from 'next/font/google';
 
@@ -10,8 +9,8 @@ import { getQueryClient } from '@/shared/lib/tanstack/get-query-client';
 import { cn } from '@/shared/lib/utils';
 import { getMenuItemsQueryOptions } from '@/shared/queries/get-menu-items';
 
+import type { LayoutProps } from '@/shared/types/shared/types/common';
 import type { Metadata } from 'next';
-import type { ReactNode } from 'react';
 
 const montserratFont = Montserrat({
   variable: '--font-montserrat',
@@ -40,7 +39,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({ children }: LayoutProps) {
   const queryClient = getQueryClient();
   await queryClient.ensureQueryData(getMenuItemsQueryOptions);
 
