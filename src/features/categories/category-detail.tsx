@@ -61,9 +61,7 @@ export function CategoryDetail({ handle }: CategoryDetailProps) {
         </Show>
 
         <Show when={category.description}>
-          <div className='mb-8'>
-            <RichText schema={category.description} />
-          </div>
+          <RichText className='mb-8' schema={category.description} />
         </Show>
       </div>
     </PageWrapper>

@@ -11,6 +11,7 @@ import { usePriceRangeStorage } from '@/features/collections/hooks/use-price-ran
 import { List } from '@/shared/components/common/list';
 import { PageWrapper } from '@/shared/components/common/page-wrapper';
 import { ProductCard } from '@/shared/components/common/product-card';
+import { RichText } from '@/shared/components/common/rich-text';
 import { Show } from '@/shared/components/common/show';
 import { NativeSelect, NativeSelectOption } from '@/shared/components/ui/native-select';
 import { Typography } from '@/shared/components/ui/typography';
@@ -130,14 +131,14 @@ export const CollectionProducts: FC<{
                     <Show
                       when={isMounted}
                       fallback={
-                        <div className='space-y-3.5'>
+                        <div className='space-y-4'>
                           <Typography variant='bold'>Price</Typography>
 
                           <div className='grid grid-cols-2 gap-3'>
-                            <div className='bg-muted-primary h-9 animate-pulse rounded' />
-                            <div className='bg-muted-primary h-9 animate-pulse rounded' />
+                            <div className='bg-muted-primary/50 h-9 animate-pulse rounded' />
+                            <div className='bg-muted-primary/50 h-9 animate-pulse rounded' />
                           </div>
-                          <div className='bg-muted-primary h-1 animate-pulse rounded-full' />
+                          <div className='bg-muted-primary/50 h-1 animate-pulse rounded-full' />
                         </div>
                       }
                     >
@@ -228,6 +229,10 @@ export const CollectionProducts: FC<{
                     isList && 'flex flex-col',
                   )}
                 />
+
+                <Show when={!!collection?.fullDescription?.value}>
+                  <RichText className='mt-12.5' schema={collection?.fullDescription?.value ?? ''} />
+                </Show>
               </div>
             </div>
           </div>

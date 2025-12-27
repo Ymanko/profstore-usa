@@ -3,6 +3,8 @@ import { queryOptions } from '@tanstack/react-query';
 import { STALE_TIME } from '@/shared/constants/stale-time';
 import { serverGraphqlFetcher } from '@/shared/lib/graphql/server-graphql-fetcher';
 
+import type { Schema } from '@thebeyondgroup/shopify-rich-text-renderer';
+
 const GET_SUBCATEGORY_PRODUCTS = `
   query GetSubcategoryProducts(
     $handle: String!
@@ -17,6 +19,9 @@ const GET_SUBCATEGORY_PRODUCTS = `
       handle
       title
       description
+      fullDescription: metafield(namespace: "custom", key: "full_description") {
+        value
+      }
       image {
         url
         altText
@@ -202,6 +207,9 @@ type SubcategoryProductsData = {
     handle: string;
     title: string;
     description: string;
+    fullDescription?: {
+      value: Schema;
+    } | null;
     image?: {
       url: string;
       altText?: string;
