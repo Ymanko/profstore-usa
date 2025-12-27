@@ -1,6 +1,6 @@
 'use client';
 
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { CircleX, LayoutGrid, LayoutList, Loader2 } from 'lucide-react';
 
 import { useCollectionFilters } from '@/features/collections/hooks/use-collection-filters';
@@ -15,10 +15,16 @@ import { RichText } from '@/shared/components/common/rich-text';
 import { Show } from '@/shared/components/common/show';
 import { NativeSelect, NativeSelectOption } from '@/shared/components/ui/native-select';
 import { Typography } from '@/shared/components/ui/typography';
+import { STALE_TIME } from '@/shared/constants/stale-time';
 import { useIsMounted } from '@/shared/hooks/use-is-mounted';
 import { useLayoutMode } from '@/shared/hooks/use-layout-mode';
+import { serverGraphqlFetcher } from '@/shared/lib/graphql/server-graphql-fetcher';
 import { cn } from '@/shared/lib/utils';
-import { getSubcategoryProductsQueryOptions } from '@/shared/queries/collections/get-subcategory-products';
+import {
+  GET_SUBCATEGORY_PRODUCTS,
+  type Filter,
+  type SubcategoryProductsData,
+} from '@/shared/queries/collections/get-subcategory-products';
 
 import { FilterItem } from './components/filter-item';
 import { PriceRangeFilter } from './components/price-range-filter';
@@ -38,22 +44,39 @@ export const CollectionProducts: FC<{
 
   const decodedFilters = useDecodedFilters({ f: params.f, minPrice: params.minPrice, maxPrice: params.maxPrice });
 
-  const {
-    data: { collection },
-    isFetching,
-  } = useSuspenseQuery(
-    getSubcategoryProductsQueryOptions({
-      handle,
-      first: productsPerPage,
-      sortKey,
-      reverse,
-      filters: decodedFilters,
-    }),
-  );
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery({
+    queryKey: ['subcategory', handle, 'products', { sortKey, reverse, productsPerPage, filters: decodedFilters }],
+    queryFn: async ({ pageParam }) => {
+      return serverGraphqlFetcher<SubcategoryProductsData>(
+        GET_SUBCATEGORY_PRODUCTS,
+        {
+          handle,
+          first: productsPerPage,
+          after: (pageParam as string | null) ?? null,
+          sortKey,
+          reverse,
+          filters: decodedFilters,
+        },
+        {
+          tags: ['collection', handle],
+        },
+      );
+    },
+    initialPageParam: null as string | null,
+    getNextPageParam: lastPage => {
+      const pageInfo = lastPage.collection?.products.pageInfo;
+      return pageInfo?.hasNextPage ? pageInfo.endCursor : null;
+    },
+    staleTime: STALE_TIME.FIVE_MINUTES,
+  });
 
-  const products = collection?.products.edges.map(edge => edge.node) ?? [];
-  const priceFilter = collection?.products.filters.find(f => f.type === 'PRICE_RANGE');
-  const otherFilters = collection?.products.filters.filter(f => f.type !== 'PRICE_RANGE') ?? [];
+  // Combine all products from all pages
+  const allProducts = data.pages.flatMap(page => page.collection?.products.edges.map(edge => edge.node) ?? []);
+
+  // Get filters from first page
+  const collection = data.pages[0]?.collection;
+  const priceFilter = collection?.products.filters.find((f: Filter) => f.type === 'PRICE_RANGE');
+  const otherFilters = collection?.products.filters.filter((f: Filter) => f.type !== 'PRICE_RANGE') ?? [];
 
   const priceRange = usePriceRange(priceFilter);
 
@@ -98,7 +121,7 @@ export const CollectionProducts: FC<{
         }
       >
         <Show
-          when={products.length > 0}
+          when={allProducts.length > 0}
           fallback={
             <Typography variant='body-lg' className='text-muted-foreground py-20 text-center'>
               No products yet
@@ -155,10 +178,10 @@ export const CollectionProducts: FC<{
                   {/* Other Filters */}
                   <List
                     data={otherFilters}
-                    renderItem={filter => (
+                    renderItem={(filter: Filter) => (
                       <FilterItem filter={filter} decodedFilters={decodedFilters} onFilterChange={handleFilterChange} />
                     )}
-                    keyExtractor={filter => filter.id}
+                    keyExtractor={(filter: Filter) => filter.id}
                     className='space-y-3.5'
                     itemClassName='space-y-3.5 border-b pb-4 last:border-0'
                   />
@@ -167,12 +190,6 @@ export const CollectionProducts: FC<{
 
               {/* Products Grid*/}
               <div className='relative space-y-7.5'>
-                {isFetching && (
-                  <div className='bg-background/50 absolute inset-0 z-10 flex items-center justify-center backdrop-blur-sm'>
-                    <Loader2 className='text-primary size-8 animate-spin' />
-                  </div>
-                )}
-
                 <header className='animate-fade-in flex items-center justify-between'>
                   <div className='flex items-center gap-x-4'>
                     <Typography variant='bold'>Sort:</Typography>
@@ -220,7 +237,7 @@ export const CollectionProducts: FC<{
                 </header>
 
                 <List
-                  data={products}
+                  data={allProducts}
                   renderItem={product => <ProductCard product={product} view={isGrid ? 'grid' : 'list'} />}
                   keyExtractor={product => product.id}
                   className={cn(
@@ -229,6 +246,25 @@ export const CollectionProducts: FC<{
                     isList && 'flex flex-col',
                   )}
                 />
+
+                {/* Load More Button */}
+                <Show when={hasNextPage}>
+                  <div className='animate-fade-in flex justify-center'>
+                    <button
+                      onClick={() => fetchNextPage()}
+                      disabled={isFetchingNextPage}
+                      className='bg-secondary hover:bg-secondary/90 disabled:bg-muted-primary disabled:text-muted-foreground flex items-center gap-2 rounded-lg px-8 py-3 font-medium text-white transition-colors'
+                      type='button'
+                    >
+                      <Show when={isFetchingNextPage} fallback='Load More'>
+                        <>
+                          <Loader2 className='size-4 animate-spin' />
+                          Loading...
+                        </>
+                      </Show>
+                    </button>
+                  </div>
+                </Show>
 
                 <Show when={!!collection?.fullDescription?.value}>
                   <RichText className='mt-12.5' schema={collection?.fullDescription?.value ?? ''} />

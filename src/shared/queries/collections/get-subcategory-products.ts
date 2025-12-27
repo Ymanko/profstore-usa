@@ -5,7 +5,7 @@ import { serverGraphqlFetcher } from '@/shared/lib/graphql/server-graphql-fetche
 
 import type { Schema } from '@thebeyondgroup/shopify-rich-text-renderer';
 
-const GET_SUBCATEGORY_PRODUCTS = `
+export const GET_SUBCATEGORY_PRODUCTS = `
   query GetSubcategoryProducts(
     $handle: String!
     $first: Int = 24
@@ -201,7 +201,7 @@ export type Product = {
   };
 };
 
-type SubcategoryProductsData = {
+export type SubcategoryProductsData = {
   collection: {
     id: string;
     handle: string;
