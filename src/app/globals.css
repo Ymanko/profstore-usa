@@ -187,6 +187,15 @@ body {
   animation: accordion-up 0.2s ease-out;
 }
 
+/* Collapsible Animations (uses same keyframes as accordion) */
+@utility animate-collapse-down {
+  animation: accordion-down 0.1s ease-out;
+}
+
+@utility animate-collapse-up {
+  animation: accordion-up 0.1s ease-out;
+}
+
 /*Radix Scroll Area Override*/
 [data-radix-scroll-area-viewport] > div {
   display: block !important;
