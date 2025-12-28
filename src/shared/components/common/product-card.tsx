@@ -70,14 +70,14 @@ export const ProductCard: FC<ProductCardProps> = ({
             {title}
           </Typography>
 
-          <Typography
-            variant='body'
-            className={cn(
-              'flex items-center gap-2 text-base',
-              availableForSale ? 'text-muted-foreground' : 'text-rose-600',
-            )}
-          >
-            <Icon name='checkmarkSmall' width={22} height={22} />
+          <Typography variant='body' className={cn('text-muted-foreground flex items-center gap-2 text-base')}>
+            <Icon
+              name='checkmarkSmall'
+              width={20}
+              height={20}
+              className={availableForSale ? 'text-muted-foreground' : 'text-rose-600'}
+            />
+
             {availableForSale ? 'In stock' : 'Out of stock'}
           </Typography>
         </div>
