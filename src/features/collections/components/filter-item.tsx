@@ -2,7 +2,9 @@
 
 import { useState } from 'react';
 
+import { Checkbox } from '@/shared/components/ui/checkbox';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/shared/components/ui/collapsible';
+import { Label } from '@/shared/components/ui/label';
 import { Typography } from '@/shared/components/ui/typography';
 
 import type { Filter } from '@/shared/queries/collections/get-subcategory-products';
@@ -27,16 +29,17 @@ export function FilterItem({ filter, decodedFilters, onFilterChange }: FilterIte
     const isChecked = (decodedFilters || []).some(f => JSON.stringify(f) === value.input);
 
     return (
-      <label key={value.id} className='flex cursor-pointer items-center gap-2'>
-        <input
-          type='checkbox'
-          className='size-3.5'
+      <div key={value.id} className='flex items-center gap-2'>
+        <Checkbox
+          id={value.id}
           checked={isChecked}
-          onChange={e => onFilterChange(value.input, e.target.checked)}
+          onCheckedChange={checked => onFilterChange(value.input, checked === true)}
         />
-        <Typography className='flex-1'>{value.label}</Typography>
-        <Typography className='text-muted-foreground'>({value.count})</Typography>
-      </label>
+        <Label htmlFor={value.id} className='flex w-full cursor-pointer items-center gap-2'>
+          <Typography className='flex-1'>{value.label}</Typography>
+          <Typography className='text-muted-foreground'>{`(${value.count})`}</Typography>
+        </Label>
+      </div>
     );
   };
 

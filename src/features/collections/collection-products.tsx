@@ -1,10 +1,11 @@
 'use client';
 
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
-import { LayoutGrid, LayoutList } from 'lucide-react';
+import { ChevronDown, LayoutGrid, LayoutList, Menu } from 'lucide-react';
 
 import { Filters } from '@/features/collections/components/filters';
 import { LoadMore } from '@/features/collections/components/load-more';
+import { MobileFilters } from '@/features/collections/components/mobile-filters';
 import { SelectWrapper } from '@/features/collections/components/select-wrapper';
 import { useCollectionFilters } from '@/features/collections/hooks/use-collection-filters';
 import { useCollectionParams } from '@/features/collections/hooks/use-collection-params';
@@ -16,6 +17,7 @@ import { PageWrapper } from '@/shared/components/common/page-wrapper';
 import { ProductCard } from '@/shared/components/common/product-card';
 import { RichText } from '@/shared/components/common/rich-text';
 import { Show } from '@/shared/components/common/show';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/shared/components/ui/dropdown-menu';
 import { NativeSelect, NativeSelectOption } from '@/shared/components/ui/native-select';
 import { Typography } from '@/shared/components/ui/typography';
 import { STALE_TIME } from '@/shared/constants/stale-time';
@@ -128,9 +130,32 @@ export const CollectionProducts: FC<{
           }
         >
           <div className='container'>
-            <Typography variant='h1' as='h1' className='mb-5.75'>
-              {collection?.title}
-            </Typography>
+            <div className='mb-5.75 grid gap-y-4 md:grid-cols-2'>
+              <Typography variant='h1' as='h1'>
+                {collection?.title}
+              </Typography>
+
+              <MobileFilters>
+                <Filters
+                  className='w-full rounded-none rounded-b border-t py-5 shadow-none'
+                  priceFilter={{
+                    basePriceRange,
+                    currentMin: params.minPrice ?? null,
+                    currentMax: params.maxPrice ?? null,
+                    onChange: handlePriceChange,
+                  }}
+                  productFilters={{
+                    filters: otherFilters,
+                    decodedFilters,
+                    onChange: handleFilterChange,
+                  }}
+                  clearFilters={{
+                    hasActiveFilters,
+                    onClear: handleClearFilters,
+                  }}
+                />
+              </MobileFilters>
+            </div>
 
             <div className='xl:grid xl:grid-cols-[auto_1fr] xl:items-start xl:gap-5'>
               {/* Filters*/}
