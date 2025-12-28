@@ -1,4 +1,4 @@
-import { queryOptions } from '@tanstack/react-query';
+import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query';
 
 import { STALE_TIME } from '@/shared/constants/stale-time';
 import { serverGraphqlFetcher } from '@/shared/lib/graphql/server-graphql-fetcher';
@@ -239,4 +239,47 @@ export const getSubcategoryProductsQueryOptions = (params: SubcategoryProductsPa
       });
     },
     staleTime: STALE_TIME.ONE_MINUTE,
+  });
+
+export const getSubcategoryProductsInfiniteQueryOptions = (params: {
+  handle: string;
+  sortKey: SubcategoryProductsParams['sortKey'];
+  reverse: boolean;
+  productsPerPage: number;
+  filters: SubcategoryProductsParams['filters'];
+}) =>
+  infiniteQueryOptions({
+    queryKey: [
+      'subcategory',
+      params.handle,
+      'products',
+      {
+        sortKey: params.sortKey,
+        reverse: params.reverse,
+        productsPerPage: params.productsPerPage,
+        filters: params.filters,
+      },
+    ],
+    queryFn: async ({ pageParam }) => {
+      return serverGraphqlFetcher<SubcategoryProductsData>(
+        GET_SUBCATEGORY_PRODUCTS,
+        {
+          handle: params.handle,
+          first: params.productsPerPage,
+          after: (pageParam as string | null) ?? null,
+          sortKey: params.sortKey,
+          reverse: params.reverse,
+          filters: params.filters,
+        },
+        {
+          tags: ['collection', params.handle],
+        },
+      );
+    },
+    initialPageParam: null as string | null,
+    getNextPageParam: lastPage => {
+      const pageInfo = lastPage.collection?.products.pageInfo;
+      return pageInfo?.hasNextPage ? pageInfo.endCursor : null;
+    },
+    staleTime: STALE_TIME.FIVE_MINUTES,
   });

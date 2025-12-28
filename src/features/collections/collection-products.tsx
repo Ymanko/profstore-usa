@@ -1,8 +1,9 @@
 'use client';
 
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
-import { ChevronDown, LayoutGrid, LayoutList, Menu } from 'lucide-react';
+import { LayoutGrid, LayoutList } from 'lucide-react';
 
+import { DiscountedProduct } from '@/features/collections/components/discounted-product';
 import { Filters } from '@/features/collections/components/filters';
 import { LoadMore } from '@/features/collections/components/load-more';
 import { MobileFilters } from '@/features/collections/components/mobile-filters';
@@ -17,18 +18,14 @@ import { PageWrapper } from '@/shared/components/common/page-wrapper';
 import { ProductCard } from '@/shared/components/common/product-card';
 import { RichText } from '@/shared/components/common/rich-text';
 import { Show } from '@/shared/components/common/show';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/shared/components/ui/dropdown-menu';
 import { NativeSelect, NativeSelectOption } from '@/shared/components/ui/native-select';
 import { Typography } from '@/shared/components/ui/typography';
-import { STALE_TIME } from '@/shared/constants/stale-time';
 import { useIsMounted } from '@/shared/hooks/use-is-mounted';
 import { useLayoutMode } from '@/shared/hooks/use-layout-mode';
-import { serverGraphqlFetcher } from '@/shared/lib/graphql/server-graphql-fetcher';
 import { cn } from '@/shared/lib/utils';
 import {
-  GET_SUBCATEGORY_PRODUCTS,
+  getSubcategoryProductsInfiniteQueryOptions,
   type Filter,
-  type SubcategoryProductsData,
 } from '@/shared/queries/collections/get-subcategory-products';
 
 import type { FC } from 'react';
@@ -46,31 +43,15 @@ export const CollectionProducts: FC<{
 
   const decodedFilters = useDecodedFilters({ f: params.f, minPrice: params.minPrice, maxPrice: params.maxPrice });
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery({
-    queryKey: ['subcategory', handle, 'products', { sortKey, reverse, productsPerPage, filters: decodedFilters }],
-    queryFn: async ({ pageParam }) => {
-      return serverGraphqlFetcher<SubcategoryProductsData>(
-        GET_SUBCATEGORY_PRODUCTS,
-        {
-          handle,
-          first: productsPerPage,
-          after: (pageParam as string | null) ?? null,
-          sortKey,
-          reverse,
-          filters: decodedFilters,
-        },
-        {
-          tags: ['collection', handle],
-        },
-      );
-    },
-    initialPageParam: null as string | null,
-    getNextPageParam: lastPage => {
-      const pageInfo = lastPage.collection?.products.pageInfo;
-      return pageInfo?.hasNextPage ? pageInfo.endCursor : null;
-    },
-    staleTime: STALE_TIME.FIVE_MINUTES,
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery(
+    getSubcategoryProductsInfiniteQueryOptions({
+      handle,
+      sortKey,
+      reverse,
+      productsPerPage,
+      filters: decodedFilters,
+    }),
+  );
 
   // Combine all products from all pages
   const allProducts = data.pages.flatMap(page => page.collection?.products.edges.map(edge => edge.node) ?? []);
@@ -158,25 +139,30 @@ export const CollectionProducts: FC<{
             </div>
 
             <div className='xl:grid xl:grid-cols-[auto_1fr] xl:items-start xl:gap-5'>
-              {/* Filters*/}
-              <Filters
-                className='hidden xl:block'
-                priceFilter={{
-                  basePriceRange,
-                  currentMin: params.minPrice ?? null,
-                  currentMax: params.maxPrice ?? null,
-                  onChange: handlePriceChange,
-                }}
-                productFilters={{
-                  filters: otherFilters,
-                  decodedFilters,
-                  onChange: handleFilterChange,
-                }}
-                clearFilters={{
-                  hasActiveFilters,
-                  onClear: handleClearFilters,
-                }}
-              />
+              <div className=''>
+                {/* Filters*/}
+                <Filters
+                  className='hidden xl:block'
+                  priceFilter={{
+                    basePriceRange,
+                    currentMin: params.minPrice ?? null,
+                    currentMax: params.maxPrice ?? null,
+                    onChange: handlePriceChange,
+                  }}
+                  productFilters={{
+                    filters: otherFilters,
+                    decodedFilters,
+                    onChange: handleFilterChange,
+                  }}
+                  clearFilters={{
+                    hasActiveFilters,
+                    onClear: handleClearFilters,
+                  }}
+                />
+
+                {/* Discounted products*/}
+                <DiscountedProduct />
+              </div>
 
               {/* Products Grid*/}
               <div className='relative w-full space-y-7.5'>
