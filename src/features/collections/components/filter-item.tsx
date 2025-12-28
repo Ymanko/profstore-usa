@@ -27,15 +27,21 @@ export function FilterItem({ filter, decodedFilters, onFilterChange }: FilterIte
 
   const renderCheckbox = (value: Filter['values'][0]) => {
     const isChecked = (decodedFilters || []).some(f => JSON.stringify(f) === value.input);
+    const isDisabled = value.count === 0;
 
     return (
       <div key={value.id} className='flex items-center gap-2'>
         <Checkbox
           id={value.id}
           checked={isChecked}
+          disabled={isDisabled}
           onCheckedChange={checked => onFilterChange(value.input, checked === true)}
         />
-        <Label htmlFor={value.id} className='flex w-full cursor-pointer items-center gap-2'>
+        <Label
+          htmlFor={value.id}
+          className='flex w-full cursor-pointer items-center gap-2 data-disabled:cursor-not-allowed data-disabled:opacity-50'
+          data-disabled={isDisabled ? '' : undefined}
+        >
           <Typography className='flex-1'>{value.label}</Typography>
           <Typography className='text-muted-foreground'>{`(${value.count})`}</Typography>
         </Label>
