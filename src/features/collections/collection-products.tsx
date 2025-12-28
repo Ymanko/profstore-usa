@@ -7,6 +7,7 @@ import { DiscountedProduct } from '@/features/collections/components/discounted-
 import { Filters } from '@/features/collections/components/filters';
 import { LoadMore } from '@/features/collections/components/load-more';
 import { MobileFilters } from '@/features/collections/components/mobile-filters';
+import { News } from '@/features/collections/components/news';
 import { PopularCollectionProducts } from '@/features/collections/components/popular-collection-products';
 import { SelectWrapper } from '@/features/collections/components/select-wrapper';
 import { useCollectionFilters } from '@/features/collections/hooks/use-collection-filters';
@@ -94,169 +95,173 @@ export const CollectionProducts: FC<{
   };
 
   return (
-    <PageWrapper>
-      <Show
-        when={collection}
-        fallback={
-          <Typography variant='body-lg' className='text-muted-foreground text-center'>
-            Collection not found
-          </Typography>
-        }
-      >
+    <>
+      <PageWrapper>
         <Show
-          when={allProducts.length > 0}
+          when={collection}
           fallback={
-            <Typography variant='body-lg' className='text-muted-foreground py-20 text-center'>
-              No products yet
+            <Typography variant='body-lg' className='text-muted-foreground text-center'>
+              Collection not found
             </Typography>
           }
         >
-          <div className='container'>
-            <div className='mb-5.75 grid gap-y-4 md:grid-cols-2'>
-              <Typography variant='h1' as='h1'>
-                {collection?.title}
+          <Show
+            when={allProducts.length > 0}
+            fallback={
+              <Typography variant='body-lg' className='text-muted-foreground py-20 text-center'>
+                No products yet
               </Typography>
+            }
+          >
+            <div className='container'>
+              <div className='mb-5.75 grid gap-y-4 md:grid-cols-2'>
+                <Typography variant='h1' as='h1'>
+                  {collection?.title}
+                </Typography>
 
-              <MobileFilters>
-                <Filters
-                  className='w-full rounded-none rounded-b border-t py-5 shadow-none'
-                  priceFilter={{
-                    basePriceRange,
-                    currentMin: params.minPrice ?? null,
-                    currentMax: params.maxPrice ?? null,
-                    onChange: handlePriceChange,
-                  }}
-                  productFilters={{
-                    filters: otherFilters,
-                    decodedFilters,
-                    onChange: handleFilterChange,
-                  }}
-                  clearFilters={{
-                    hasActiveFilters,
-                    onClear: handleClearFilters,
-                  }}
-                />
-              </MobileFilters>
-            </div>
-
-            <div className='xl:grid xl:grid-cols-[auto_1fr] xl:items-start xl:gap-5'>
-              {/*Sidebar*/}
-              <div className='space-y-5'>
-                {/* Filters*/}
-                <Filters
-                  className='hidden xl:block'
-                  priceFilter={{
-                    basePriceRange,
-                    currentMin: params.minPrice ?? null,
-                    currentMax: params.maxPrice ?? null,
-                    onChange: handlePriceChange,
-                  }}
-                  productFilters={{
-                    filters: otherFilters,
-                    decodedFilters,
-                    onChange: handleFilterChange,
-                  }}
-                  clearFilters={{
-                    hasActiveFilters,
-                    onClear: handleClearFilters,
-                  }}
-                />
-
-                {/* Discounted products*/}
-                <DiscountedProduct />
-              </div>
-
-              {/*Main page*/}
-              <div className='relative w-full space-y-7.5'>
-                <header className='animate-fade-in flex items-center gap-x-4'>
-                  <SelectWrapper label='Sort:' className='w-full max-w-95'>
-                    <NativeSelect
-                      className='w-full'
-                      name='collection-sort-select'
-                      value={handlers.getSortSelectValue()}
-                      onChange={handlers.handleSortChange}
-                    >
-                      <NativeSelectOption value='BEST_SELLING'>Best Selling</NativeSelectOption>
-                      <NativeSelectOption value='PRICE_ASC'>Price: Low to High</NativeSelectOption>
-                      <NativeSelectOption value='PRICE_DESC'>Price: High to Low</NativeSelectOption>
-                      <NativeSelectOption value='CREATED'>Newest Arrivals</NativeSelectOption>
-                    </NativeSelect>
-                  </SelectWrapper>
-
-                  <SelectWrapper label='Show:' className='w-full max-w-50'>
-                    <NativeSelect
-                      className='w-full'
-                      name='collection-products-per-page-select'
-                      value={productsPerPage.toString()}
-                      onChange={handlers.handleShowChange}
-                    >
-                      <NativeSelectOption value='12'>12</NativeSelectOption>
-                      <NativeSelectOption value='24'>24</NativeSelectOption>
-                      <NativeSelectOption value='48'>48</NativeSelectOption>
-                      <NativeSelectOption value='96'>96</NativeSelectOption>
-                    </NativeSelect>
-                  </SelectWrapper>
-
-                  {/* Products Grid*/}
-                  <List
-                    data={[
-                      { label: 'List view', icon: LayoutList, mode: 'list' },
-                      { label: 'Grid view', icon: LayoutGrid, mode: 'grid' },
-                    ]}
-                    renderItem={item => (
-                      <button
-                        type='button'
-                        onClick={() => setMode(item.mode as 'list' | 'grid')}
-                        aria-label={item.label}
-                        className={cn(
-                          'transition-colors',
-                          (item.mode === 'list' && isList) || (item.mode === 'grid' && isGrid)
-                            ? 'text-secondary'
-                            : 'text-muted-foreground hover:text-foreground',
-                        )}
-                      >
-                        <item.icon size={24} strokeWidth={2.25} />
-                      </button>
-                    )}
-                    keyExtractor={item => item.mode}
-                    className='hidden items-center gap-x-4 self-end md:ml-auto md:flex'
+                <MobileFilters>
+                  <Filters
+                    className='w-full rounded-none rounded-b border-t py-5 shadow-none'
+                    priceFilter={{
+                      basePriceRange,
+                      currentMin: params.minPrice ?? null,
+                      currentMax: params.maxPrice ?? null,
+                      onChange: handlePriceChange,
+                    }}
+                    productFilters={{
+                      filters: otherFilters,
+                      decodedFilters,
+                      onChange: handleFilterChange,
+                    }}
+                    clearFilters={{
+                      hasActiveFilters,
+                      onClear: handleClearFilters,
+                    }}
                   />
-                </header>
+                </MobileFilters>
+              </div>
 
-                <List
-                  data={allProducts}
-                  renderItem={product => <ProductCard product={product} view={isGrid ? 'grid' : 'list'} />}
-                  keyExtractor={product => product.id}
-                  className={cn(
-                    'animate-fade-in gap-5',
-                    isGrid && 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3',
-                    isList && 'flex flex-col',
-                  )}
-                />
+              <div className='xl:grid xl:grid-cols-[auto_1fr] xl:items-start xl:gap-5'>
+                {/*Sidebar*/}
+                <div className='space-y-5'>
+                  {/* Filters*/}
+                  <Filters
+                    className='hidden xl:block'
+                    priceFilter={{
+                      basePriceRange,
+                      currentMin: params.minPrice ?? null,
+                      currentMax: params.maxPrice ?? null,
+                      onChange: handlePriceChange,
+                    }}
+                    productFilters={{
+                      filters: otherFilters,
+                      decodedFilters,
+                      onChange: handleFilterChange,
+                    }}
+                    clearFilters={{
+                      hasActiveFilters,
+                      onClear: handleClearFilters,
+                    }}
+                  />
 
-                {/* Load More Button */}
-                <Show when={hasNextPage}>
-                  <div className='animate-fade-in flex justify-center'>
-                    <LoadMore
-                      isLoading={isFetchingNextPage}
-                      onClick={() => fetchNextPage()}
-                      disabled={isFetchingNextPage}
+                  {/* Discounted products*/}
+                  <DiscountedProduct />
+                </div>
+
+                {/*Main page*/}
+                <div className='relative w-full space-y-7.5'>
+                  <header className='animate-fade-in flex items-center gap-x-4'>
+                    <SelectWrapper label='Sort:' className='w-full max-w-95'>
+                      <NativeSelect
+                        className='w-full'
+                        name='collection-sort-select'
+                        value={handlers.getSortSelectValue()}
+                        onChange={handlers.handleSortChange}
+                      >
+                        <NativeSelectOption value='BEST_SELLING'>Best Selling</NativeSelectOption>
+                        <NativeSelectOption value='PRICE_ASC'>Price: Low to High</NativeSelectOption>
+                        <NativeSelectOption value='PRICE_DESC'>Price: High to Low</NativeSelectOption>
+                        <NativeSelectOption value='CREATED'>Newest Arrivals</NativeSelectOption>
+                      </NativeSelect>
+                    </SelectWrapper>
+
+                    <SelectWrapper label='Show:' className='w-full max-w-50'>
+                      <NativeSelect
+                        className='w-full'
+                        name='collection-products-per-page-select'
+                        value={productsPerPage.toString()}
+                        onChange={handlers.handleShowChange}
+                      >
+                        <NativeSelectOption value='12'>12</NativeSelectOption>
+                        <NativeSelectOption value='24'>24</NativeSelectOption>
+                        <NativeSelectOption value='48'>48</NativeSelectOption>
+                        <NativeSelectOption value='96'>96</NativeSelectOption>
+                      </NativeSelect>
+                    </SelectWrapper>
+
+                    {/* Products Grid*/}
+                    <List
+                      data={[
+                        { label: 'List view', icon: LayoutList, mode: 'list' },
+                        { label: 'Grid view', icon: LayoutGrid, mode: 'grid' },
+                      ]}
+                      renderItem={item => (
+                        <button
+                          type='button'
+                          onClick={() => setMode(item.mode as 'list' | 'grid')}
+                          aria-label={item.label}
+                          className={cn(
+                            'transition-colors',
+                            (item.mode === 'list' && isList) || (item.mode === 'grid' && isGrid)
+                              ? 'text-secondary'
+                              : 'text-muted-foreground hover:text-foreground',
+                          )}
+                        >
+                          <item.icon size={24} strokeWidth={2.25} />
+                        </button>
+                      )}
+                      keyExtractor={item => item.mode}
+                      className='hidden items-center gap-x-4 self-end md:ml-auto md:flex'
                     />
-                  </div>
-                </Show>
+                  </header>
 
-                {/* Popular Products in Category */}
-                <PopularCollectionProducts handle={handle} />
+                  <List
+                    data={allProducts}
+                    renderItem={product => <ProductCard product={product} view={isGrid ? 'grid' : 'list'} />}
+                    keyExtractor={product => product.id}
+                    className={cn(
+                      'animate-fade-in gap-5',
+                      isGrid && 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3',
+                      isList && 'flex flex-col',
+                    )}
+                  />
 
-                {/* Full Description */}
-                <Show when={!!collection?.fullDescription?.value}>
-                  <RichText className='mt-12.5' schema={collection?.fullDescription?.value ?? ''} />
-                </Show>
+                  {/* Load More Button */}
+                  <Show when={hasNextPage}>
+                    <div className='animate-fade-in flex justify-center'>
+                      <LoadMore
+                        isLoading={isFetchingNextPage}
+                        onClick={() => fetchNextPage()}
+                        disabled={isFetchingNextPage}
+                      />
+                    </div>
+                  </Show>
+
+                  {/* Popular Products in Category */}
+                  <PopularCollectionProducts handle={handle} />
+
+                  {/* Full Description */}
+                  <Show when={!!collection?.fullDescription?.value}>
+                    <RichText className='mt-12.5' schema={collection?.fullDescription?.value ?? ''} />
+                  </Show>
+                </div>
               </div>
             </div>
-          </div>
+          </Show>
         </Show>
-      </Show>
-    </PageWrapper>
+      </PageWrapper>
+      {/*News*/}
+      <News />
+    </>
   );
 };
