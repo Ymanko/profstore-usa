@@ -2,10 +2,10 @@
 
 import { useSuspenseQuery } from '@tanstack/react-query';
 
+import { ContentBlock } from '@/features/categories/components/content-block';
 import { CategoryCard } from '@/shared/components/common/category-card';
 import { List } from '@/shared/components/common/list';
 import { PageWrapper } from '@/shared/components/common/page-wrapper';
-import { RichText } from '@/shared/components/common/rich-text';
 import { Section } from '@/shared/components/common/section';
 import { Show } from '@/shared/components/common/show';
 import { Typography } from '@/shared/components/ui/typography';
@@ -60,8 +60,20 @@ export function CategoryDetail({ handle }: CategoryDetailProps) {
           />
         </Show>
 
-        <Show when={category.description}>
-          <RichText className='prose-ul:grid prose-ul:grid-cols-4 mb-8' schema={category.description} />
+        {/* Content Blocks */}
+        <Show when={category.content && category.content.length > 0}>
+          <div className='space-y-12'>
+            {category.content?.map(block => (
+              <ContentBlock
+                key={block.id}
+                title={block.title}
+                text={block.text}
+                media={block.media}
+                poster={block.poster}
+                mediaPosition={block.mediaPosition}
+              />
+            ))}
+          </div>
         </Show>
       </div>
     </PageWrapper>

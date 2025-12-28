@@ -33,6 +33,30 @@ const GET_CATEGORY = `
                   altText
                 }
               }
+              ... on Metaobject {
+                id
+                fields {
+                  key
+                  value
+                  type
+                  reference {
+                    ... on MediaImage {
+                      image {
+                        url
+                        altText
+                        width
+                        height
+                      }
+                    }
+                    ... on Video {
+                      sources {
+                        url
+                        mimeType
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -40,6 +64,24 @@ const GET_CATEGORY = `
     }
   }
 `;
+
+type ContentMetaobjectField = {
+  key: string;
+  value?: string | null;
+  type: string;
+  reference?: {
+    image?: {
+      url: string;
+      altText?: string | null;
+      width?: number | null;
+      height?: number | null;
+    } | null;
+    sources?: Array<{
+      url: string;
+      mimeType: string;
+    }>;
+  } | null;
+};
 
 type MetaobjectField = {
   key: string;
@@ -52,10 +94,11 @@ type MetaobjectField = {
     edges: Array<{
       node: {
         id: string;
-        handle: string;
-        title: string;
+        handle?: string;
+        title?: string;
         description?: string;
         image?: { url: string; altText?: string } | null;
+        fields?: ContentMetaobjectField[];
       };
     }>;
   } | null;
@@ -69,6 +112,21 @@ type MetaobjectNode = {
 
 type CategoryData = {
   metaobject: MetaobjectNode | null;
+};
+
+// Helper function to parse content metaobjects
+const parseContentMetaobject = (fields: ContentMetaobjectField[]) => {
+  const getFieldValue = (key: string) => fields.find(f => f.key === key)?.value ?? null;
+  const getFieldImage = (key: string) => fields.find(f => f.key === key)?.reference?.image ?? null;
+  const getFieldVideo = (key: string) => fields.find(f => f.key === key)?.reference?.sources ?? null;
+
+  return {
+    title: getFieldValue('title'),
+    text: getFieldValue('text'),
+    media: getFieldImage('media') || getFieldVideo('media'),
+    poster: getFieldImage('poster'),
+    mediaPosition: getFieldValue('media_position'),
+  };
 };
 
 export const getCategoryQueryOptions = (handle: string) =>
@@ -93,6 +151,16 @@ export const getCategoryQueryOptions = (handle: string) =>
       const descriptionField = node.fields.find(f => f.key === 'description');
       const imageField = node.fields.find(f => f.key === 'collection_image');
       const subCollectionsField = node.fields.find(f => f.key === 'sub_collections');
+      const contentField = node.fields.find(f => f.key === 'content');
+
+      // Parse content metaobjects
+      const contentMetaobjects =
+        contentField?.references?.edges
+          .filter(edge => edge.node.fields) // Only nodes with fields (metaobjects)
+          .map(edge => ({
+            id: edge.node.id,
+            ...parseContentMetaobject(edge.node.fields!),
+          })) || [];
 
       return {
         id: node.id,
@@ -106,13 +174,16 @@ export const getCategoryQueryOptions = (handle: string) =>
             }
           : null,
         subCollections:
-          subCollectionsField?.references?.edges.map(edge => ({
-            id: edge.node.id,
-            handle: edge.node.handle,
-            title: edge.node.title,
-            description: edge.node.description || '',
-            image: edge.node.image,
-          })) || [],
+          subCollectionsField?.references?.edges
+            .filter(edge => edge.node.handle) // Only Collection nodes
+            .map(edge => ({
+              id: edge.node.id,
+              handle: edge.node.handle!,
+              title: edge.node.title!,
+              description: edge.node.description || '',
+              image: edge.node.image,
+            })) || [],
+        content: contentMetaobjects,
       };
     },
   });
