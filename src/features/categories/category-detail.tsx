@@ -62,7 +62,7 @@ export function CategoryDetail({ handle }: CategoryDetailProps) {
 
         {/* Content Blocks */}
         <Show when={category.content && category.content.length > 0}>
-          <div className='space-y-12'>
+          <div className='space-y-6'>
             {category.content?.map(block => (
               <ContentBlock
                 key={block.id}

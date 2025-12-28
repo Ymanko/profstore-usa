@@ -36,17 +36,11 @@ interface ContentBlockProps {
 
 export const ContentBlock: FC<ContentBlockProps> = ({ title, text, media, poster, mediaPosition = 'right' }) => {
   const isMediaLeft = mediaPosition === 'left';
-  const isMediaRight = mediaPosition === 'right';
   const isVideo = Array.isArray(media);
   const hasMedia = media !== null && media !== undefined;
 
   return (
-    <div
-      className={cn(
-        'grid gap-8',
-        hasMedia ? 'md:grid-cols-2 md:items-center' : 'md:grid-cols-1',
-      )}
-    >
+    <div className={cn('grid gap-8', hasMedia ? 'md:grid-cols-2 md:items-center' : 'md:grid-cols-1')}>
       {/* Text Content */}
       <div className={cn('space-y-4', isMediaLeft && hasMedia && 'md:order-2')}>
         <Show when={title}>
@@ -56,7 +50,10 @@ export const ContentBlock: FC<ContentBlockProps> = ({ title, text, media, poster
         </Show>
 
         <Show when={text}>
-          <RichText schema={text || ''} />
+          <RichText
+            schema={text || ''}
+            className='prose-ul:grid md:prose-ul:gap-x-5 md:prose-ul:grid-cols-2 xl:prose-ul:grid-cols-3'
+          />
         </Show>
       </div>
 
@@ -64,11 +61,7 @@ export const ContentBlock: FC<ContentBlockProps> = ({ title, text, media, poster
       {hasMedia && (
         <div className={cn('relative w-full', isMediaLeft && 'md:order-1')}>
           {isVideo ? (
-            <video
-              className='h-auto w-full rounded-lg'
-              controls
-              poster={poster?.url}
-            >
+            <video className='h-auto w-full rounded-lg' controls poster={poster?.url}>
               {(media as Array<{ url: string; mimeType: string }>).map((source, index) => (
                 <source key={index} src={source.url} type={source.mimeType} />
               ))}

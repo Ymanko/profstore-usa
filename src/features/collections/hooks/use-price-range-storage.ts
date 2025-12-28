@@ -18,9 +18,7 @@ export function usePriceRangeStorage({ handle, priceRange, hasActiveFilters, isM
   } | null>(`price-range-${handle}`, null);
 
   // Use original range for slider, current range for reset logic
-  const basePriceRange = originalPriceRange
-    ? { min: originalPriceRange.min, max: originalPriceRange.max }
-    : priceRange;
+  const basePriceRange = originalPriceRange ? { min: originalPriceRange.min, max: originalPriceRange.max } : priceRange;
 
   // Smart price range storage with validation
   useEffect(() => {
