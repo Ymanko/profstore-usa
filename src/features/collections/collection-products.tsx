@@ -1,8 +1,11 @@
 'use client';
 
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
-import { CircleX, LayoutGrid, LayoutList, Loader2 } from 'lucide-react';
+import { LayoutGrid, LayoutList } from 'lucide-react';
 
+import { Filters } from '@/features/collections/components/filters';
+import { LoadMore } from '@/features/collections/components/load-more';
+import { SelectWrapper } from '@/features/collections/components/select-wrapper';
 import { useCollectionFilters } from '@/features/collections/hooks/use-collection-filters';
 import { useCollectionParams } from '@/features/collections/hooks/use-collection-params';
 import { useDecodedFilters } from '@/features/collections/hooks/use-decoded-filters';
@@ -25,9 +28,6 @@ import {
   type Filter,
   type SubcategoryProductsData,
 } from '@/shared/queries/collections/get-subcategory-products';
-
-import { FilterItem } from './components/filter-item';
-import { PriceRangeFilter } from './components/price-range-filter';
 
 import type { FC } from 'react';
 
@@ -99,14 +99,13 @@ export const CollectionProducts: FC<{
   const hasActiveFilters = params.minPrice !== null || params.maxPrice !== null || params.f !== '';
 
   // Clear all filters
-  const handleClearFilters = async () => {
-    // Clear URL params
+  const handleClearFilters = () => {
     setParams({
       minPrice: null,
       maxPrice: null,
       f: '',
     });
-    // Clear session storage for price range
+
     sessionStorage.removeItem(`price-range-${handle}`);
   };
 
@@ -135,81 +134,55 @@ export const CollectionProducts: FC<{
 
             <div className='xl:grid xl:grid-cols-[auto_1fr] xl:items-start xl:gap-5'>
               {/* Filters*/}
-              <div className='bg-sidebar animate-fade-in relative w-86 rounded-[10px] px-4.5 py-6 shadow-xs'>
-                {/* Clear Filters Button */}
-                <Show when={hasActiveFilters}>
-                  <button
-                    onClick={handleClearFilters}
-                    className='text-secondary hover:text-secondary/80 animate-fade-in absolute top-7 right-7 inline-flex w-fit items-center gap-1 text-sm font-medium transition-colors'
-                    type='button'
-                  >
-                    <CircleX className='size-4' />
-                    Clear all filters
-                  </button>
-                </Show>
-
-                <div className='custom-scrollbar space-y-6 overflow-y-auto pr-2'>
-                  {/* Price Filter - Always First */}
-                  <div className='border-b pb-4'>
-                    <Show
-                      when={isMounted}
-                      fallback={
-                        <div className='space-y-4'>
-                          <Typography variant='bold'>Price</Typography>
-
-                          <div className='grid grid-cols-2 gap-3'>
-                            <div className='bg-muted-primary/50 h-9 animate-pulse rounded' />
-                            <div className='bg-muted-primary/50 h-9 animate-pulse rounded' />
-                          </div>
-                          <div className='bg-muted-primary/50 h-1 animate-pulse rounded-full' />
-                        </div>
-                      }
-                    >
-                      <PriceRangeFilter
-                        baseMin={basePriceRange.min}
-                        baseMax={basePriceRange.max}
-                        currentMin={params.minPrice ?? undefined}
-                        currentMax={params.maxPrice ?? undefined}
-                        onPriceChange={handlePriceChange}
-                      />
-                    </Show>
-                  </div>
-
-                  {/* Other Filters */}
-                  <List
-                    data={otherFilters}
-                    renderItem={(filter: Filter) => (
-                      <FilterItem filter={filter} decodedFilters={decodedFilters} onFilterChange={handleFilterChange} />
-                    )}
-                    keyExtractor={(filter: Filter) => filter.id}
-                    className='space-y-3.5'
-                    itemClassName='space-y-3.5 border-b pb-4 last:border-0'
-                  />
-                </div>
-              </div>
+              <Filters
+                className='hidden xl:block'
+                priceFilter={{
+                  basePriceRange,
+                  currentMin: params.minPrice ?? null,
+                  currentMax: params.maxPrice ?? null,
+                  onChange: handlePriceChange,
+                }}
+                productFilters={{
+                  filters: otherFilters,
+                  decodedFilters,
+                  onChange: handleFilterChange,
+                }}
+                clearFilters={{
+                  hasActiveFilters,
+                  onClear: handleClearFilters,
+                }}
+              />
 
               {/* Products Grid*/}
-              <div className='relative space-y-7.5'>
-                <header className='animate-fade-in flex items-center justify-between'>
-                  <div className='flex items-center gap-x-4'>
-                    <Typography variant='bold'>Sort:</Typography>
-                    <NativeSelect value={handlers.getSortSelectValue()} onChange={handlers.handleSortChange}>
+              <div className='relative w-full space-y-7.5'>
+                <header className='animate-fade-in flex items-center gap-x-4'>
+                  <SelectWrapper label='Sort:' className='w-full max-w-95'>
+                    <NativeSelect
+                      className='w-full'
+                      name='collection-sort-select'
+                      value={handlers.getSortSelectValue()}
+                      onChange={handlers.handleSortChange}
+                    >
                       <NativeSelectOption value='BEST_SELLING'>Best Selling</NativeSelectOption>
                       <NativeSelectOption value='PRICE_ASC'>Price: Low to High</NativeSelectOption>
                       <NativeSelectOption value='PRICE_DESC'>Price: High to Low</NativeSelectOption>
                       <NativeSelectOption value='CREATED'>Newest Arrivals</NativeSelectOption>
                     </NativeSelect>
-                  </div>
+                  </SelectWrapper>
 
-                  <div className='flex items-center gap-x-4'>
-                    <Typography variant='bold'>Show:</Typography>
-                    <NativeSelect value={productsPerPage.toString()} onChange={handlers.handleShowChange}>
+                  <SelectWrapper label='Show:' className='w-full max-w-50'>
+                    <NativeSelect
+                      className='w-full'
+                      name='collection-products-per-page-select'
+                      value={productsPerPage.toString()}
+                      onChange={handlers.handleShowChange}
+                    >
                       <NativeSelectOption value='12'>12</NativeSelectOption>
                       <NativeSelectOption value='24'>24</NativeSelectOption>
                       <NativeSelectOption value='48'>48</NativeSelectOption>
                       <NativeSelectOption value='96'>96</NativeSelectOption>
                     </NativeSelect>
-                  </div>
+                  </SelectWrapper>
 
                   <List
                     data={[
@@ -232,7 +205,7 @@ export const CollectionProducts: FC<{
                       </button>
                     )}
                     keyExtractor={item => item.mode}
-                    className='flex items-center gap-x-4'
+                    className='hidden items-center gap-x-4 self-end md:ml-auto md:flex'
                   />
                 </header>
 
@@ -250,19 +223,11 @@ export const CollectionProducts: FC<{
                 {/* Load More Button */}
                 <Show when={hasNextPage}>
                   <div className='animate-fade-in flex justify-center'>
-                    <button
+                    <LoadMore
+                      isLoading={isFetchingNextPage}
                       onClick={() => fetchNextPage()}
                       disabled={isFetchingNextPage}
-                      className='bg-secondary hover:bg-secondary/90 disabled:bg-muted-primary disabled:text-muted-foreground flex items-center gap-2 rounded-lg px-8 py-3 font-medium text-white transition-colors'
-                      type='button'
-                    >
-                      <Show when={isFetchingNextPage} fallback='Load More'>
-                        <>
-                          <Loader2 className='size-4 animate-spin' />
-                          Loading...
-                        </>
-                      </Show>
-                    </button>
+                    />
                   </div>
                 </Show>
 
