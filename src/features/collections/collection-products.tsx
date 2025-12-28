@@ -7,6 +7,7 @@ import { DiscountedProduct } from '@/features/collections/components/discounted-
 import { Filters } from '@/features/collections/components/filters';
 import { LoadMore } from '@/features/collections/components/load-more';
 import { MobileFilters } from '@/features/collections/components/mobile-filters';
+import { PopularCollectionProducts } from '@/features/collections/components/popular-collection-products';
 import { SelectWrapper } from '@/features/collections/components/select-wrapper';
 import { useCollectionFilters } from '@/features/collections/hooks/use-collection-filters';
 import { useCollectionParams } from '@/features/collections/hooks/use-collection-params';
@@ -139,7 +140,8 @@ export const CollectionProducts: FC<{
             </div>
 
             <div className='xl:grid xl:grid-cols-[auto_1fr] xl:items-start xl:gap-5'>
-              <div className=''>
+              {/*Sidebar*/}
+              <div className='space-y-5'>
                 {/* Filters*/}
                 <Filters
                   className='hidden xl:block'
@@ -164,7 +166,7 @@ export const CollectionProducts: FC<{
                 <DiscountedProduct />
               </div>
 
-              {/* Products Grid*/}
+              {/*Main page*/}
               <div className='relative w-full space-y-7.5'>
                 <header className='animate-fade-in flex items-center gap-x-4'>
                   <SelectWrapper label='Sort:' className='w-full max-w-95'>
@@ -195,6 +197,7 @@ export const CollectionProducts: FC<{
                     </NativeSelect>
                   </SelectWrapper>
 
+                  {/* Products Grid*/}
                   <List
                     data={[
                       { label: 'List view', icon: LayoutList, mode: 'list' },
@@ -242,6 +245,10 @@ export const CollectionProducts: FC<{
                   </div>
                 </Show>
 
+                {/* Popular Products in Category */}
+                <PopularCollectionProducts handle={handle} />
+
+                {/* Full Description */}
                 <Show when={!!collection?.fullDescription?.value}>
                   <RichText className='mt-12.5' schema={collection?.fullDescription?.value ?? ''} />
                 </Show>

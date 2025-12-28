@@ -12,7 +12,7 @@ export function DiscountedProduct() {
 
   if (isLoading) {
     return (
-      <div className='mt-5 hidden space-y-4 xl:block'>
+      <div className='hidden space-y-4 xl:block'>
         <div className='bg-muted-primary/50 h-9 animate-pulse rounded-lg' />
         <div className='bg-muted-primary/50 h-96 animate-pulse rounded-lg' />
       </div>
@@ -22,7 +22,7 @@ export function DiscountedProduct() {
   if (error || !products || products.length === 0) return null;
 
   return (
-    <div className='mt-5 hidden space-y-4 xl:block'>
+    <div className='hidden space-y-4 xl:block'>
       <Typography variant='h2' as='h2'>
         Discounted products
       </Typography>
