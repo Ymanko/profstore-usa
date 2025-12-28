@@ -21,7 +21,6 @@ export const RichText: FC<RichTextSchema> = ({ schema, className, ...props }) =>
         'prose-h3:mt-0 prose-h3:font-bold',
         'prose-p:mt-0',
         // List styles
-        'prose-ul:grid prose-ul:grid-cols-4',
         'prose-li:marker:text-foreground',
         // Image styles - responsive sizes based on design
         'prose-img:w-full prose-img:h-auto prose-img:object-cover prose-img:object-center',
