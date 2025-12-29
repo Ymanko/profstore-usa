@@ -1,0 +1,85 @@
+'use client';
+
+import Image from 'next/image';
+
+import { RichText } from '@/shared/components/common/rich-text';
+import { Show } from '@/shared/components/common/show';
+import { Typography } from '@/shared/components/ui/typography';
+import { cn } from '@/shared/lib/utils';
+
+import type { FC } from 'react';
+
+type Media =
+  | {
+      url: string;
+      altText?: string | null;
+      width?: number | null;
+      height?: number | null;
+    }
+  | Array<{
+      url: string;
+      mimeType: string;
+    }>;
+
+interface ContentBlockProps {
+  title?: string | null;
+  text?: string | null;
+  media?: Media | null;
+  poster?: {
+    url: string;
+    altText?: string | null;
+    width?: number | null;
+    height?: number | null;
+  } | null;
+  mediaPosition?: string | null;
+}
+
+export const ContentBlock: FC<ContentBlockProps> = ({ title, text, media, poster, mediaPosition = 'right' }) => {
+  const isMediaLeft = mediaPosition === 'left';
+  const isVideo = Array.isArray(media);
+  const hasMedia = media !== null && media !== undefined;
+
+  return (
+    <div className={cn('grid gap-8', hasMedia ? 'md:grid-cols-2 md:items-center' : 'md:grid-cols-1')}>
+      {/* Text Content */}
+      <div className={cn('space-y-4', isMediaLeft && hasMedia && 'md:order-2')}>
+        <Show when={title}>
+          <Typography variant='h2' as='h2'>
+            {title}
+          </Typography>
+        </Show>
+
+        <Show when={text}>
+          <RichText
+            schema={text || ''}
+            className='prose-ul:grid md:prose-ul:gap-x-5 md:prose-ul:grid-cols-2 xl:prose-ul:grid-cols-3'
+          />
+        </Show>
+      </div>
+
+      {/* Media */}
+      {hasMedia && (
+        <div className={cn('relative w-full', isMediaLeft && 'md:order-1')}>
+          {isVideo ? (
+            <video className='h-auto w-full rounded-lg' controls poster={poster?.url}>
+              {(media as Array<{ url: string; mimeType: string }>).map((source, index) => (
+                <source key={index} src={source.url} type={source.mimeType} />
+              ))}
+              Your browser does not support the video tag.
+            </video>
+          ) : (
+            <div className='relative h-auto w-full overflow-hidden rounded-lg'>
+              <Image
+                src={(media as { url: string }).url}
+                alt={(media as { altText?: string | null }).altText || title || ''}
+                width={(media as { width?: number | null }).width || 800}
+                height={(media as { height?: number | null }).height || 600}
+                className='h-auto w-full object-cover'
+              />
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};

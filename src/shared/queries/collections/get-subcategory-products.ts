@@ -1,9 +1,11 @@
-import { queryOptions } from '@tanstack/react-query';
+import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query';
 
 import { STALE_TIME } from '@/shared/constants/stale-time';
 import { serverGraphqlFetcher } from '@/shared/lib/graphql/server-graphql-fetcher';
 
-const GET_SUBCATEGORY_PRODUCTS = `
+import type { Schema } from '@thebeyondgroup/shopify-rich-text-renderer';
+
+export const GET_SUBCATEGORY_PRODUCTS = `
   query GetSubcategoryProducts(
     $handle: String!
     $first: Int = 24
@@ -17,6 +19,9 @@ const GET_SUBCATEGORY_PRODUCTS = `
       handle
       title
       description
+      fullDescription: metafield(namespace: "custom", key: "full_description") {
+        value
+      }
       image {
         url
         altText
@@ -196,12 +201,15 @@ export type Product = {
   };
 };
 
-type SubcategoryProductsData = {
+export type SubcategoryProductsData = {
   collection: {
     id: string;
     handle: string;
     title: string;
     description: string;
+    fullDescription?: {
+      value: Schema;
+    } | null;
     image?: {
       url: string;
       altText?: string;
@@ -231,4 +239,47 @@ export const getSubcategoryProductsQueryOptions = (params: SubcategoryProductsPa
       });
     },
     staleTime: STALE_TIME.ONE_MINUTE,
+  });
+
+export const getSubcategoryProductsInfiniteQueryOptions = (params: {
+  handle: string;
+  sortKey: SubcategoryProductsParams['sortKey'];
+  reverse: boolean;
+  productsPerPage: number;
+  filters: SubcategoryProductsParams['filters'];
+}) =>
+  infiniteQueryOptions({
+    queryKey: [
+      'subcategory',
+      params.handle,
+      'products',
+      {
+        sortKey: params.sortKey,
+        reverse: params.reverse,
+        productsPerPage: params.productsPerPage,
+        filters: params.filters,
+      },
+    ],
+    queryFn: async ({ pageParam }) => {
+      return serverGraphqlFetcher<SubcategoryProductsData>(
+        GET_SUBCATEGORY_PRODUCTS,
+        {
+          handle: params.handle,
+          first: params.productsPerPage,
+          after: (pageParam as string | null) ?? null,
+          sortKey: params.sortKey,
+          reverse: params.reverse,
+          filters: params.filters,
+        },
+        {
+          tags: ['collection', params.handle],
+        },
+      );
+    },
+    initialPageParam: null as string | null,
+    getNextPageParam: lastPage => {
+      const pageInfo = lastPage.collection?.products.pageInfo;
+      return pageInfo?.hasNextPage ? pageInfo.endCursor : null;
+    },
+    staleTime: STALE_TIME.FIVE_MINUTES,
   });

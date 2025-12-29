@@ -3,4 +3,5 @@ export const STALE_TIME = {
   ONE_DAY: 1000 * 60 * 60 * 24,
   ONE_HOUR: 1000 * 60 * 60,
   ONE_MINUTE: 1000 * 60,
+  FIVE_MINUTES: 1000 * 60 * 5,
 };

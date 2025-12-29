@@ -8,53 +8,48 @@ import { cn } from '@/shared/lib/utils';
 import type { Product } from '@/shared/queries/collections/get-subcategory-products';
 import type { ComponentPropsWithoutRef, FC } from 'react';
 
-interface ProductCardProps extends ComponentPropsWithoutRef<'div'> {
+interface DiscountedProductCardProps extends ComponentPropsWithoutRef<'div'> {
   product: Product;
-  view?: 'grid' | 'list';
   onAddToCart?: (productId: string) => void;
   onAddToFavorites?: (productId: string) => void;
 }
 
-export const ProductCard: FC<ProductCardProps> = ({
+export function calculateDiscountPercentage(oldPrice: number, newPrice: number): number {
+  const percentPerPrice = (newPrice * 100) / oldPrice;
+  return Math.round(100 - percentPerPrice);
+}
+
+export const DiscountedProductCard: FC<DiscountedProductCardProps> = ({
   product,
-  view = 'grid',
   onAddToCart,
   onAddToFavorites,
   className,
 }) => {
   const { id, title, featuredImage, availableForSale, priceRange, compareAtPriceRange } = product;
 
-  const currentPrice = parseFloat(compareAtPriceRange?.minVariantPrice.amount);
-  const previousPrice = parseFloat(priceRange?.minVariantPrice.amount);
-  const hasDiscount = currentPrice !== 0 && previousPrice > currentPrice;
-
-  const isListView = view === 'list';
+  const oldPrice = parseFloat(priceRange?.minVariantPrice.amount);
+  const newPrice = parseFloat(compareAtPriceRange?.minVariantPrice.amount);
 
   return (
-    <div
-      className={cn(
-        'gap-4 rounded-lg border p-4 transition-all duration-300',
-        isListView ? 'flex h-auto' : 'grid h-full',
-        className,
-      )}
-    >
-      <div
-        className={cn(
-          'relative overflow-hidden transition-all duration-300',
-          isListView ? 'h-40 w-40 shrink-0' : 'h-60 w-full',
-        )}
-      >
+    <div className={cn('grid h-full gap-4 rounded-lg border p-4 transition-all duration-300', className)}>
+      <div className='relative h-60 w-full overflow-hidden transition-all duration-300'>
         <Show when={featuredImage}>
           <Image
             src={featuredImage?.url ?? ''}
             alt={featuredImage?.altText ?? title}
             className='h-full w-full object-contain'
-            width={isListView ? 160 : 304}
-            height={isListView ? 160 : 240}
+            width={304}
+            height={240}
             loading='lazy'
           />
         </Show>
 
+        {/* Badge in top left */}
+        <span className='bg-secondary absolute top-0 left-0 flex items-center rounded-md px-3 text-lg font-bold text-white'>
+          {calculateDiscountPercentage(oldPrice, newPrice)}%
+        </span>
+
+        {/* Heart in top right */}
         <button
           onClick={() => (onAddToFavorites ? onAddToFavorites(id) : null)}
           className='text-muted-foreground hover:text-accent absolute top-0 right-0 flex size-10 items-center justify-center rounded-md transition-colors duration-200'
@@ -64,8 +59,8 @@ export const ProductCard: FC<ProductCardProps> = ({
         </button>
       </div>
 
-      <div className={cn('flex flex-col', isListView ? 'flex-1' : 'space-y-2.5 border-t pt-3.75')}>
-        <div className={cn(isListView && 'flex-1 space-y-2.5')}>
+      <div className='flex flex-col space-y-2.5 border-t pt-3.75'>
+        <div>
           <Typography variant='h3' as='h3' className='line-clamp-1 font-semibold'>
             {title}
           </Typography>
@@ -82,16 +77,15 @@ export const ProductCard: FC<ProductCardProps> = ({
           </Typography>
         </div>
 
-        <div className={cn('flex items-center justify-between gap-3', isListView ? 'mt-auto' : 'mt-auto')}>
-          <div className='space-y-1'>
-            <Show when={hasDiscount}>
-              <Typography variant='body' className='text-muted-foreground text-base font-bold line-through'>
-                {previousPrice}$
-              </Typography>
-            </Show>
+        <div className='mt-auto flex items-center justify-between gap-3'>
+          {/* Prices in row: old price left, new price right */}
+          <div className='flex items-center gap-2'>
+            <Typography variant='body' className='text-muted-foreground text-base line-through'>
+              {Math.round(oldPrice)} $
+            </Typography>
 
-            <Typography variant='body' className='text-foreground text-[22px] leading-tight font-extrabold'>
-              {hasDiscount ? currentPrice : previousPrice} $
+            <Typography variant='body' className='text-secondary text-[22px] leading-tight font-extrabold'>
+              {Math.round(newPrice)} $
             </Typography>
           </div>
 

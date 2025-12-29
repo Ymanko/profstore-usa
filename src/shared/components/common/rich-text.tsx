@@ -1,67 +1,40 @@
-import React from 'react';
+import { convertSchemaToHtml } from '@thebeyondgroup/shopify-rich-text-renderer';
 
-import { Typography } from '@/shared/components/ui/typography';
+import { cn } from '@/shared/lib/utils';
 
-type RichTextNode = {
-  type: string;
-  children?: RichTextNode[];
-  value?: string;
-  level?: number;
-  listType?: 'ordered' | 'unordered';
-};
+import type { Schema } from '@thebeyondgroup/shopify-rich-text-renderer';
+import type { ComponentPropsWithoutRef, FC } from 'react';
 
-type RichTextRoot = {
-  type: 'root';
-  children: RichTextNode[];
-};
-
-function renderNode(node: RichTextNode, index: number): React.ReactNode {
-  switch (node.type) {
-    case 'text':
-      return node.value;
-
-    case 'paragraph':
-      return (
-        <Typography key={index} variant='body' className='mb-4 last:mb-0'>
-          {node.children?.map((child, i) => renderNode(child, i))}
-        </Typography>
-      );
-
-    case 'heading':
-      const headingVariant = `h${node.level}` as 'h1' | 'h2' | 'h3' | 'h4';
-      return (
-        <Typography key={index} variant={headingVariant} as={headingVariant} className='mb-4 last:mb-0'>
-          {node.children?.map((child, i) => renderNode(child, i))}
-        </Typography>
-      );
-
-    case 'list':
-      const ListTag = node.listType === 'ordered' ? 'ol' : 'ul';
-      const listStyle = node.listType === 'ordered' ? 'list-decimal' : 'list-disc';
-
-      return (
-        <ListTag key={index} className={`mb-4 ml-6 ${listStyle} font-montserrat`}>
-          {node.children?.map((child, i) => renderNode(child, i))}
-        </ListTag>
-      );
-
-    case 'list-item':
-      return (
-        <li key={index} className='font-montserrat mb-2'>
-          {node.children?.map((child, i) => renderNode(child, i))}
-        </li>
-      );
-
-    default:
-      return node.children?.map((child, i) => renderNode(child, i));
-  }
+interface RichTextSchema extends ComponentPropsWithoutRef<'div'> {
+  schema: string | Schema | Schema[];
 }
 
-export function RichText({ content }: { content: string }) {
-  try {
-    const data: RichTextRoot = JSON.parse(content);
-    return <div className='prose max-w-none space-y-4'>{data.children?.map((child, i) => renderNode(child, i))}</div>;
-  } catch (_error) {
-    return <div>{content}</div>;
-  }
-}
+export const RichText: FC<RichTextSchema> = ({ schema, className, ...props }) => {
+  const html = convertSchemaToHtml(schema, { scoped: true });
+
+  return (
+    <div
+      className={cn(
+        'prose prose-base text-foreground max-w-none',
+        // Text styles
+        'prose-h2:mt-0',
+        'prose-h3:mt-0 prose-h3:font-bold',
+        'prose-p:mt-0',
+        // List styles
+        'prose-li:marker:text-foreground',
+        // Image styles - responsive sizes based on design
+        'prose-img:w-full prose-img:h-auto prose-img:object-cover prose-img:object-center',
+        'prose-img:my-4 prose-img:mx-auto',
+        // Mobile: 345x318
+        'prose-img:max-w-86.25 prose-img:aspect-345/318',
+        // Tablet: 669x410
+        'md:prose-img:max-w-167.25 md:prose-img:aspect-669/410',
+        // Desktop: 617x570
+        'xl:prose-img:max-w-154.25 xl:prose-img:aspect-617/570',
+        className,
+      )}
+      dangerouslySetInnerHTML={{ __html: html }}
+      {...props}
+    />
+  );
+};
