@@ -13,6 +13,7 @@ import { SelectWrapper } from '@/features/collections/components/select-wrapper'
 import { useCollectionFilters } from '@/features/collections/hooks/use-collection-filters';
 import { useCollectionParams } from '@/features/collections/hooks/use-collection-params';
 import { useDecodedFilters } from '@/features/collections/hooks/use-decoded-filters';
+import { useFiltersStorage } from '@/features/collections/hooks/use-filters-storage';
 import { usePriceRange } from '@/features/collections/hooks/use-price-range';
 import { usePriceRangeStorage } from '@/features/collections/hooks/use-price-range-storage';
 import { List } from '@/shared/components/common/list';
@@ -60,8 +61,9 @@ export const CollectionProducts: FC<{
 
   // Get filters from first page
   const collection = data.pages[0]?.collection;
-  const priceFilter = collection?.products.filters.find((f: Filter) => f.type === 'PRICE_RANGE');
-  const otherFilters = collection?.products.filters.filter((f: Filter) => f.type !== 'PRICE_RANGE') ?? [];
+  const currentFilters = collection?.products.filters ?? [];
+  const priceFilter = currentFilters.find((f: Filter) => f.type === 'PRICE_RANGE');
+  const otherFilters = currentFilters.filter((f: Filter) => f.type !== 'PRICE_RANGE');
 
   const priceRange = usePriceRange(priceFilter);
 
@@ -70,6 +72,14 @@ export const CollectionProducts: FC<{
     handle,
     priceRange,
     hasActiveFilters: params.minPrice !== null || params.maxPrice !== null,
+    isMounted,
+  });
+
+  // Filters storage - preserve filters even when no products match
+  const baseFilters = useFiltersStorage({
+    handle,
+    filters: otherFilters,
+    hasActiveFilters: params.f !== null,
     isMounted,
   });
 
@@ -106,7 +116,7 @@ export const CollectionProducts: FC<{
           }
         >
           <Show
-            when={allProducts.length > 0}
+            when={baseFilters.length > 0}
             fallback={
               <Typography variant='body-lg' className='text-muted-foreground py-20 text-center'>
                 No products yet
@@ -129,7 +139,7 @@ export const CollectionProducts: FC<{
                       onChange: handlePriceChange,
                     }}
                     productFilters={{
-                      filters: otherFilters,
+                      filters: baseFilters,
                       decodedFilters,
                       onChange: handleFilterChange,
                     }}
@@ -154,7 +164,7 @@ export const CollectionProducts: FC<{
                       onChange: handlePriceChange,
                     }}
                     productFilters={{
-                      filters: otherFilters,
+                      filters: baseFilters,
                       decodedFilters,
                       onChange: handleFilterChange,
                     }}
@@ -225,26 +235,35 @@ export const CollectionProducts: FC<{
                     />
                   </header>
 
-                  <List
-                    data={allProducts}
-                    renderItem={product => <ProductCard product={product} view={isGrid ? 'grid' : 'list'} />}
-                    keyExtractor={product => product.id}
-                    className={cn(
-                      'animate-fade-in gap-5',
-                      isGrid && 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3',
-                      isList && 'flex flex-col',
-                    )}
-                  />
+                  <Show
+                    when={allProducts.length > 0}
+                    fallback={
+                      <Typography variant='body-lg' className='text-muted-foreground py-20 text-center'>
+                        {hasActiveFilters ? 'No products match your filters' : 'No products available'}
+                      </Typography>
+                    }
+                  >
+                    <List
+                      data={allProducts}
+                      renderItem={product => <ProductCard product={product} view={isGrid ? 'grid' : 'list'} />}
+                      keyExtractor={product => product.id}
+                      className={cn(
+                        'animate-fade-in gap-5',
+                        isGrid && 'grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3',
+                        isList && 'flex flex-col',
+                      )}
+                    />
 
-                  {/* Load More Button */}
-                  <Show when={hasNextPage}>
-                    <div className='animate-fade-in flex justify-center'>
-                      <LoadMore
-                        isLoading={isFetchingNextPage}
-                        onClick={() => fetchNextPage()}
-                        disabled={isFetchingNextPage}
-                      />
-                    </div>
+                    {/* Load More Button */}
+                    <Show when={hasNextPage}>
+                      <div className='animate-fade-in flex justify-center'>
+                        <LoadMore
+                          isLoading={isFetchingNextPage}
+                          onClick={() => fetchNextPage()}
+                          disabled={isFetchingNextPage}
+                        />
+                      </div>
+                    </Show>
                   </Show>
 
                   {/* Popular Products in Category */}
