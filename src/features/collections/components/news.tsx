@@ -2,14 +2,20 @@
 
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
+import { useParams } from 'next/navigation';
 
 import { List } from '@/shared/components/common/list';
 import { Section } from '@/shared/components/common/section';
 import { Typography } from '@/shared/components/ui/typography';
 import { getNewsQueryOptions } from '@/shared/queries/blog/get-news';
 
-export const News = () => {
-  const { data: articles, isLoading, error } = useQuery(getNewsQueryOptions({ handle: 'news', first: 3 }));
+export function News() {
+  const { subcategory } = useParams();
+  const tag = typeof subcategory === 'string' ? subcategory : undefined;
+
+  const { data: articles, isLoading, error } = useQuery(
+    getNewsQueryOptions({ handle: 'news', first: 3, tag })
+  );
 
   if (isLoading) {
     return (
@@ -63,4 +69,4 @@ export const News = () => {
       />
     </Section>
   );
-};
+}
