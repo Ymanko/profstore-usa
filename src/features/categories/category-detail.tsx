@@ -20,7 +20,7 @@ export function CategoryDetail({ handle }: CategoryDetailProps) {
 
   if (!category) {
     return (
-      <Section className='py-10'>
+      <Section className='items-center justify-center py-20'>
         <Typography variant='body-lg' className='text-muted-foreground text-center'>
           Category not found
         </Typography>
@@ -49,7 +49,7 @@ export function CategoryDetail({ handle }: CategoryDetailProps) {
             renderItem={subCollection => (
               <CategoryCard
                 key={subCollection.id}
-                href={`/collections/${category.handle}/${subCollection.handle}`}
+                href={`/${category.handle}/${subCollection.handle}`}
                 title={subCollection.title}
                 image={subCollection.image?.url || ''}
                 alt={subCollection.image?.altText || subCollection.title}
@@ -66,11 +66,11 @@ export function CategoryDetail({ handle }: CategoryDetailProps) {
             {category.content?.map(block => (
               <ContentBlock
                 key={block.id}
-                title={block.title}
                 text={block.text}
                 media={block.media}
                 poster={block.poster}
                 mediaPosition={block.mediaPosition}
+                richTextClassName='prose-ul:grid sm:prose-ul:grid-cols-2 md:prose-ul:gap-x-5 xl:prose-ul:grid-cols-3'
               />
             ))}
           </div>

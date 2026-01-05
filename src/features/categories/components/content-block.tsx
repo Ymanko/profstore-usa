@@ -7,42 +7,24 @@ import { Show } from '@/shared/components/common/show';
 import { Typography } from '@/shared/components/ui/typography';
 import { cn } from '@/shared/lib/utils';
 
-import type { FC } from 'react';
+import type { ContentBlockProps } from '@/shared/types/content-block.types';
 
-type Media =
-  | {
-      url: string;
-      altText?: string | null;
-      width?: number | null;
-      height?: number | null;
-    }
-  | Array<{
-      url: string;
-      mimeType: string;
-    }>;
-
-interface ContentBlockProps {
-  title?: string | null;
-  text?: string | null;
-  media?: Media | null;
-  poster?: {
-    url: string;
-    altText?: string | null;
-    width?: number | null;
-    height?: number | null;
-  } | null;
-  mediaPosition?: string | null;
-}
-
-export const ContentBlock: FC<ContentBlockProps> = ({ title, text, media, poster, mediaPosition = 'right' }) => {
+export function ContentBlock({
+  title,
+  text,
+  media,
+  poster,
+  mediaPosition = 'right',
+  richTextClassName,
+}: ContentBlockProps) {
   const isMediaLeft = mediaPosition === 'left';
   const isVideo = Array.isArray(media);
   const hasMedia = media !== null && media !== undefined;
 
   return (
-    <div className={cn('grid gap-8', hasMedia ? 'md:grid-cols-2 md:items-center' : 'md:grid-cols-1')}>
+    <div className={cn('grid gap-8', hasMedia ? 'xl:grid-cols-2 xl:items-center' : 'xl:grid-cols-1')}>
       {/* Text Content */}
-      <div className={cn('space-y-4', isMediaLeft && hasMedia && 'md:order-2')}>
+      <div className={cn('space-y-4', isMediaLeft && hasMedia && 'xl:order-2')}>
         <Show when={title}>
           <Typography variant='h2' as='h2'>
             {title}
@@ -50,16 +32,13 @@ export const ContentBlock: FC<ContentBlockProps> = ({ title, text, media, poster
         </Show>
 
         <Show when={text}>
-          <RichText
-            schema={text || ''}
-            className='prose-ul:grid md:prose-ul:gap-x-5 md:prose-ul:grid-cols-2 xl:prose-ul:grid-cols-3'
-          />
+          <RichText schema={text || ''} className={cn(richTextClassName)} />
         </Show>
       </div>
 
       {/* Media */}
       {hasMedia && (
-        <div className={cn('relative w-full', isMediaLeft && 'md:order-1')}>
+        <div className={cn('relative w-full', isMediaLeft && 'xl:order-1')}>
           {isVideo ? (
             <video className='h-auto w-full rounded-lg' controls poster={poster?.url}>
               {(media as Array<{ url: string; mimeType: string }>).map((source, index) => (
@@ -82,4 +61,4 @@ export const ContentBlock: FC<ContentBlockProps> = ({ title, text, media, poster
       )}
     </div>
   );
-};
+}

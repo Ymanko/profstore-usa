@@ -1,12 +1,10 @@
 import { Banner } from '@/features/home/banner';
 import { Categories } from '@/features/home/categories';
+import { Description } from '@/features/home/description';
 import { OurBrands } from '@/features/home/our-brands';
 import { ProductTabs } from '@/features/home/product-tabs';
 import { Recommended } from '@/features/home/recommended';
 import { PageWrapper } from '@/shared/components/common/page-wrapper';
-import { RichText } from '@/shared/components/common/rich-text';
-import { Section } from '@/shared/components/common/section';
-import { Show } from '@/shared/components/common/show';
 import { Typography } from '@/shared/components/ui/typography';
 import { getQueryClient } from '@/shared/lib/tanstack/get-query-client';
 import { getCategoriesQueryOptions } from '@/shared/queries/home/get-categories';
@@ -35,40 +33,18 @@ export default async function Home() {
     queryClient.ensureQueryData(getSaleHitsQueryOptions),
   ]);
 
-  const getHomePageContent = queryClient.getQueryData(getHomePageContentQueryOptions.queryKey);
-
   return (
-    <PageWrapper>
+    <PageWrapper className='pb-0'>
       <Typography variant='h1' className='sr-only'>
         Welcome to ProfStore
       </Typography>
 
-      {/*MainBanner*/}
       <Banner />
-      {/*Category*/}
       <Categories />
-
-      {/*Recommended*/}
       <Recommended />
-
-      {/*NewAndSaleProducts*/}
       <ProductTabs />
-
-      {/*Description*/}
-      <Section className='pt-2.5 pb-5'>
-        <Show when={!!getHomePageContent?.descriptionTitle}>
-          <Typography variant='h2' as='h2' className='mb-5 text-[27px] md:mb-4.5 md:text-3xl'>
-            {getHomePageContent?.descriptionTitle}
-          </Typography>
-        </Show>
-
-        <Show when={!!getHomePageContent?.descriptionContent}>
-          <RichText schema={getHomePageContent?.descriptionContent ?? ''} />
-        </Show>
-      </Section>
-
-      {/*Our Brands*/}
-      <OurBrands brands={getHomePageContent?.brands} />
+      <Description />
+      <OurBrands />
     </PageWrapper>
   );
 }

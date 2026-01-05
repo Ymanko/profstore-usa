@@ -2,6 +2,11 @@ import { queryOptions } from '@tanstack/react-query';
 
 import { STALE_TIME } from '@/shared/constants/stale-time';
 import { serverGraphqlFetcher } from '@/shared/lib/graphql/server-graphql-fetcher';
+import {
+  parseContentBlocks,
+  CONTENT_BLOCK_FIELDS_FRAGMENT,
+  type ContentMetaobjectField,
+} from '@/shared/utils/parsers/parse-content-blocks';
 
 const GET_CATEGORY = `
   query GetCategory($handle: String!) {
@@ -34,28 +39,7 @@ const GET_CATEGORY = `
                 }
               }
               ... on Metaobject {
-                id
-                fields {
-                  key
-                  value
-                  type
-                  reference {
-                    ... on MediaImage {
-                      image {
-                        url
-                        altText
-                        width
-                        height
-                      }
-                    }
-                    ... on Video {
-                      sources {
-                        url
-                        mimeType
-                      }
-                    }
-                  }
-                }
+                ${CONTENT_BLOCK_FIELDS_FRAGMENT}
               }
             }
           }
@@ -64,24 +48,6 @@ const GET_CATEGORY = `
     }
   }
 `;
-
-type ContentMetaobjectField = {
-  key: string;
-  value?: string | null;
-  type: string;
-  reference?: {
-    image?: {
-      url: string;
-      altText?: string | null;
-      width?: number | null;
-      height?: number | null;
-    } | null;
-    sources?: Array<{
-      url: string;
-      mimeType: string;
-    }>;
-  } | null;
-};
 
 type MetaobjectField = {
   key: string;
@@ -114,21 +80,6 @@ type CategoryData = {
   metaobject: MetaobjectNode | null;
 };
 
-// Helper function to parse content metaobjects
-const parseContentMetaobject = (fields: ContentMetaobjectField[]) => {
-  const getFieldValue = (key: string) => fields.find(f => f.key === key)?.value ?? null;
-  const getFieldImage = (key: string) => fields.find(f => f.key === key)?.reference?.image ?? null;
-  const getFieldVideo = (key: string) => fields.find(f => f.key === key)?.reference?.sources ?? null;
-
-  return {
-    title: getFieldValue('title'),
-    text: getFieldValue('text'),
-    media: getFieldImage('media') || getFieldVideo('media'),
-    poster: getFieldImage('poster'),
-    mediaPosition: getFieldValue('media_position'),
-  };
-};
-
 export const getCategoryQueryOptions = (handle: string) =>
   queryOptions({
     queryKey: ['category', handle],
@@ -154,13 +105,7 @@ export const getCategoryQueryOptions = (handle: string) =>
       const contentField = node.fields.find(f => f.key === 'content');
 
       // Parse content metaobjects
-      const contentMetaobjects =
-        contentField?.references?.edges
-          .filter(edge => edge.node.fields) // Only nodes with fields (metaobjects)
-          .map(edge => ({
-            id: edge.node.id,
-            ...parseContentMetaobject(edge.node.fields!),
-          })) || [];
+      const contentMetaobjects = parseContentBlocks(contentField?.references);
 
       return {
         id: node.id,

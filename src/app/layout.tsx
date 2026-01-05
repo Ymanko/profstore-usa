@@ -3,13 +3,13 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { Montserrat, Inter } from 'next/font/google';
 
 import Providers from '@/app/providers';
-import { Footer } from '@/shared/components/layout/footer';
-import { Header } from '@/shared/components/layout/header';
+import { Footer } from '@/features/layout/footer';
+import { Header } from '@/features/layout/header';
 import { getQueryClient } from '@/shared/lib/tanstack/get-query-client';
 import { cn } from '@/shared/lib/utils';
 import { getMenuItemsQueryOptions } from '@/shared/queries/get-menu-items';
 
-import type { LayoutProps } from '@/shared/types/shared/types/common';
+import type { LayoutProps } from '@/shared/types/common';
 import type { Metadata } from 'next';
 
 const montserratFont = Montserrat({

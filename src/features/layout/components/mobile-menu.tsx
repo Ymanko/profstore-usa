@@ -1,9 +1,9 @@
 import { Menu } from 'lucide-react';
 import React from 'react';
 
+import { MobileUserActions } from '@/features/layout/components/mobile-user-actions';
 import { List } from '@/shared/components/common/list';
 import { Phone } from '@/shared/components/common/phone';
-import { MobileUserActions } from '@/shared/components/layout/components/mobile-user-actions';
 import { NavLink } from '@/shared/components/links/nav-link';
 import { SocialLinks } from '@/shared/components/links/social-links';
 import { TrainingLink } from '@/shared/components/links/training-link';

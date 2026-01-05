@@ -4,12 +4,12 @@ import { STALE_TIME } from '@/shared/constants/stale-time';
 import { serverGraphqlFetcher } from '@/shared/lib/graphql/server-graphql-fetcher';
 
 export const GET_NEWS = `
-  query GetNews($handle: String!, $first: Int = 10) {
+  query GetNews($handle: String!, $first: Int = 10, $query: String) {
     blog(handle: $handle) {
       id
       handle
       title
-      articles(first: $first, sortKey: PUBLISHED_AT, reverse: true) {
+      articles(first: $first, sortKey: PUBLISHED_AT, reverse: true, query: $query) {
         edges {
           node {
             id
@@ -71,13 +71,14 @@ export interface NewsData {
   } | null;
 }
 
-export const getNewsQueryOptions = (params: { handle: string; first?: number }) =>
+export const getNewsQueryOptions = (params: { handle: string; first?: number; tag?: string }) =>
   queryOptions({
-    queryKey: ['blog', params.handle, 'articles', { first: params.first }],
+    queryKey: ['blog', params.handle, 'articles', { first: params.first, tag: params.tag }],
     queryFn: async () => {
+      const query = params.tag ? `tag:${params.tag}` : undefined;
       return serverGraphqlFetcher<NewsData>(
         GET_NEWS,
-        { handle: params.handle, first: params.first ?? 10 },
+        { handle: params.handle, first: params.first ?? 10, query },
         { tags: ['blog', params.handle] },
       );
     },

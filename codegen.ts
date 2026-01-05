@@ -15,7 +15,7 @@ const config: CodegenConfig = {
   documents: ['src/**/*.graphql.ts'],
   ignoreNoDocuments: true,
   generates: {
-    './src/lib/graphql/': {
+    './src/shared/lib/graphql/': {
       preset: 'client',
       presetConfig: {
         fragmentMasking: false,

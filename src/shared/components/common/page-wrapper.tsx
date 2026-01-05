@@ -1,10 +1,10 @@
+import { TransitionLayout } from '@/features/layout/transition-layout';
 import { PageBreadcrumb } from '@/shared/components/common/page-breadcrumb';
-import { TransitionLayout } from '@/shared/components/layout/transition-layout';
 import { cn } from '@/shared/lib/utils';
 
-import type { ComponentPropsWithoutRef, FC } from 'react';
+import type { ComponentPropsWithoutRef } from 'react';
 
-export const PageWrapper: FC<ComponentPropsWithoutRef<'section'>> = ({ children, className, ...props }) => {
+export function PageWrapper({ children, className, ...props }: ComponentPropsWithoutRef<'section'>) {
   return (
     <TransitionLayout>
       <section className={cn('py-4', className)} {...props}>
@@ -16,4 +16,4 @@ export const PageWrapper: FC<ComponentPropsWithoutRef<'section'>> = ({ children,
       </section>
     </TransitionLayout>
   );
-};
+}

@@ -2,8 +2,11 @@ import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query';
 
 import { STALE_TIME } from '@/shared/constants/stale-time';
 import { serverGraphqlFetcher } from '@/shared/lib/graphql/server-graphql-fetcher';
-
-import type { Schema } from '@thebeyondgroup/shopify-rich-text-renderer';
+import {
+  parseContentBlocks,
+  CONTENT_BLOCK_FIELDS_FRAGMENT,
+  type ContentMetaobjectField,
+} from '@/shared/utils/parsers/parse-content-blocks';
 
 export const GET_SUBCATEGORY_PRODUCTS = `
   query GetSubcategoryProducts(
@@ -19,8 +22,16 @@ export const GET_SUBCATEGORY_PRODUCTS = `
       handle
       title
       description
-      fullDescription: metafield(namespace: "custom", key: "full_description") {
-        value
+      content: metafield(namespace: "custom", key: "content") {
+        references(first: 20) {
+          edges {
+            node {
+              ... on Metaobject {
+                ${CONTENT_BLOCK_FIELDS_FRAGMENT}
+              }
+            }
+          }
+        }
       }
       image {
         url
@@ -207,8 +218,15 @@ export type SubcategoryProductsData = {
     handle: string;
     title: string;
     description: string;
-    fullDescription?: {
-      value: Schema;
+    content?: {
+      references?: {
+        edges: Array<{
+          node: {
+            id: string;
+            fields?: ContentMetaobjectField[];
+          };
+        }>;
+      } | null;
     } | null;
     image?: {
       url: string;
@@ -281,5 +299,17 @@ export const getSubcategoryProductsInfiniteQueryOptions = (params: {
       const pageInfo = lastPage.collection?.products.pageInfo;
       return pageInfo?.hasNextPage ? pageInfo.endCursor : null;
     },
+    select: data => ({
+      ...data,
+      pages: data.pages.map(page => ({
+        ...page,
+        collection: page.collection
+          ? {
+              ...page.collection,
+              content: parseContentBlocks(page.collection.content?.references),
+            }
+          : null,
+      })),
+    }),
     staleTime: STALE_TIME.FIVE_MINUTES,
   });

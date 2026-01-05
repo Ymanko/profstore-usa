@@ -72,8 +72,4 @@ export const getPopularProductsQueryOptions = queryOptions({
   },
   staleTime: STALE_TIME.ONE_HOUR,
   select: data => parsePopularProductsData(data?.collection?.products?.edges ?? []),
-  // select: data => ({
-  //   ...data.collection,
-  //   products: data.collection?.products?.edges ?? [],
-  // }),
 });
