@@ -20,7 +20,7 @@ export function CategoryDetail({ handle }: CategoryDetailProps) {
 
   if (!category) {
     return (
-      <Section className='py-10'>
+      <Section className='items-center justify-center py-20'>
         <Typography variant='body-lg' className='text-muted-foreground text-center'>
           Category not found
         </Typography>
@@ -49,7 +49,7 @@ export function CategoryDetail({ handle }: CategoryDetailProps) {
             renderItem={subCollection => (
               <CategoryCard
                 key={subCollection.id}
-                href={`/collections/${category.handle}/${subCollection.handle}`}
+                href={`/${category.handle}/${subCollection.handle}`}
                 title={subCollection.title}
                 image={subCollection.image?.url || ''}
                 alt={subCollection.image?.altText || subCollection.title}

@@ -6,7 +6,7 @@ import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
 import { getQueryClient } from '@/shared/lib/tanstack/get-query-client';
 
-import type { LayoutProps } from '@/shared/types/shared/types/common';
+import type { LayoutProps } from '@/shared/types/common';
 
 export default function Providers({ children }: LayoutProps) {
   const queryClient = getQueryClient();

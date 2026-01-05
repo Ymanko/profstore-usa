@@ -45,6 +45,7 @@ export default async function Home() {
 
       {/*MainBanner*/}
       <Banner />
+
       {/*Category*/}
       <Categories />
 

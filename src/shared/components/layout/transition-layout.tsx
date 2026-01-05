@@ -1,4 +1,4 @@
-import type { LayoutProps } from '@/shared/types/shared/types/common';
+import type { LayoutProps } from '@/shared/types/common';
 import type { FC } from 'react';
 
 export const TransitionLayout: FC<LayoutProps> = ({ children }) => {
