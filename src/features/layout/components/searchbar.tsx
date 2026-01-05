@@ -6,10 +6,12 @@ import { LayoutGrid, LoaderCircle } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useBoolean, useMedia } from 'react-use';
 import { useDebounce } from 'use-debounce';
 
+import { TransitionLayout } from '@/features/layout/transition-layout';
+import { CategoryCard } from '@/shared/components/common/category-card';
 import { List } from '@/shared/components/common/list';
 import { Show } from '@/shared/components/common/show';
 import { Button } from '@/shared/components/ui/button';
@@ -30,14 +32,14 @@ import { useSearchState } from '@/shared/hooks/use-search-state';
 import { cn } from '@/shared/lib/utils';
 import { getMenuItemsQueryOptions } from '@/shared/queries/get-menu-items';
 import { searchQueryOptions } from '@/shared/queries/search-query';
-import { getLastSegment } from '@/shared/utils/parsers/get-last-segment';
+import { getCollectionPath } from '@/shared/utils/parsers/get-collection-path';
 import { getPathAfterCom } from '@/shared/utils/parsers/get-path-after-com';
 import { parseSubcategoryData } from '@/shared/utils/parsers/parse-subcategory-data';
 
 import type { MenuItem } from '@/shared/lib/graphql/graphql';
-import type { ComponentPropsWithoutRef, FC } from 'react';
+import type { ComponentPropsWithoutRef } from 'react';
 
-export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...props }) => {
+export function Searchbar({ className, ...props }: ComponentPropsWithoutRef<'div'>) {
   const router = useRouter();
   const { searchValue, setSearchValue, isFocus, handleFocus, handleBlur } = useSearchState();
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -57,13 +59,9 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
     }
   };
 
-  useEffect(() => {
-    document.body.style.overflow = isCatalogOpen ? 'hidden' : '';
-  }, [isCatalogOpen]);
-
   return (
     <div className={cn('grid items-center gap-5 md:grid-cols-[auto_1fr]', className)} {...props}>
-      <DropdownMenu open={isCatalogOpen} onOpenChange={setIsCatalogOpen} modal={false}>
+      <DropdownMenu open={isCatalogOpen} onOpenChange={setIsCatalogOpen} modal>
         <DropdownMenuTrigger asChild>
           <Button size='lg' className={cn('relative h-12.5 gap-2.5', isCatalogOpen ? 'bg-secondary' : 'bg-primary')}>
             <LayoutGrid className='text-accent size-6' />
@@ -73,21 +71,14 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
           </Button>
         </DropdownMenuTrigger>
 
-        {/* Backdrop */}
-        {isCatalogOpen && (
-          <div
-            className='absolute right-0 left-0 z-40 bg-black/40'
-            onClick={() => setIsCatalogOpen(false)}
-            style={{ top: '100%', height: '100vh' }}
-          />
-        )}
-
         <DropdownMenuContent
           style={{ width: '100vw', maxWidth: '100%' }}
-          className='right-0 left-0 z-40 flex overflow-auto border-none bg-transparent pt-0.5'
+          className='right-0 left-0 z-50 flex overflow-auto border-none bg-transparent pt-0.5'
           onClick={() => setIsCatalogOpen(false)}
           align='start'
           sideOffset={isMobile ? 90 : 20}
+          withOverlay
+          overlayClassName='top-[351px]! md:top-[173px]! xl:top-[169px]! bottom-0! left-0! right-0!'
         >
           <div className='container flex h-full w-full overflow-auto'>
             {/* Desktop Sidebar */}
@@ -175,7 +166,7 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
                               return (
                                 <Link
                                   key={sub.id}
-                                  href={getLastSegment(sub.id)}
+                                  href={getCollectionPath(sub.url)}
                                   onClick={() => setIsCatalogOpen(false)}
                                   className='hover:text-sidebar-active flex items-center px-6 py-2 uppercase transition-colors'
                                 >
@@ -203,9 +194,9 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
 
             {/* Desktop Content*/}
             {activeCategory?.items && activeCategory.items.length > 0 && (
-              <div
+              <TransitionLayout
                 onClick={e => e.stopPropagation()}
-                className='bg-background border-secondary relative hidden flex-1 border-t-5 p-10 md:block xl:px-[70px] xl:py-[35px]'
+                className='bg-background border-secondary relative hidden flex-1 border-t-5 p-10 duration-200 md:block xl:px-17.5 xl:py-8.75'
               >
                 <button
                   onClick={() => setIsCatalogOpen(false)}
@@ -219,32 +210,19 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
                     const parsed = parseSubcategoryData(sub.title);
 
                     return (
-                      <Link
+                      <CategoryCard
                         key={sub.id}
-                        href={getLastSegment(sub.id)}
+                        href={getCollectionPath(sub.url)}
+                        title={parsed.title}
+                        image={parsed?.image ?? ''}
+                        alt={parsed.title}
+                        titleClassName='text-sm uppercase'
                         onClick={() => setIsCatalogOpen(false)}
-                        className='border-border group hover:border-border flex flex-col items-center rounded-lg border p-4 text-center transition-all'
-                      >
-                        <div className='border-border mb-3 flex h-30 w-full items-center justify-center border-b pb-3 transition-transform group-hover:scale-105'>
-                          <Image
-                            src={parsed.image || 'https://placehold.co/100x100.png'}
-                            alt={parsed.title}
-                            width={100}
-                            height={100}
-                            className='object-contain'
-                          />
-                        </div>
-                        <Typography
-                          as='p'
-                          className='font-montserrat group-hover:text-sidebar-active text-sm font-light uppercase transition-colors'
-                        >
-                          {parsed.title}
-                        </Typography>
-                      </Link>
+                      />
                     );
                   })}
                 </div>
-              </div>
+              </TransitionLayout>
             )}
           </div>
         </DropdownMenuContent>
@@ -344,4 +322,4 @@ export const Searchbar: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...p
       </Command>
     </div>
   );
-};
+}

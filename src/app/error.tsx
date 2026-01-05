@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-import { TransitionLayout } from '@/shared/components/layout/transition-layout';
+import { TransitionLayout } from '@/features/layout/transition-layout';
 import { Typography } from '@/shared/components/ui/typography';
 
 interface ErrorPage {

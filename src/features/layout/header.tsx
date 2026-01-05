@@ -1,10 +1,10 @@
+import { MobileMenu } from '@/features/layout/components/mobile-menu';
+import { MobileUserActions } from '@/features/layout/components/mobile-user-actions';
+import { Searchbar } from '@/features/layout/components/searchbar';
+import { UserActions } from '@/features/layout/components/user-actions';
 import { List } from '@/shared/components/common/list';
 import { Phone } from '@/shared/components/common/phone';
 import { SiteLogo } from '@/shared/components/common/site-logo';
-import { MobileMenu } from '@/shared/components/layout/components/mobile-menu';
-import { MobileUserActions } from '@/shared/components/layout/components/mobile-user-actions';
-import { Searchbar } from '@/shared/components/layout/components/searchbar';
-import { UserActions } from '@/shared/components/layout/components/user-actions';
 import { NavLink } from '@/shared/components/links/nav-link';
 import { SocialLinks } from '@/shared/components/links/social-links';
 import { TrainingLink } from '@/shared/components/links/training-link';

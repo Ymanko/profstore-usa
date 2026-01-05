@@ -25,7 +25,10 @@ export function ContentBlock({ title, text, media, poster, mediaPosition = 'righ
         </Show>
 
         <Show when={text}>
-          <RichText schema={text || ''} className='prose-ul:grid md:prose-ul:gap-x-5 xl:prose-ul:grid-cols-3' />
+          <RichText
+            schema={text || ''}
+            className='prose-ul:grid sm:prose-ul:grid-cols-2 md:prose-ul:gap-x-5 xl:prose-ul:grid-cols-3'
+          />
         </Show>
       </div>
 
