@@ -13,9 +13,7 @@ export function News() {
   const { subcategory } = useParams();
   const tag = typeof subcategory === 'string' ? subcategory : undefined;
 
-  const { data: articles, isLoading, error } = useQuery(
-    getNewsQueryOptions({ handle: 'news', first: 3, tag })
-  );
+  const { data: articles, isLoading, error } = useQuery(getNewsQueryOptions({ handle: 'news', first: 3, tag }));
 
   if (isLoading) {
     return (

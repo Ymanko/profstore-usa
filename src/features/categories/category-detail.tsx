@@ -66,11 +66,11 @@ export function CategoryDetail({ handle }: CategoryDetailProps) {
             {category.content?.map(block => (
               <ContentBlock
                 key={block.id}
-                title={block.title}
                 text={block.text}
                 media={block.media}
                 poster={block.poster}
                 mediaPosition={block.mediaPosition}
+                richTextClassName='prose-ul:grid sm:prose-ul:grid-cols-2 md:prose-ul:gap-x-5 xl:prose-ul:grid-cols-3'
               />
             ))}
           </div>

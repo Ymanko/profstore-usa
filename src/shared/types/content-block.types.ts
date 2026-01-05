@@ -25,4 +25,5 @@ export interface ContentBlockProps {
   media?: MediaProps | null;
   poster?: PosterProps | null;
   mediaPosition?: string | null;
+  richTextClassName?: string;
 }

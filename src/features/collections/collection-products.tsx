@@ -3,6 +3,7 @@
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { LayoutGrid, LayoutList } from 'lucide-react';
 
+import { ContentBlock } from '@/features/categories/components/content-block';
 import { DiscountedProduct } from '@/features/collections/components/discounted-product';
 import { Filters } from '@/features/collections/components/filters';
 import { LoadMore } from '@/features/collections/components/load-more';
@@ -19,7 +20,6 @@ import { usePriceRangeStorage } from '@/features/collections/hooks/use-price-ran
 import { List } from '@/shared/components/common/list';
 import { PageWrapper } from '@/shared/components/common/page-wrapper';
 import { ProductCard } from '@/shared/components/common/product-card';
-import { RichText } from '@/shared/components/common/rich-text';
 import { Show } from '@/shared/components/common/show';
 import { NativeSelect, NativeSelectOption } from '@/shared/components/ui/native-select';
 import { Typography } from '@/shared/components/ui/typography';
@@ -269,9 +269,22 @@ export const CollectionProducts: FC<{
                   {/* Popular Products in Category */}
                   <PopularCollectionProducts handle={handle} />
 
-                  {/* Full Description */}
-                  <Show when={!!collection?.fullDescription?.value}>
-                    <RichText className='mt-12.5' schema={collection?.fullDescription?.value ?? ''} />
+                  {/* Content Blocks */}
+                  <Show
+                    when={collection?.content && Array.isArray(collection.content) && collection.content.length > 0}
+                  >
+                    <div className='mt-12.5 space-y-6'>
+                      {Array.isArray(collection?.content) &&
+                        collection.content.map(block => (
+                          <ContentBlock
+                            key={block.id}
+                            text={block.text}
+                            media={block.media}
+                            poster={block.poster}
+                            mediaPosition={block.mediaPosition}
+                          />
+                        ))}
+                    </div>
                   </Show>
                 </div>
               </div>
