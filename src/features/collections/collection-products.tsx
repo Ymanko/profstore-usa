@@ -2,6 +2,7 @@
 
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { LayoutGrid, LayoutList } from 'lucide-react';
+import { useParams } from 'next/navigation';
 
 import { ContentBlock } from '@/features/categories/components/content-block';
 import { DiscountedProduct } from '@/features/collections/components/discounted-product';
@@ -36,6 +37,7 @@ import type { FC } from 'react';
 export const CollectionProducts: FC<{
   handle: string;
 }> = ({ handle }) => {
+  const { category, subcategory } = useParams();
   const isMounted = useIsMounted();
   const { setMode, isGrid, isList } = useLayoutMode('grid');
   const { params, setParams, handlers } = useCollectionParams();
@@ -245,7 +247,13 @@ export const CollectionProducts: FC<{
                   >
                     <List
                       data={allProducts}
-                      renderItem={product => <ProductCard product={product} view={isGrid ? 'grid' : 'list'} />}
+                      renderItem={product => (
+                        <ProductCard
+                          href={`/${category}/${subcategory}/${product.handle}`}
+                          product={product}
+                          view={isGrid ? 'grid' : 'list'}
+                        />
+                      )}
                       keyExtractor={product => product.id}
                       className={cn(
                         'animate-fade-in gap-5',

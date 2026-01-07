@@ -1,16 +1,22 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { Show } from '@/shared/components/common/show';
 import { Icon } from '@/shared/components/ui/icon';
 import { Typography } from '@/shared/components/ui/typography';
 import { cn } from '@/shared/lib/utils';
+import { calculateDiscountPercentage } from '@/shared/utils/calculate-discount-percentage';
 
 import type { Product } from '@/shared/queries/collections/get-subcategory-products';
-import type { ComponentPropsWithoutRef, FC } from 'react';
+import type { LinkProps } from 'next/link';
+import type { ComponentPropsWithoutRef, FC, PropsWithChildren } from 'react';
 
 interface ProductCardProps extends ComponentPropsWithoutRef<'div'> {
   product: Product;
   view?: 'grid' | 'list';
+  variant?: 'default' | 'discount';
+  showDiscountBadge?: boolean;
+  href?: LinkProps['href'];
   onAddToCart?: (productId: string) => void;
   onAddToFavorites?: (productId: string) => void;
 }
@@ -18,6 +24,9 @@ interface ProductCardProps extends ComponentPropsWithoutRef<'div'> {
 export const ProductCard: FC<ProductCardProps> = ({
   product,
   view = 'grid',
+  variant = 'default',
+  showDiscountBadge = false,
+  href = '#',
   onAddToCart,
   onAddToFavorites,
   className,
@@ -29,11 +38,13 @@ export const ProductCard: FC<ProductCardProps> = ({
   const hasDiscount = currentPrice !== 0 && previousPrice > currentPrice;
 
   const isListView = view === 'list';
+  const isDiscountVariant = variant === 'discount';
+  const discountPercentage = hasDiscount ? calculateDiscountPercentage(previousPrice, currentPrice) : 0;
 
   return (
     <div
       className={cn(
-        'gap-4 rounded-lg border p-4 transition-all duration-300',
+        'relative gap-4 rounded-lg border p-4 transition-all duration-300',
         isListView ? 'flex h-auto' : 'grid h-full',
         className,
       )}
@@ -55,55 +66,128 @@ export const ProductCard: FC<ProductCardProps> = ({
           />
         </Show>
 
-        <button
-          onClick={() => (onAddToFavorites ? onAddToFavorites(id) : null)}
-          className='text-muted-foreground hover:text-accent absolute top-0 right-0 flex size-10 items-center justify-center rounded-md transition-colors duration-200'
-          aria-label='Add to favorites'
-        >
-          <Icon name='heart' width={18} height={18} />
-        </button>
+        <Show when={showDiscountBadge && hasDiscount}>
+          <DiscountBadge percentage={discountPercentage} />
+        </Show>
+
+        <AddToFavoritesButton onClick={() => (onAddToFavorites ? onAddToFavorites(id) : null)} />
       </div>
 
       <div className={cn('flex flex-col', isListView ? 'flex-1' : 'space-y-2.5 border-t pt-3.75')}>
         <div className={cn(isListView && 'flex-1 space-y-2.5')}>
           <Typography variant='h3' as='h3' className='line-clamp-1 font-semibold'>
-            {title}
+            <Show when={href} fallback={title}>
+              <CardLink href={href}>{title}</CardLink>
+            </Show>
           </Typography>
 
-          <Typography variant='body' className={cn('text-muted-foreground flex items-center gap-2 text-base')}>
-            <Icon
-              name='checkmarkSmall'
-              width={20}
-              height={20}
-              className={availableForSale ? 'text-muted-foreground' : 'text-rose-600'}
-            />
-
-            {availableForSale ? 'In stock' : 'Out of stock'}
-          </Typography>
+          <AvailabilityIndicator isAvailable={availableForSale} />
         </div>
 
         <div className={cn('flex items-center justify-between gap-3', isListView ? 'mt-auto' : 'mt-auto')}>
-          <div className='space-y-1'>
-            <Show when={hasDiscount}>
-              <Typography variant='body' className='text-muted-foreground text-base font-bold line-through'>
-                {previousPrice}$
-              </Typography>
-            </Show>
+          <Show when={isDiscountVariant && hasDiscount}>
+            <PriceInRow previousPrice={previousPrice} currentPrice={currentPrice} />
+          </Show>
 
-            <Typography variant='body' className='text-foreground text-[22px] leading-tight font-extrabold'>
-              {hasDiscount ? currentPrice : previousPrice} $
-            </Typography>
-          </div>
+          <Show when={!isDiscountVariant}>
+            <PriceStacked currentPrice={hasDiscount ? currentPrice : previousPrice} previousPrice={previousPrice} />
+          </Show>
 
-          <button
-            onClick={() => (onAddToCart ? onAddToCart(id) : null)}
-            className='hover:text-accent flex size-10 shrink-0 items-center justify-center rounded-md bg-linear-to-r from-[rgb(87,144,64)] to-[rgb(58,111,67)] text-white transition-colors duration-200 disabled:opacity-50'
-            aria-label='Add to cart'
-          >
-            <Icon name='shoppingCart' width={18} height={18} />
-          </button>
+          <AddToCartButton onClick={() => (onAddToCart ? onAddToCart(id) : null)} />
         </div>
       </div>
     </div>
   );
 };
+
+function DiscountBadge({ percentage }: { percentage: number }) {
+  return (
+    <span className='bg-secondary absolute top-0 left-0 flex items-center rounded-md px-3 text-lg font-bold text-white'>
+      {percentage}%
+    </span>
+  );
+}
+
+function PriceInRow({ previousPrice, currentPrice }: { previousPrice: number; currentPrice: number }) {
+  return (
+    <div className='flex items-center gap-2'>
+      <Typography variant='body' className='text-muted-foreground text-base line-through'>
+        {Math.round(previousPrice)} $
+      </Typography>
+      <Typography variant='body' className='text-secondary text-[22px] leading-tight font-extrabold'>
+        {Math.round(currentPrice)} $
+      </Typography>
+    </div>
+  );
+}
+
+function PriceStacked({ previousPrice, currentPrice }: { previousPrice: number; currentPrice: number }) {
+  return (
+    <div className='space-y-1'>
+      <Show when={previousPrice > currentPrice}>
+        <Typography variant='body' className='text-muted-foreground text-base font-bold line-through'>
+          {previousPrice}$
+        </Typography>
+      </Show>
+
+      <Typography variant='body' className='text-foreground text-[22px] leading-tight font-extrabold'>
+        {currentPrice} $
+      </Typography>
+    </div>
+  );
+}
+
+function AddToCartButton({ ...props }: ComponentPropsWithoutRef<'button'>) {
+  return (
+    <button
+      type='button'
+      className='hover:text-accent flex size-10 shrink-0 items-center justify-center rounded-md bg-linear-to-r from-[rgb(87,144,64)] to-[rgb(58,111,67)] text-white transition-colors duration-200 disabled:opacity-50'
+      aria-label='Add to cart'
+      {...props}
+    >
+      <Icon name='shoppingCart' width={18} height={18} />
+    </button>
+  );
+}
+
+function AddToFavoritesButton({ ...props }: ComponentPropsWithoutRef<'button'>) {
+  return (
+    <button
+      type='button'
+      className='text-muted-foreground hover:text-accent flex size-10 items-center justify-center rounded-md transition-colors duration-200'
+      aria-label='Add to favorites'
+      {...props}
+    >
+      <Icon name='heart' width={18} height={18} />
+    </button>
+  );
+}
+
+function CardLink({ ...props }: LinkProps & PropsWithChildren) {
+  return (
+    <Link
+      className={cn(
+        'before:absolute before:inset-0 before:rounded-lg before:border before:border-transparent before:transition-[border-color] before:duration-200',
+        'focus-visible:before:border-ring focus-visible:before:ring-ring/50 focus-visible:outline-none focus-visible:before:ring-[3px]',
+        'hover:before:border-secondary hover:before:border-2',
+      )}
+      {...props}
+    />
+  );
+}
+
+function AvailabilityIndicator({ isAvailable }: { isAvailable: boolean }) {
+  return (
+    <div className='flex items-center gap-2'>
+      <Icon
+        name='checkmarkSmall'
+        width={20}
+        height={20}
+        className={isAvailable ? 'text-muted-foreground' : 'text-rose-600'}
+      />
+      <Typography variant='body' className='text-muted-foreground text-base'>
+        {isAvailable ? 'In stock' : 'Out of stock'}
+      </Typography>
+    </div>
+  );
+}

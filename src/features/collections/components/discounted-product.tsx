@@ -1,13 +1,15 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'next/navigation';
 
-import { DiscountedProductCard } from '@/features/collections/components/discounted-product-card';
 import { List } from '@/shared/components/common/list';
+import { ProductCard } from '@/shared/components/common/product-card';
 import { Typography } from '@/shared/components/ui/typography';
 import { getDiscountedProductsQueryOptions } from '@/shared/queries/products/get-discounted-products';
 
 export function DiscountedProduct() {
+  const { category, subcategory } = useParams();
   const { data: products, isLoading, error } = useQuery(getDiscountedProductsQueryOptions);
 
   if (isLoading) {
@@ -29,7 +31,14 @@ export function DiscountedProduct() {
 
       <List
         data={products}
-        renderItem={product => <DiscountedProductCard product={product} />}
+        renderItem={product => (
+          <ProductCard
+            href={`/${category}/${subcategory}/${product.handle}`}
+            product={product}
+            variant='discount'
+            showDiscountBadge
+          />
+        )}
         keyExtractor={product => product.id}
       />
     </div>
