@@ -3,11 +3,7 @@ import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query
 import { CategoryDetail } from '@/features/categories/category-detail';
 import { getCategoryQueryOptions } from '@/shared/queries/categories/get-category';
 
-type CategoryPageProps = {
-  params: Promise<{ category: string }>;
-};
-
-export default async function CategoryPage({ params }: CategoryPageProps) {
+export default async function CategoryPage({ params }: { params: Promise<{ category: string }> }) {
   const { category } = await params;
   const queryClient = new QueryClient();
 

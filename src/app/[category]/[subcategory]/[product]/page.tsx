@@ -1,5 +1,6 @@
-import { TransitionLayout } from '@/features/layout/transition-layout';
-import { PageWrapper } from '@/shared/components/common/page-wrapper';
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
+
+import { ProductDetails } from '@/features/product/product-details';
 
 interface ProductPageProps {
   params: Promise<{
@@ -9,16 +10,11 @@ interface ProductPageProps {
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { product } = await params;
+  const queryClient = new QueryClient();
 
   return (
-    <TransitionLayout>
-      <PageWrapper>
-        <div className='container'>
-          <h1 className='text-3xl font-bold'>C{product}</h1>
-
-          {/* Product details would be fetched and displayed here */}
-        </div>
-      </PageWrapper>
-    </TransitionLayout>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <ProductDetails handle={product} />
+    </HydrationBoundary>
   );
 }
