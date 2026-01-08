@@ -214,3 +214,22 @@ body {
 .range-slider__thumb {
   @apply border-secondary! size-5! border! bg-white!;
 }
+
+/*React-image-gallery*/
+.image-gallery-swipe,
+.image-gallery-thumbnail,
+.image-gallery-thumbnail.active,
+.image-gallery-thumbnail:focus {
+  @apply border-surface-default! overflow-hidden rounded-[10px] border-2!;
+}
+
+.image-gallery-thumbnail,
+.image-gallery-thumbnail.active,
+.image-gallery-thumbnail:focus {
+  @apply hover:border-accent!;
+}
+
+.image-gallery-thumbnail.active,
+.image-gallery-thumbnail:focus {
+  @apply border-accent!;
+}
