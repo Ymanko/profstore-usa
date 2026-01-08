@@ -154,7 +154,7 @@ function AddToFavoritesButton({ ...props }: ComponentPropsWithoutRef<'button'>) 
   return (
     <button
       type='button'
-      className='text-muted-foreground hover:text-accent flex size-10 items-center justify-center rounded-md transition-colors duration-200'
+      className='text-muted-foreground hover:text-accent absolute top-0 right-0 z-20 flex size-10 items-center justify-center rounded-md transition-colors duration-200'
       aria-label='Add to favorites'
       {...props}
     >
