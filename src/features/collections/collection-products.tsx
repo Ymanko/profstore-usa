@@ -18,6 +18,7 @@ import { useDecodedFilters } from '@/features/collections/hooks/use-decoded-filt
 import { useFiltersStorage } from '@/features/collections/hooks/use-filters-storage';
 import { usePriceRange } from '@/features/collections/hooks/use-price-range';
 import { usePriceRangeStorage } from '@/features/collections/hooks/use-price-range-storage';
+import { NotFound } from '@/features/layout/not-found';
 import { List } from '@/shared/components/common/list';
 import { ProductCard } from '@/shared/components/common/product-card';
 import { Show } from '@/shared/components/common/show';
@@ -107,22 +108,8 @@ export const CollectionProducts: FC<{
 
   return (
     <>
-      <Show
-        when={collection}
-        fallback={
-          <Typography variant='body-lg' className='text-muted-foreground text-center'>
-            Collection not found
-          </Typography>
-        }
-      >
-        <Show
-          when={baseFilters.length > 0}
-          fallback={
-            <Typography variant='body-lg' className='text-muted-foreground py-20 text-center'>
-              No products yet
-            </Typography>
-          }
-        >
+      <Show when={collection} fallback={<NotFound>Collection not found</NotFound>}>
+        <Show when={baseFilters.length > 0} fallback={<NotFound>No products yet</NotFound>}>
           <div className='container'>
             <div className='mb-5.75 grid gap-y-4 md:grid-cols-2'>
               <Typography variant='h1' as='h1'>
