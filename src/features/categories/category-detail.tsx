@@ -3,6 +3,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { ContentBlock } from '@/features/categories/components/content-block';
+import { NotFound } from '@/features/layout/not-found';
 import { CategoryCard } from '@/shared/components/common/category-card';
 import { List } from '@/shared/components/common/list';
 import { Section } from '@/shared/components/common/section';
@@ -16,9 +17,7 @@ export function CategoryDetail({ handle }: { handle: string }) {
   if (!category) {
     return (
       <Section className='items-center justify-center py-20'>
-        <Typography variant='body-lg' className='text-muted-foreground text-center'>
-          Category not found
-        </Typography>
+        <NotFound>Collection not found</NotFound>
       </Section>
     );
   }
@@ -29,14 +28,7 @@ export function CategoryDetail({ handle }: { handle: string }) {
         {category.title}
       </Typography>
 
-      <Show
-        when={category.subCollections.length > 0}
-        fallback={
-          <Typography variant='body-lg' className='text-muted-foreground text-center'>
-            No categories available
-          </Typography>
-        }
-      >
+      <Show when={category.subCollections.length > 0} fallback={<NotFound>No categories available</NotFound>}>
         <List
           data={category.subCollections}
           keyExtractor={item => item.id}
