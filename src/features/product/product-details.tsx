@@ -1,7 +1,7 @@
 'use client';
 
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { MinusIcon, Plus, PlusIcon } from 'lucide-react';
+import { MinusIcon, PlusIcon } from 'lucide-react';
 import { useCounter } from 'react-use';
 
 import { NotFound } from '@/features/layout/not-found';
@@ -18,11 +18,9 @@ import { getProductQueryOptions } from '@/shared/queries/products/get-product';
 
 export function ProductDetails({ handle }: { handle: string }) {
   const { data: product } = useSuspenseQuery(getProductQueryOptions(handle));
-  const [value, { inc, dec, set, reset }] = useCounter(0, null, 0);
+  const [value, { inc, dec }] = useCounter(0, null, 0);
 
   const images = product?.images.edges.map(edge => edge.node) || [];
-
-  console.log('images:', images);
 
   return (
     <div className='container'>
