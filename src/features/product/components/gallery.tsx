@@ -1,6 +1,6 @@
 'use client';
 
-import { ChevronDown, ChevronUp, Search } from 'lucide-react';
+import { ChevronDown, Search } from 'lucide-react';
 import ImageGallery from 'react-image-gallery';
 import { useMedia } from 'react-use';
 
@@ -24,8 +24,11 @@ export function Gallery({ items, className, ...props }: GalleryProps) {
   const isMounted = useIsMounted();
   const images = useGalleryImages(items);
 
-  const { canGoNext, canGoPrev, galleryRef, handleNext, handlePrevious, setCurrentIndex, showThumbnailControls } =
-    useGallery(images.length, isMobile);
+  const { canGoNext, galleryRef, handleNext, setCurrentIndex, showThumbnailControls } = useGallery(
+    images.length,
+    isMobile,
+    true,
+  );
 
   return (
     <Show when={isMounted} fallback={<div className='bg-muted-primary/50 h-96 w-full animate-pulse rounded-md' />}>
@@ -33,7 +36,7 @@ export function Gallery({ items, className, ...props }: GalleryProps) {
         <ImageGallery
           ref={galleryRef}
           items={images}
-          infinite={false}
+          infinite
           showPlayButton={false}
           showNav={false}
           thumbnailPosition={isMobile ? 'bottom' : 'left'}
@@ -43,35 +46,28 @@ export function Gallery({ items, className, ...props }: GalleryProps) {
           )}
         />
 
-        {/* Thumbnail controls - positioned over thumbnails */}
-        {showThumbnailControls && (
-          <>
-            <ControlButton direction='prev' disabled={!canGoPrev} onClick={handlePrevious} />
-            <ControlButton direction='next' disabled={!canGoNext} onClick={handleNext} />
-          </>
-        )}
+        {/* Thumbnail control - only bottom button */}
+        {showThumbnailControls && <ControlButton disabled={!canGoNext} onClick={handleNext} />}
       </div>
     </Show>
   );
 }
 
-function ControlButton({ direction, ...props }: ComponentPropsWithoutRef<'button'> & { direction: 'prev' | 'next' }) {
-  const isPrev = direction === 'prev';
-
+function ControlButton(props: ComponentPropsWithoutRef<'button'>) {
   return (
     <button
       type='button'
       className={cn(
-        'absolute z-50',
-        isPrev ? 'top-0 left-0' : 'bottom-0 left-0',
-        'flex h-10 w-26.25 items-center justify-center',
+        'absolute bottom-0 left-0 z-50',
+        'flex h-10 items-center justify-center',
+        'w-19.5 md:w-30 xl:w-40',
         'focus:ring-accent focus:ring-2 focus:ring-offset-2 focus:outline-none',
         'text-muted-foreground hover:bg-background/70 bg-transparent transition duration-200',
       )}
-      aria-label={isPrev ? 'Previous image' : 'Next image'}
+      aria-label='Next image'
       {...props}
     >
-      {isPrev ? <ChevronUp className='text-foreground size-5' /> : <ChevronDown className='text-foreground size-5' />}
+      <ChevronDown className='text-foreground size-5' />
     </button>
   );
 }
