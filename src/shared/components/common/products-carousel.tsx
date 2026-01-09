@@ -1,6 +1,7 @@
 'use client';
 
 import { ProductCard } from '@/shared/components/common/product-card';
+import { Show } from '@/shared/components/common/show';
 import {
   Carousel,
   CarouselContent,
@@ -20,32 +21,33 @@ interface ProductsCarouselProps {
 
 export const ProductsCarousel: FC<ProductsCarouselProps> = ({ title = '', products }) => {
   return (
-    <div className='border-accent border-t-3 pt-10 md:pt-12.5'>
-      <div className='relative'>
+    <div className='relative'>
+      <Show when={!!title}>
         <Typography variant='h2' as='h2' className='mb-5'>
           {title}
         </Typography>
+      </Show>
 
-        <Carousel
-          className='m-auto w-full max-w-87 md:max-w-167 lg:max-w-full'
-          opts={{
-            align: 'start',
-            slidesToScroll: 'auto',
-          }}
-        >
-          <div className='absolute top-0 right-0 hidden gap-3 md:flex'>
-            <CarouselPrevious />
-            <CarouselNext />
-          </div>
-          <CarouselContent>
-            {products.map(product => (
-              <CarouselItem key={product.id} className='sm:basis-1/2 lg:basis-1/4'>
-                <ProductCard product={product} />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
-      </div>
+      <Carousel
+        className='m-auto w-full max-w-87 md:max-w-167 lg:max-w-full'
+        opts={{
+          align: 'start',
+          slidesToScroll: 'auto',
+        }}
+      >
+        <div className='absolute top-0 right-0 hidden gap-3 md:flex'>
+          <CarouselPrevious />
+          <CarouselNext />
+        </div>
+
+        <CarouselContent>
+          {products.map(product => (
+            <CarouselItem key={product.id} className='sm:basis-1/2 lg:basis-1/4'>
+              <ProductCard product={product} />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
     </div>
   );
 };

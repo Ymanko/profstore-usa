@@ -1,24 +1,40 @@
 'use client';
 
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { MinusIcon, PlusIcon } from 'lucide-react';
-import { useCounter } from 'react-use';
+import { useParams } from 'next/navigation';
+import { useMedia } from 'react-use';
 
+import { PopularCollectionProducts } from '@/features/collections/components/popular-collection-products';
 import { NotFound } from '@/features/layout/not-found';
 import { Gallery } from '@/features/product/components/gallery';
+import { ProductActions } from '@/features/product/components/product-actions';
+import { ProductBenefits } from '@/features/product/components/product-benefits';
+import { ProductCharacteristics } from '@/features/product/components/product-characteristics';
+import { ProductDescription } from '@/features/product/components/product-description';
+import { ProductFiles } from '@/features/product/components/product-files';
+import { ProductNavigation } from '@/features/product/components/product-navigation';
+import {
+  ProductArticle,
+  ProductBrand,
+  ProductPrice,
+  ProductWrapper,
+} from '@/features/product/components/product-tools';
+import { ProductVideo } from '@/features/product/components/product-video';
 import { Rating } from '@/features/product/components/rating';
-import { BasketBtn } from '@/shared/components/common/basket-btn';
-import { List } from '@/shared/components/common/list';
 import { Show } from '@/shared/components/common/show';
-import { Badge } from '@/shared/components/ui/badge';
-import { Button } from '@/shared/components/ui/button';
 import { Separator } from '@/shared/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/components/ui/tabs';
 import { Typography } from '@/shared/components/ui/typography';
 import { getProductQueryOptions } from '@/shared/queries/products/get-product';
 
 export function ProductDetails({ handle }: { handle: string }) {
+  const params = useParams();
+  const subcategory = Array.isArray(params.subcategory) ? params.subcategory[0] : params.subcategory;
+
+  const isDesktop = useMedia('(min-width: 1280px)');
+  const isMobileAndTablet = useMedia('(max-width: 1279px)');
+
   const { data: product } = useSuspenseQuery(getProductQueryOptions(handle));
-  const [value, { inc, dec }] = useCounter(0, null, 0);
 
   const images = product?.images.edges.map(edge => edge.node) || [];
 
@@ -29,111 +45,89 @@ export function ProductDetails({ handle }: { handle: string }) {
           {product?.title}
         </Typography>
 
-        {/*Rating + Article*/}
         <div className='mb-6 items-center justify-between sm:flex md:mb-7.5'>
           <Rating rating={3.5} commentsCount={1} />
-          <Typography className='text-muted-foreground font-inter'>
-            Article: <span className='text-foreground'>0014</span>
-          </Typography>
+          <ProductArticle article='0014' />
         </div>
 
         <div className='grid gap-12.5 md:gap-8.75 xl:grid-cols-16 xl:gap-5'>
           {/*Gallery*/}
           <Gallery className='xl:col-span-10' items={images} />
 
-          {/*Discounts*/}
+          {/*Additional info*/}
           <div className='space-y-6 xl:col-span-6'>
-            <div className='bg-sidebar rounded-xl px-2.5 py-5 md:px-7.5 md:py-5.5'>
-              <div className='flex items-center gap-x-4 md:gap-x-10'>
-                {/*Price + Percentage*/}
-                <Typography className='text-secondary text-3xl font-black md:text-[40px] md:leading-10'>
-                  1,099 $
-                </Typography>
-                <Typography className='text-muted-foreground font-semibold md:text-xl'>13,233 $</Typography>
-                <Badge className='bg-secondary ml-auto rounded-md px-5 py-1.5 text-sm font-semibold md:ml-0 md:text-base'>
-                  20%
-                </Badge>
-              </div>
-
+            <ProductWrapper className='px-2.5 py-5 md:px-7.5 md:py-5.5'>
+              <ProductPrice newPrice='1,099 $' oldPrice='13,233 $' discount='20%' />
               <Separator className='my-3.75 md:mt-7.5 md:mb-6.25' />
+              <ProductBenefits />
+            </ProductWrapper>
 
-              {/*List of benefits*/}
-              <div className='inline-grid justify-items-start sm:inline-flex sm:items-center sm:justify-between'>
-                <Typography className='text-lg font-light'>
-                  4 interest-free payments of <span className='font-bold'>$274.75</span>
-                </Typography>
-                <Button variant='link' className='text-secondary font-montserrat text-lg font-normal'>
-                  Apply Now
-                </Button>
-              </div>
-
-              <List
-                data={[
-                  {
-                    title: 'FREE Delivery',
-                    description: 'when you spend over 40$ ex VAT',
-                  },
-                  {
-                    title: 'FREE Returns',
-                    description: '30 day money back guarantee',
-                  },
-                  {
-                    title: 'FREE 1 Hour Click',
-                    description: '& Collect check stock at your local store',
-                  },
-                  {
-                    title: 'PREMIUM',
-                    description: 'Delivery Options offered in checkout if available',
-                  },
-                ]}
-                renderItem={item => (
-                  <div className='flex items-center gap-1.25' key={item.title}>
-                    <Typography className='tracking-normal text-wrap md:text-lg'>
-                      <span className='font-bold'>{item.title} </span>
-                      {item.description}
-                    </Typography>
-                  </div>
-                )}
-                keyExtractor={(_, i) => i.toString()}
-                className='space-y-4.5'
-                itemClassName='list-disc ml-6'
-              />
-            </div>
-
-            {/*Actions*/}
-            <div className='grid grid-cols-3 gap-5'>
-              <div
-                aria-label='Quantity selector'
-                className='border-border flex items-center justify-between rounded-xl border px-1.5 py-1.25'
-              >
-                <Button
-                  className='bg-accent hover:bg-accent/70 size-11.25 text-black'
-                  onClick={() => dec()}
-                  disabled={value <= 0}
-                >
-                  <MinusIcon strokeWidth={6} size={40} />
-                </Button>
-
-                <Typography className='text-muted-foreground text-[17px] leading-4.5'>{value}</Typography>
-
-                <Button className='bg-accent hover:bg-accent/70 size-11.25 text-black' onClick={() => inc()}>
-                  <PlusIcon strokeWidth={6} size={40} />
-                </Button>
-              </div>
-
-              <BasketBtn />
-
-              <Button
-                className='h-13.5 bg-[linear-gradient(90deg,rgba(87,144,64,1),rgba(58,111,67,1)_100%)] text-xl'
-                size='lg'
-              >
-                Buy
-              </Button>
-            </div>
-
-            <Separator />
+            <ProductActions />
+            <Separator className='mt-1.5 mb-7.5' />
+            <ProductBrand title='Quamar (Italy)' src='/img/quamar-logo.png' width={182} height={86} alt='quamar-logo' />
           </div>
         </div>
+
+        <Separator className='my-7.5' />
+
+        <ProductNavigation />
+
+        <div className='pt-10.5 pb-8.5 md:pt-6.25 md:pb-11.25 xl:grid xl:grid-cols-16 xl:gap-5'>
+          <div className='xl:col-span-11'>
+            <ProductDescription />
+
+            <Show when={isDesktop}>
+              <ProductCharacteristics />
+            </Show>
+          </div>
+
+          <Show when={isDesktop}>
+            <div className='xl:col-span-5'>
+              <ProductVideo />
+              <ProductFiles />
+            </div>
+          </Show>
+
+          <Separator className='bg-accent my-13 h-0.75! xl:hidden' />
+
+          <Show when={isMobileAndTablet}>
+            <ProductVideo />
+          </Show>
+        </div>
+
+        <Separator className='bg-accent mb-13 hidden h-0.75! xl:block' />
+
+        <Show when={isMobileAndTablet}>
+          <ProductCharacteristics />
+        </Show>
+
+        <Show when={isMobileAndTablet}>
+          <div className='bg-sidebar rounded-lg p-2.5'>
+            <Tabs defaultValue='files'>
+              <TabsList className='w-full gap-4.25 rounded-xl bg-white px-5 py-2.5'>
+                <TabsTrigger value='files'>Files</TabsTrigger>
+                <TabsTrigger value='manuals'>Manuals</TabsTrigger>
+              </TabsList>
+
+              <div className='p-5'>
+                <TabsContent value='files' className='grid grid-cols-2 gap-3.75 md:grid-cols-3 md:gap-5 xl:grid-cols-2'>
+                  Download available files here.
+                </TabsContent>
+
+                <TabsContent
+                  value='manuals'
+                  className='grid grid-cols-2 gap-3.75 md:grid-cols-3 md:gap-5 xl:grid-cols-2'
+                >
+                  Download available manuals here.
+                </TabsContent>
+              </div>
+            </Tabs>
+          </div>
+        </Show>
+
+        <PopularCollectionProducts handle={subcategory ?? ''} />
+
+        <PopularCollectionProducts handle={subcategory ?? ''} />
       </Show>
     </div>
   );

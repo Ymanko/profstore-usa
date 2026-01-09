@@ -1,5 +1,3 @@
-'use client';
-
 import { useQuery } from '@tanstack/react-query';
 
 import { ProductsCarousel } from '@/shared/components/common/products-carousel';
@@ -7,7 +5,9 @@ import { ProductCardsSkeleton } from '@/shared/components/skeletons/product-card
 import { Separator } from '@/shared/components/ui/separator';
 import { getPopularCollectionProductsQueryOptions } from '@/shared/queries/collections/get-popular-collection-products';
 
-export function PopularCollectionProducts({ handle }: { handle: string }) {
+
+
+export function CustomersAlsoBought({ handle }: { handle: string }) {
   const { data: products, isLoading, error } = useQuery(getPopularCollectionProductsQueryOptions(handle));
 
   if (isLoading) return <ProductCardsSkeleton />;
@@ -19,4 +19,4 @@ export function PopularCollectionProducts({ handle }: { handle: string }) {
       <ProductsCarousel title='Popular products in this category' products={products} />
     </>
   );
-}
+};
