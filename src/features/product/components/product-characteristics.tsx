@@ -1,11 +1,11 @@
-import { ProductTitle } from '@/features/product/components/product-tools';
+import { ProductTitle, ProductWrapper } from '@/features/product/components/product-tools';
 import { ProductDetailsAnchor } from '@/features/product/types/product.types';
 import { List } from '@/shared/components/common/list';
 import { Typography } from '@/shared/components/ui/typography';
 
 export function ProductCharacteristics() {
   return (
-    <div className='bg-sidebar rounded-lg p-2.5 pt-6'>
+    <ProductWrapper className='p-2.5 pt-6'>
       <ProductTitle className='mb-3.75' id={ProductDetailsAnchor.Characteristics}>
         Characteristics
       </ProductTitle>
@@ -28,6 +28,6 @@ export function ProductCharacteristics() {
         keyExtractor={item => item.title}
         itemClassName='grid grid-cols-6 pl-5 py-3 odd:bg-white rounded-md even:bg-transparent'
       />
-    </div>
+    </ProductWrapper>
   );
 }

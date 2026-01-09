@@ -1,11 +1,10 @@
 'use client';
 
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
 import { useMedia } from 'react-use';
 
-import { PopularCollectionProducts } from '@/features/collections/components/popular-collection-products';
 import { NotFound } from '@/features/layout/not-found';
+import { CustomersAlsoBought } from '@/features/product/components/customers-also-bought';
 import { Gallery } from '@/features/product/components/gallery';
 import { ProductActions } from '@/features/product/components/product-actions';
 import { ProductBenefits } from '@/features/product/components/product-benefits';
@@ -21,16 +20,13 @@ import {
 } from '@/features/product/components/product-tools';
 import { ProductVideo } from '@/features/product/components/product-video';
 import { Rating } from '@/features/product/components/rating';
+import { RelatedProduct } from '@/features/product/components/related-product';
 import { Show } from '@/shared/components/common/show';
 import { Separator } from '@/shared/components/ui/separator';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/components/ui/tabs';
 import { Typography } from '@/shared/components/ui/typography';
 import { getProductQueryOptions } from '@/shared/queries/products/get-product';
 
 export function ProductDetails({ handle }: { handle: string }) {
-  const params = useParams();
-  const subcategory = Array.isArray(params.subcategory) ? params.subcategory[0] : params.subcategory;
-
   const isDesktop = useMedia('(min-width: 1280px)');
   const isMobileAndTablet = useMedia('(max-width: 1279px)');
 
@@ -51,10 +47,8 @@ export function ProductDetails({ handle }: { handle: string }) {
         </div>
 
         <div className='grid gap-12.5 md:gap-8.75 xl:grid-cols-16 xl:gap-5'>
-          {/*Gallery*/}
           <Gallery className='xl:col-span-10' items={images} />
 
-          {/*Additional info*/}
           <div className='space-y-6 xl:col-span-6'>
             <ProductWrapper className='px-2.5 py-5 md:px-7.5 md:py-5.5'>
               <ProductPrice newPrice='1,099 $' oldPrice='13,233 $' discount='20%' />
@@ -69,65 +63,33 @@ export function ProductDetails({ handle }: { handle: string }) {
         </div>
 
         <Separator className='my-7.5' />
-
         <ProductNavigation />
 
         <div className='pt-10.5 pb-8.5 md:pt-6.25 md:pb-11.25 xl:grid xl:grid-cols-16 xl:gap-5'>
           <div className='xl:col-span-11'>
             <ProductDescription />
-
-            <Show when={isDesktop}>
-              <ProductCharacteristics />
-            </Show>
+            {isDesktop && <ProductCharacteristics />}
           </div>
 
-          <Show when={isDesktop}>
+          {isDesktop && (
             <div className='xl:col-span-5'>
               <ProductVideo />
               <ProductFiles />
             </div>
-          </Show>
+          )}
 
           <Separator className='bg-accent my-13 h-0.75! xl:hidden' />
-
-          <Show when={isMobileAndTablet}>
-            <ProductVideo />
-          </Show>
+          {isMobileAndTablet && <ProductVideo />}
         </div>
 
         <Separator className='bg-accent mb-13 hidden h-0.75! xl:block' />
+        {isMobileAndTablet && <ProductCharacteristics />}
 
-        <Show when={isMobileAndTablet}>
-          <ProductCharacteristics />
-        </Show>
+        <CustomersAlsoBought />
+        <Separator className='bg-accent my-7.5 h-0.75!' />
+        <RelatedProduct />
 
-        <Show when={isMobileAndTablet}>
-          <div className='bg-sidebar rounded-lg p-2.5'>
-            <Tabs defaultValue='files'>
-              <TabsList className='w-full gap-4.25 rounded-xl bg-white px-5 py-2.5'>
-                <TabsTrigger value='files'>Files</TabsTrigger>
-                <TabsTrigger value='manuals'>Manuals</TabsTrigger>
-              </TabsList>
-
-              <div className='p-5'>
-                <TabsContent value='files' className='grid grid-cols-2 gap-3.75 md:grid-cols-3 md:gap-5 xl:grid-cols-2'>
-                  Download available files here.
-                </TabsContent>
-
-                <TabsContent
-                  value='manuals'
-                  className='grid grid-cols-2 gap-3.75 md:grid-cols-3 md:gap-5 xl:grid-cols-2'
-                >
-                  Download available manuals here.
-                </TabsContent>
-              </div>
-            </Tabs>
-          </div>
-        </Show>
-
-        <PopularCollectionProducts handle={subcategory ?? ''} />
-
-        <PopularCollectionProducts handle={subcategory ?? ''} />
+        {isMobileAndTablet && <ProductFiles />}
       </Show>
     </div>
   );

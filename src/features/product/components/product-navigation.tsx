@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+import { ProductWrapper } from '@/features/product/components/product-tools';
 import { ProductDetailsAnchor } from '@/features/product/types/product.types';
 import { List } from '@/shared/components/common/list';
 import { cn } from '@/shared/lib/utils';
@@ -11,7 +12,7 @@ export function ProductNavigation() {
   const pathname = usePathname();
 
   return (
-    <nav className='bg-sidebar rounded-xl p-3.5'>
+    <ProductWrapper className='p-3.5'>
       <List
         data={Object.values(ProductDetailsAnchor)}
         renderItem={item => (
@@ -30,6 +31,6 @@ export function ProductNavigation() {
         keyExtractor={item => item}
         className='flex flex-wrap items-center justify-center gap-2.5 md:justify-start'
       />
-    </nav>
+    </ProductWrapper>
   );
 }

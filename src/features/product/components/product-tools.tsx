@@ -43,7 +43,7 @@ function ProductPrice({ newPrice, oldPrice, discount }: { newPrice: string; oldP
 
 function ProductBrand({ title, ...props }: ImageProps & { title: string }) {
   return (
-    <div className='md: flex items-center gap-x-4 md:gap-x-5'>
+    <div className='flex items-center gap-x-4 md:gap-x-5'>
       <Image className='h-18.75 w-40 md:h-21.5 md:w-45.5' {...props} />
 
       <div className='space-y-1'>

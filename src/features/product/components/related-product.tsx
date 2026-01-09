@@ -1,5 +1,3 @@
-'use client';
-
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 
@@ -9,7 +7,7 @@ import { ProductsCarousel } from '@/shared/components/common/products-carousel';
 import { ProductCardsSkeleton } from '@/shared/components/skeletons/product-cards-skeleton';
 import { getPopularCollectionProductsQueryOptions } from '@/shared/queries/collections/get-popular-collection-products';
 
-export function CustomersAlsoBought() {
+export function RelatedProduct() {
   const { subcategory } = useParams();
 
   const {
@@ -22,8 +20,8 @@ export function CustomersAlsoBought() {
   if (error || !products || products.length === 0) return null;
 
   return (
-    <div className='space-y-6.25 pt-8 md:space-y-7.5 md:pt-12.5'>
-      <ProductTitle id={ProductDetailsAnchor.CustomersAlsoBought}>Customers also bought</ProductTitle>
+    <div className='space-y-6.25'>
+      <ProductTitle id={ProductDetailsAnchor.RelatedProducts}>Related products</ProductTitle>
       <ProductsCarousel products={products} />
     </div>
   );

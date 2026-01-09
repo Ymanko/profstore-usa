@@ -1,8 +1,9 @@
+import { ProductWrapper } from '@/features/product/components/product-tools';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/components/ui/tabs';
 
 export function ProductFiles() {
   return (
-    <div className='bg-sidebar rounded-lg p-2.5'>
+    <ProductWrapper className='p-2.5'>
       <Tabs defaultValue='files'>
         <TabsList className='w-full gap-4.25 rounded-xl bg-white px-5 py-2.5'>
           <TabsTrigger value='files'>Files</TabsTrigger>
@@ -19,6 +20,6 @@ export function ProductFiles() {
           </TabsContent>
         </div>
       </Tabs>
-    </div>
+    </ProductWrapper>
   );
 }
