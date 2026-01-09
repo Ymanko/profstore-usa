@@ -1,9 +1,10 @@
 'use client';
 
-import { ChevronDown, Search } from 'lucide-react';
 import ImageGallery from 'react-image-gallery';
+import 'react-image-gallery/styles/css/image-gallery.css';
 import { useMedia } from 'react-use';
 
+import { ControlButton, ZoomButton } from '@/features/product/components/gallery-controls';
 import { useGallery } from '@/features/product/hooks/use-gallery';
 import { useGalleryImages } from '@/features/product/hooks/use-gallery-images';
 import { Show } from '@/shared/components/common/show';
@@ -12,8 +13,6 @@ import { cn } from '@/shared/lib/utils';
 
 import type { GalleryImage } from '@/features/product/hooks/use-gallery-images';
 import type { ComponentPropsWithoutRef } from 'react';
-
-import 'react-image-gallery/styles/css/image-gallery.css';
 
 interface GalleryProps extends ComponentPropsWithoutRef<'div'> {
   items: GalleryImage[];
@@ -28,7 +27,7 @@ export function Gallery({ items, className, ...props }: GalleryProps) {
 
   return (
     <Show when={isMounted} fallback={<div className='bg-muted-primary/50 h-96 w-full animate-pulse rounded-md' />}>
-      <div className={cn('relative overflow-hidden', className)} {...props}>
+      <div className={cn('relative overflow-hidden p-1', className)} {...props}>
         <ImageGallery
           infinite
           items={images}
@@ -46,42 +45,5 @@ export function Gallery({ items, className, ...props }: GalleryProps) {
         {!isMobile && <ControlButton disabled={!canGoNext} onClick={handleNext} />}
       </div>
     </Show>
-  );
-}
-
-function ControlButton(props: ComponentPropsWithoutRef<'button'>) {
-  return (
-    <button
-      type='button'
-      className={cn(
-        'absolute bottom-0 left-0 z-50',
-        'flex h-10 items-center justify-center',
-        'w-19.5 md:w-30 xl:w-40',
-        'focus:ring-accent focus:ring-2 focus:ring-offset-2 focus:outline-none',
-        'text-muted-foreground hover:bg-background/70 bg-transparent transition duration-200',
-      )}
-      aria-label='Next image'
-      {...props}
-    >
-      <ChevronDown className='text-foreground size-5' />
-    </button>
-  );
-}
-
-function ZoomButton({ isFullscreen, ...props }: ComponentPropsWithoutRef<'button'> & { isFullscreen: boolean }) {
-  return (
-    <button
-      type='button'
-      className={cn(
-        'absolute top-3.5 left-3.5 z-10',
-        'inline-flex size-9 items-center justify-center rounded-md',
-        'focus:ring-accent focus:ring-2 focus:ring-offset-2 focus:outline-none',
-        'text-muted-foreground hover:bg-background/70 bg-transparent transition duration-200',
-      )}
-      aria-label={isFullscreen ? 'Close zoom' : 'Open zoom'}
-      {...props}
-    >
-      <Search className='text-foreground size-5' />
-    </button>
   );
 }
