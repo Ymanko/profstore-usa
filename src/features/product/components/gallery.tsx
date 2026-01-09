@@ -24,21 +24,18 @@ export function Gallery({ items, className, ...props }: GalleryProps) {
   const isMounted = useIsMounted();
   const images = useGalleryImages(items);
 
-  const { canGoNext, galleryRef, handleNext, setCurrentIndex, showThumbnailControls } = useGallery(
-    images.length,
-    isMobile,
-    true,
-  );
+  const { canGoNext, galleryRef, handleNext, setCurrentIndex } = useGallery(images.length, true);
 
   return (
     <Show when={isMounted} fallback={<div className='bg-muted-primary/50 h-96 w-full animate-pulse rounded-md' />}>
-      <div className={cn('relative', className)} {...props}>
+      <div className={cn('relative overflow-hidden', className)} {...props}>
         <ImageGallery
-          ref={galleryRef}
-          items={images}
           infinite
-          showPlayButton={false}
+          items={images}
           showNav={false}
+          ref={galleryRef}
+          showPlayButton={false}
+          additionalClass='rounded-md'
           thumbnailPosition={isMobile ? 'bottom' : 'left'}
           onSlide={index => setCurrentIndex(index)}
           renderFullscreenButton={(onClick, isFullscreen) => (
@@ -46,8 +43,7 @@ export function Gallery({ items, className, ...props }: GalleryProps) {
           )}
         />
 
-        {/* Thumbnail control - only bottom button */}
-        {showThumbnailControls && <ControlButton disabled={!canGoNext} onClick={handleNext} />}
+        {!isMobile && <ControlButton disabled={!canGoNext} onClick={handleNext} />}
       </div>
     </Show>
   );

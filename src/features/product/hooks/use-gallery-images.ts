@@ -15,10 +15,10 @@ export function useGalleryImages(images: GalleryImage[]): ReactImageGalleryItem[
       images.map(image => ({
         original: image.url,
         thumbnail: image.url,
-        originalAlt: image.altText || undefined,
-        thumbnailAlt: image.altText || undefined,
-        originalWidth: image.width || undefined,
-        originalHeight: image.height || undefined,
+        originalClass: 'object-contain object-center w-full h-auto max-w-full',
+        thumbnailClass:
+          'object-cover object-center w-auto h-auto aspect-[78/66] md:aspect-[120/102] xl:aspect-[162/136] mt-5 md:mt-0 mr-2.5 md:mr-0 md:mb-4.5',
+        originalAlt: image?.altText || 'Product image',
       })),
     [images],
   );
