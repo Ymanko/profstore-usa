@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 
 import { ProductTitle } from '@/features/product/components/product-tools';
 import { ProductDetailsAnchor } from '@/features/product/types/product.types';
-import { ProductsCarousel } from '@/shared/components/common/products-carousel';
+import { ProductsCarouselWithHeader } from '@/shared/components/common/products-carousel';
 import { ProductCardsSkeleton } from '@/shared/components/skeletons/product-cards-skeleton';
 import { getPopularCollectionProductsQueryOptions } from '@/shared/queries/collections/get-popular-collection-products';
 
@@ -22,9 +22,11 @@ export function CustomersAlsoBought() {
   if (error || !products || products.length === 0) return null;
 
   return (
-    <div className='space-y-6.25 pt-8 md:space-y-7.5 md:pt-12.5'>
-      <ProductTitle id={ProductDetailsAnchor.CustomersAlsoBought}>Customers also bought</ProductTitle>
-      <ProductsCarousel products={products} />
+    <div className='pt-8 md:pt-12.5'>
+      <ProductsCarouselWithHeader
+        title={<ProductTitle id={ProductDetailsAnchor.CustomersAlsoBought}>Customers also bought</ProductTitle>}
+        products={products}
+      />
     </div>
   );
 }

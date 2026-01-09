@@ -20,7 +20,9 @@ import {
 } from '@/features/product/components/product-tools';
 import { ProductVideo } from '@/features/product/components/product-video';
 import { Rating } from '@/features/product/components/rating';
+import { RatingSummary } from '@/features/product/components/rating-summary';
 import { RelatedProduct } from '@/features/product/components/related-product';
+import { ReviewsList } from '@/features/product/components/reviews-list';
 import { Show } from '@/shared/components/common/show';
 import { Separator } from '@/shared/components/ui/separator';
 import { Typography } from '@/shared/components/ui/typography';
@@ -90,6 +92,34 @@ export function ProductDetails({ handle }: { handle: string }) {
         <RelatedProduct />
 
         {isMobileAndTablet && <ProductFiles />}
+
+        <Separator className='bg-accent my-7.5 h-0.75!' />
+
+        <RatingSummary
+          averageRating={4.0}
+          totalReviews={1}
+          breakdown={[
+            { stars: 5, count: 3 },
+            { stars: 4, count: 3 },
+            { stars: 3, count: 3 },
+            { stars: 2, count: 3 },
+            { stars: 1, count: 0 },
+          ]}
+        />
+
+        <ReviewsList
+          className='mt-7.5'
+          reviews={[
+            {
+              id: '1',
+              author: 'Jana L.',
+              company: "Nanna's Sweets",
+              date: '16.02.2021',
+              rating: 2,
+              content: `Wow, this Vitamix blender I purchased is extremely durable, has awesome power and so easy to clean.\n\nIt is quite loud on high speed, but hey...I can live with that since it blends the creamiest smoothies ever.`,
+            },
+          ]}
+        />
       </Show>
     </div>
   );

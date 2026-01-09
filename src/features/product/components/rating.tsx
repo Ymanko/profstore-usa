@@ -5,7 +5,7 @@ import { List } from '@/shared/components/common/list';
 import { Typography } from '@/shared/components/ui/typography';
 import { cn } from '@/shared/lib/utils';
 
-export function Rating({ rating, commentsCount }: { rating: number; commentsCount: number }) {
+export function Rating({ rating, commentsCount }: { rating: number; commentsCount?: number }) {
   const DEFAULT_STYLES = 'size-5 text-accent';
   const stars = useRating(rating);
 
@@ -33,9 +33,11 @@ export function Rating({ rating, commentsCount }: { rating: number; commentsCoun
         itemClassName='relative'
       />
 
-      <Typography className='text-muted-foreground font-inter'>
-        {commentsCount} {commentsCount === 1 ? 'comment' : 'comments'}
-      </Typography>
+      {commentsCount !== undefined && commentsCount > 0 && (
+        <Typography className='text-muted-foreground font-inter'>
+          {commentsCount} {commentsCount === 1 ? 'comment' : 'comments'}
+        </Typography>
+      )}
     </div>
   );
 }
