@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { AddToFavoritesBtn } from '@/shared/components/common/add-to favorites-btn';
 import { Show } from '@/shared/components/common/show';
 import { Icon } from '@/shared/components/ui/icon';
 import { Typography } from '@/shared/components/ui/typography';
@@ -70,7 +71,10 @@ export const ProductCard: FC<ProductCardProps> = ({
           <DiscountBadge percentage={discountPercentage} />
         </Show>
 
-        <AddToFavoritesButton onClick={() => (onAddToFavorites ? onAddToFavorites(id) : null)} />
+        <AddToFavoritesBtn
+          className='absolute top-0 right-0 z-20'
+          onClick={() => (onAddToFavorites ? onAddToFavorites(id) : null)}
+        />
       </div>
 
       <div className={cn('flex flex-col', isListView ? 'flex-1' : 'space-y-2.5 border-t pt-3.75')}>
@@ -146,19 +150,6 @@ function AddToCartButton({ ...props }: ComponentPropsWithoutRef<'button'>) {
       {...props}
     >
       <Icon name='shoppingCart' width={18} height={18} />
-    </button>
-  );
-}
-
-function AddToFavoritesButton({ ...props }: ComponentPropsWithoutRef<'button'>) {
-  return (
-    <button
-      type='button'
-      className='text-muted-foreground hover:text-accent absolute top-0 right-0 z-20 flex size-10 items-center justify-center rounded-md transition-colors duration-200'
-      aria-label='Add to favorites'
-      {...props}
-    >
-      <Icon name='heart' width={18} height={18} />
     </button>
   );
 }

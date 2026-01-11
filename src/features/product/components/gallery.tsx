@@ -1,12 +1,13 @@
 'use client';
 
 import ImageGallery from 'react-image-gallery';
-import 'react-image-gallery/styles/css/image-gallery.css';
 import { useMedia } from 'react-use';
+import 'react-image-gallery/styles/css/image-gallery.css';
 
-import { ControlButton, ZoomButton } from '@/features/product/components/gallery-controls';
+import { CompareButton, ControlButton, ZoomButton } from '@/features/product/components/gallery-controls';
 import { useGallery } from '@/features/product/hooks/use-gallery';
 import { useGalleryImages } from '@/features/product/hooks/use-gallery-images';
+import { AddToFavoritesBtn } from '@/shared/components/common/add-to favorites-btn';
 import { Show } from '@/shared/components/common/show';
 import { useIsMounted } from '@/shared/hooks/use-is-mounted';
 import { cn } from '@/shared/lib/utils';
@@ -27,7 +28,7 @@ export function Gallery({ items, className, ...props }: GalleryProps) {
 
   return (
     <Show when={isMounted} fallback={<div className='bg-muted-primary/50 h-96 w-full animate-pulse rounded-md' />}>
-      <div className={cn('relative overflow-hidden p-1', className)} {...props}>
+      <div className={cn('relative overflow-hidden px-0.5', className)} {...props}>
         <ImageGallery
           infinite
           items={images}
@@ -43,6 +44,10 @@ export function Gallery({ items, className, ...props }: GalleryProps) {
         />
 
         {!isMobile && <ControlButton disabled={!canGoNext} onClick={handleNext} />}
+        <div className='absolute top-2.5 right-2.5 z-20 grid gap-y-3.5'>
+          <AddToFavoritesBtn className='bg-surface/50' />
+          <CompareButton className='bg-surface/50' />
+        </div>
       </div>
     </Show>
   );

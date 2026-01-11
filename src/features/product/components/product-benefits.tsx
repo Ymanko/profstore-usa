@@ -5,12 +5,12 @@ import { Typography } from '@/shared/components/ui/typography';
 export function ProductBenefits() {
   return (
     <>
-      <div className='inline-grid justify-items-start sm:inline-flex sm:items-center sm:justify-between'>
+      <div className='inline-grid justify-items-start gap-x-2 sm:inline-flex sm:items-center sm:justify-between'>
         <Typography className='text-lg font-light'>
           4 interest-free payments of <span className='font-bold'>$274.75</span>
         </Typography>
 
-        <Button variant='link' className='text-secondary font-montserrat text-lg font-normal'>
+        <Button variant='link' className='text-secondary font-montserrat -ml-4 text-left text-lg md:ml-0'>
           Apply Now
         </Button>
       </div>

@@ -22,6 +22,7 @@
   --color-accent: var(--accent);
   --color-border: var(--border);
   --color-surface-default: var(--surface-default);
+  --color-surface: var(--surface-secondary);
   --color-ring: var(--ring);
   --color-sidebar: var(--surface);
   --color-sidebar-active: var(--sidebar-active);
@@ -61,6 +62,7 @@
   /* Borders & Inputs */
   --border: #e6e6e6;
   --surface-default: #efefef;
+  --surface-secondary: #DADCE2;
   --ring: #579040;
 
   /* Sidebar */
