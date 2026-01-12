@@ -27,6 +27,7 @@ import { ProductVideoCarousel } from '@/features/product/components/video-carous
 import { Show } from '@/shared/components/common/show';
 import { Separator } from '@/shared/components/ui/separator';
 import { Typography } from '@/shared/components/ui/typography';
+import { useIsMounted } from '@/shared/hooks/use-is-mounted';
 import { getProductQueryOptions } from '@/shared/queries/products/get-product';
 
 const videos = [
@@ -46,6 +47,7 @@ const videos = [
 
 export function ProductDetails({ handle }: { handle: string }) {
   const { data: product } = useSuspenseQuery(getProductQueryOptions(handle));
+  const isMounted = useIsMounted();
   const isDesktop = useMedia('(min-width: 1280px)');
   const isMobileAndTablet = useMedia('(max-width: 1279px)');
 
@@ -83,30 +85,38 @@ export function ProductDetails({ handle }: { handle: string }) {
         <ProductNavigation />
 
         <div className='pt-10.5 pb-8.5 md:pt-6.25 md:pb-11.25 xl:grid xl:grid-cols-16 xl:gap-5'>
-          <div className='xl:col-span-11'>
+          <div className='space-y-12 xl:col-span-11'>
             <ProductDescription />
-            {isDesktop && <ProductCharacteristics />}
+            <Show when={isMounted && isDesktop}>
+              <ProductCharacteristics />
+            </Show>
           </div>
 
-          {isDesktop && (
+          <Show when={isMounted && isDesktop}>
             <div className='xl:col-span-5'>
               <ProductVideo videos={videos} />
               <ProductFiles />
             </div>
-          )}
+          </Show>
 
           <Separator className='bg-accent my-13 h-0.75! xl:hidden' />
-          {isMobileAndTablet && <ProductVideoCarousel videos={videos} />}
+          <Show when={isMounted && isMobileAndTablet}>
+            <ProductVideoCarousel videos={videos} />
+          </Show>
         </div>
 
         <Separator className='bg-accent mb-13 hidden h-0.75! xl:block' />
-        {isMobileAndTablet && <ProductCharacteristics />}
+        <Show when={isMounted && isMobileAndTablet}>
+          <ProductCharacteristics />
+        </Show>
 
         <CustomersAlsoBought />
         <Separator className='bg-accent my-7.5 h-0.75!' />
         <RelatedProduct />
 
-        {isMobileAndTablet && <ProductFiles className='mt-12.5' />}
+        <Show when={isMounted && isMobileAndTablet}>
+          <ProductFiles className='mt-12.5' />
+        </Show>
 
         <Separator className='bg-accent my-7.5 h-0.75!' />
 

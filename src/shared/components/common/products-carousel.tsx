@@ -7,6 +7,7 @@ import { ProductCard } from '@/shared/components/common/product-card';
 import { Show } from '@/shared/components/common/show';
 import { CarouselContent, CarouselItem } from '@/shared/components/ui/carousel';
 import { Typography } from '@/shared/components/ui/typography';
+import { useIsMounted } from '@/shared/hooks/use-is-mounted';
 
 import type { Product } from '@/shared/queries/collections/get-subcategory-products';
 import type { FC, ReactNode } from 'react';
@@ -20,6 +21,7 @@ interface ProductsCarouselWithHeaderProps extends ProductsCarouselProps {
 }
 
 export const ProductsCarousel: FC<ProductsCarouselProps> = ({ products }) => {
+  const isMounted = useIsMounted();
   const isMobile = useMedia('(max-width: 767px)');
 
   return (
@@ -32,30 +34,32 @@ export const ProductsCarousel: FC<ProductsCarouselProps> = ({ products }) => {
         ))}
       </CarouselContent>
 
-      {isMobile && <CarouselControls className='mt-5 justify-center' />}
+      <Show when={isMounted && isMobile}>
+        <CarouselControls className='mt-5 justify-center' />
+      </Show>
     </BaseCarousel>
   );
 };
 
 export const ProductsCarouselWithHeader: FC<ProductsCarouselWithHeaderProps> = ({ title, products }) => {
+  const isMounted = useIsMounted();
   const isMobile = useMedia('(max-width: 767px)');
   const isTabletOrDesktop = useMedia('(min-width: 768px)');
 
   return (
     <BaseCarousel>
       <div className='mb-5 flex items-center justify-between'>
-        <Show
-          when={typeof title === 'string'}
-          fallback={
-            <Typography variant='h2' as='h2'>
-              {title}
-            </Typography>
-          }
-        >
+        {typeof title === 'string' ? (
+          <Typography variant='h2' as='h2'>
+            {title}
+          </Typography>
+        ) : (
           title
-        </Show>
+        )}
 
-        {isTabletOrDesktop && <CarouselControls />}
+        <Show when={isMounted && isTabletOrDesktop}>
+          <CarouselControls />
+        </Show>
       </div>
 
       <CarouselContent>
@@ -66,7 +70,9 @@ export const ProductsCarouselWithHeader: FC<ProductsCarouselWithHeaderProps> = (
         ))}
       </CarouselContent>
 
-      {isMobile && <CarouselControls className='mt-5 justify-end md:justify-center' />}
+      <Show when={isMounted && isMobile}>
+        <CarouselControls className='mt-5 justify-end md:justify-center' />
+      </Show>
     </BaseCarousel>
   );
 };

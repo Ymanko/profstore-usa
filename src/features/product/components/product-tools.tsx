@@ -22,7 +22,7 @@ function ProductArticle({ article }: { article: string }) {
 function ProductTitle({ className, ...props }: TypographyProps) {
   return (
     <Typography
-      className={cn('scroll-mt-20 text-[25px] leading-6.5 font-bold xl:text-3xl', className)}
+      className={cn('scroll-mt-20 text-[25px] leading-6.5 font-bold xl:scroll-mt-30 xl:text-3xl', className)}
       data-slot='product-description-title'
       {...props}
     />
@@ -44,6 +44,7 @@ function ProductPrice({ newPrice, oldPrice, discount }: { newPrice: string; oldP
 function ProductBrand({ title, ...props }: ImageProps & { title: string }) {
   return (
     <div className='flex items-center gap-x-4 md:gap-x-5'>
+      {/* eslint-disable-next-line jsx-a11y/alt-text */}
       <Image className='h-18.75 w-40 md:h-21.5 md:w-45.5' {...props} />
 
       <div className='space-y-1'>

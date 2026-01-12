@@ -1,12 +1,16 @@
 'use client';
 
+import { ZoomIn, ZoomOut } from 'lucide-react';
 import ImageGallery from 'react-image-gallery';
 import { useMedia } from 'react-use';
-import 'react-image-gallery/styles/css/image-gallery.css';
 
 import { CompareButton, ControlButton, ZoomButton } from '@/features/product/components/gallery-controls';
+import 'react-image-gallery/styles/css/image-gallery.css';
+
+import { GalleryItem } from '@/features/product/gallery-item';
 import { useGallery } from '@/features/product/hooks/use-gallery';
 import { useGalleryImages } from '@/features/product/hooks/use-gallery-images';
+import { useZoomImage } from '@/features/product/hooks/use-zoom-image';
 import { AddToFavoritesBtn } from '@/shared/components/common/add-to favorites-btn';
 import { Show } from '@/shared/components/common/show';
 import { useIsMounted } from '@/shared/hooks/use-is-mounted';
@@ -24,22 +28,45 @@ export function Gallery({ items, className, ...props }: GalleryProps) {
   const isMounted = useIsMounted();
   const images = useGalleryImages(items);
 
-  const { canGoNext, galleryRef, handleNext, setCurrentIndex } = useGallery(images.length, true);
+  const { canGoNext, galleryRef, handleNext, setCurrentIndex, currentIndex } = useGallery(images.length, true);
+  const { on, transformRefs, setOn, handleZoomIn, handleZoomOut } = useZoomImage(currentIndex);
 
   return (
-    <Show when={isMounted} fallback={<div className='bg-muted-primary/50 h-96 w-full animate-pulse rounded-md' />}>
+    <Show
+      when={isMounted}
+      fallback={<div className='bg-muted-primary/50 h-96 w-full animate-pulse rounded-md xl:col-span-10 xl:h-152' />}
+    >
       <div className={cn('relative overflow-hidden px-0.5', className)} {...props}>
+        <div className='absolute top-2.5 left-2.5 z-20 md:top-5 md:left-30 xl:left-32'>
+          <Show
+            when={on}
+            fallback={
+              <ZoomButton isZoomIn={false} onClick={handleZoomIn}>
+                <ZoomIn className='size-6' />
+              </ZoomButton>
+            }
+          >
+            <ZoomButton isZoomIn onClick={handleZoomOut}>
+              <ZoomOut className='size-6' />
+            </ZoomButton>
+          </Show>
+        </div>
+
         <ImageGallery
           infinite
           items={images}
           showNav={false}
           ref={galleryRef}
           showPlayButton={false}
+          showFullscreenButton={false}
           additionalClass='rounded-md'
           thumbnailPosition={isMobile ? 'bottom' : 'left'}
-          onSlide={index => setCurrentIndex(index)}
-          renderFullscreenButton={(onClick, isFullscreen) => (
-            <ZoomButton isFullscreen={isFullscreen} onClick={onClick} />
+          onSlide={index => {
+            setCurrentIndex(index);
+            setOn(false);
+          }}
+          renderItem={item => (
+            <GalleryItem item={item} index={images.indexOf(item)} transformRefs={transformRefs} isZoomEnabled={on} />
           )}
         />
 
