@@ -75,8 +75,8 @@ function Icon() {
           y2='31'
           gradientUnits='userSpaceOnUse'
         >
-          <stop stop-color='white' />
-          <stop offset='1' stop-color='#DADCE2' />
+          <stop stopColor='white' />
+          <stop offset='1' stopColor='#DADCE2' />
         </linearGradient>
         <linearGradient
           id='paint1_linear_30_2312'
@@ -86,8 +86,8 @@ function Icon() {
           y2='31'
           gradientUnits='userSpaceOnUse'
         >
-          <stop stop-color='white' />
-          <stop offset='1' stop-color='#DADCE2' />
+          <stop stopColor='white' />
+          <stop offset='1' stopColor='#DADCE2' />
         </linearGradient>
       </defs>
     </svg>
