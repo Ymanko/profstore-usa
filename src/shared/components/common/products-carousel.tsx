@@ -1,51 +1,72 @@
 'use client';
 
+import { useMedia } from 'react-use';
+
+import { BaseCarousel, CarouselControls } from '@/shared/components/common/base-carousel';
 import { ProductCard } from '@/shared/components/common/product-card';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '@/shared/components/ui/carousel';
+import { Show } from '@/shared/components/common/show';
+import { CarouselContent, CarouselItem } from '@/shared/components/ui/carousel';
 import { Typography } from '@/shared/components/ui/typography';
 
 import type { Product } from '@/shared/queries/collections/get-subcategory-products';
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 
 interface ProductsCarouselProps {
-  title?: string;
   products: Product[];
 }
 
-export const ProductsCarousel: FC<ProductsCarouselProps> = ({ title = '', products }) => {
-  return (
-    <div className='border-accent border-t-3 pt-10 md:pt-12.5'>
-      <div className='relative'>
-        <Typography variant='h2' as='h2' className='mb-5'>
-          {title}
-        </Typography>
+interface ProductsCarouselWithHeaderProps extends ProductsCarouselProps {
+  title: string | ReactNode;
+}
 
-        <Carousel
-          className='m-auto w-full max-w-87 md:max-w-167 lg:max-w-full'
-          opts={{
-            align: 'start',
-            slidesToScroll: 'auto',
-          }}
+export const ProductsCarousel: FC<ProductsCarouselProps> = ({ products }) => {
+  const isMobile = useMedia('(max-width: 767px)');
+
+  return (
+    <BaseCarousel>
+      <CarouselContent>
+        {products.map(product => (
+          <CarouselItem key={product.id} className='sm:basis-1/2 lg:basis-1/4'>
+            <ProductCard product={product} />
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+
+      {isMobile && <CarouselControls className='mt-5 justify-center' />}
+    </BaseCarousel>
+  );
+};
+
+export const ProductsCarouselWithHeader: FC<ProductsCarouselWithHeaderProps> = ({ title, products }) => {
+  const isMobile = useMedia('(max-width: 767px)');
+  const isTabletOrDesktop = useMedia('(min-width: 768px)');
+
+  return (
+    <BaseCarousel>
+      <div className='mb-5 flex items-center justify-between'>
+        <Show
+          when={typeof title === 'string'}
+          fallback={
+            <Typography variant='h2' as='h2'>
+              {title}
+            </Typography>
+          }
         >
-          <div className='absolute top-0 right-0 hidden gap-3 md:flex'>
-            <CarouselPrevious />
-            <CarouselNext />
-          </div>
-          <CarouselContent>
-            {products.map(product => (
-              <CarouselItem key={product.id} className='sm:basis-1/2 lg:basis-1/4'>
-                <ProductCard product={product} />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
+          title
+        </Show>
+
+        {isTabletOrDesktop && <CarouselControls />}
       </div>
-    </div>
+
+      <CarouselContent>
+        {products.map(product => (
+          <CarouselItem key={product.id} className='sm:basis-1/2 lg:basis-1/4'>
+            <ProductCard product={product} />
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+
+      {isMobile && <CarouselControls className='mt-5 justify-end md:justify-center' />}
+    </BaseCarousel>
   );
 };

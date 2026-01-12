@@ -22,10 +22,12 @@
   --color-accent: var(--accent);
   --color-border: var(--border);
   --color-surface-default: var(--surface-default);
+  --color-surface: var(--surface-secondary);
   --color-ring: var(--ring);
   --color-sidebar: var(--surface);
   --color-sidebar-active: var(--sidebar-active);
   --color-sidebar-active-20: rgb(from var(--sidebar-active) r g b / 0.2);
+    --color-sidebar-inactive: var(--sidebar-inactive);
   --color-muted-20: rgb(from var(--muted) r g b / 0.2);
   --color-brand-section-bg: var(--brand-section-bg);
   --color-destructive: var(--destructive);
@@ -61,11 +63,13 @@
   /* Borders & Inputs */
   --border: #e6e6e6;
   --surface-default: #efefef;
+  --surface-secondary: #DADCE2;
   --ring: #579040;
 
   /* Sidebar */
   --sidebar-active: #579040;
   --surface: #f6f6f6;
+  --sidebar-inactive: #EAF0E8;
 
   /* Section*/
   --brand-section-bg: #f2f2f2;
@@ -213,4 +217,23 @@ body {
 
 .range-slider__thumb {
   @apply border-secondary! size-5! border! bg-white!;
+}
+
+/*React-image-gallery*/
+.image-gallery-swipe,
+.image-gallery-thumbnail,
+.image-gallery-thumbnail.active,
+.image-gallery-thumbnail:focus {
+  @apply border-surface-default! overflow-hidden rounded-[10px] border-2!;
+}
+
+.image-gallery-thumbnail,
+.image-gallery-thumbnail.active,
+.image-gallery-thumbnail:focus {
+  @apply hover:border-accent!;
+}
+
+.image-gallery-thumbnail.active,
+.image-gallery-thumbnail:focus {
+  @apply border-accent!;
 }

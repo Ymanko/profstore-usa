@@ -51,7 +51,7 @@ const typographyVariants = cva('text-balance font-montserrat', {
 
 type TypographyElement = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span';
 
-interface TypographyProps extends React.HTMLAttributes<HTMLElement>, VariantProps<typeof typographyVariants> {
+export interface TypographyProps extends React.HTMLAttributes<HTMLElement>, VariantProps<typeof typographyVariants> {
   as?: TypographyElement;
   children: React.ReactNode;
 }

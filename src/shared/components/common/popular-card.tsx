@@ -2,8 +2,8 @@
 
 import Image from 'next/image';
 
-import { Button } from '@/shared/components/ui/button';
-import { Icon } from '@/shared/components/ui/icon';
+import { BasketBtn } from '@/shared/components/common/basket-btn';
+import { Show } from '@/shared/components/common/show';
 import { Typography } from '@/shared/components/ui/typography';
 import { cn } from '@/shared/lib/utils';
 
@@ -69,16 +69,17 @@ export function PopularProductBanner({ product }: PopularProductBannerProps) {
         <div className='relative col-span-2 ml-5 flex flex-col items-baseline gap-7'>
           {/*Price*/}
           <div className='flex items-baseline gap-3'>
-            {discount > 0 ? (
-              <>
-                <span className='text-foreground text-3xl leading-tight font-extrabold'>{price.toLocaleString()}$</span>
-                <span className='text-xl leading-[1.2] font-bold text-[#9f9f9f]'>{oldPrice.toLocaleString()}$</span>
-              </>
-            ) : (
-              <span className='text-foreground text-3xl leading-tight font-extrabold'>
-                {oldPrice.toLocaleString()}$
-              </span>
-            )}
+            <Show
+              when={discount > 0}
+              fallback={
+                <span className='text-foreground text-3xl leading-tight font-extrabold'>
+                  {oldPrice.toLocaleString()}$
+                </span>
+              }
+            >
+              <span className='text-foreground text-3xl leading-tight font-extrabold'>{price.toLocaleString()}$</span>
+              <span className='text-xl leading-[1.2] font-bold text-[#9f9f9f]'>{oldPrice.toLocaleString()}$</span>
+            </Show>
           </div>
 
           {/*Description*/}
@@ -87,18 +88,7 @@ export function PopularProductBanner({ product }: PopularProductBannerProps) {
           </Typography>
 
           {/*Button*/}
-          <Button
-            size='lg'
-            className={cn(
-              'hover:text-accent h-13.5 gap-3.5 bg-[linear-gradient(90deg,rgba(87,144,64,1),rgba(58,111,67,1)_100%)] py-3 has-[>svg]:pr-7.5',
-            )}
-          >
-            <Icon name='shoppingCart' className='size-6 shrink-0' width='24' height='24' />
-            <span className='h-full w-px bg-[#FFFFFF66]'></span>
-            <Typography variant='h3' as='span' className='font-medium'>
-              Basket
-            </Typography>
-          </Button>
+          <BasketBtn />
         </div>
       </div>
     </div>
