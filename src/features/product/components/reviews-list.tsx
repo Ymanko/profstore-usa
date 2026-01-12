@@ -50,7 +50,7 @@ export function ReviewsList({ reviews, className }: ReviewsListProps) {
         )}
         keyExtractor={review => review.id}
         className='space-y-4'
-        itemClassName='bg-sidebar rounded-xl p-5 md:p-7.5 space-y-3.5'
+        itemClassName='border rounded-xl p-5 md:p-7.5 space-y-3.5'
       />
     </div>
   );

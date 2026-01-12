@@ -8,9 +8,13 @@ export function ProductFiles({ className, ...props }: ComponentProps<'div'>) {
   return (
     <ProductWrapper className={cn('p-2.5', className)} {...props}>
       <Tabs defaultValue='files'>
-        <TabsList className='w-full gap-4.25 rounded-xl bg-white px-5 py-2.5'>
-          <TabsTrigger value='files'>Files</TabsTrigger>
-          <TabsTrigger value='manuals'>Manuals</TabsTrigger>
+        <TabsList className='w-full gap-4.25 rounded-xl bg-white px-5 py-2.5 md:justify-start'>
+          <TabsTrigger value='files' className='w-full md:max-w-45'>
+            Files
+          </TabsTrigger>
+          <TabsTrigger value='manuals' className='w-full md:max-w-45'>
+            Manuals
+          </TabsTrigger>
         </TabsList>
 
         <div className='p-5'>

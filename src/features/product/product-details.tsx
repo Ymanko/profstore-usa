@@ -111,31 +111,34 @@ export function ProductDetails({ handle }: { handle: string }) {
 
         <Separator className='bg-accent my-7.5 h-0.75!' />
 
-        <RatingSummary
-          averageRating={4.0}
-          totalReviews={1}
-          breakdown={[
-            { stars: 5, count: 3 },
-            { stars: 4, count: 3 },
-            { stars: 3, count: 3 },
-            { stars: 2, count: 3 },
-            { stars: 1, count: 0 },
-          ]}
-        />
+        <div className='grid gap-5.75 md:grid-cols-6'>
+          <RatingSummary
+            className='md:col-span-2'
+            averageRating={4.0}
+            totalReviews={1}
+            breakdown={[
+              { stars: 5, count: 3 },
+              { stars: 4, count: 3 },
+              { stars: 3, count: 3 },
+              { stars: 2, count: 3 },
+              { stars: 1, count: 0 },
+            ]}
+          />
 
-        <ReviewsList
-          className='mt-5.75'
-          reviews={[
-            {
-              id: '1',
-              author: 'Jana L.',
-              company: "Nanna's Sweets",
-              date: '16.02.2021',
-              rating: 2,
-              content: `Wow, this Vitamix blender I purchased is extremely durable, has awesome power and so easy to clean.\n\nIt is quite loud on high speed, but hey...I can live with that since it blends the creamiest smoothies ever.`,
-            },
-          ]}
-        />
+          <ReviewsList
+            className='md:col-span-4'
+            reviews={[
+              {
+                id: '1',
+                author: 'Jana L.',
+                company: "Nanna's Sweets",
+                date: '16.02.2021',
+                rating: 2,
+                content: `Wow, this Vitamix blender I purchased is extremely durable, has awesome power and so easy to clean.\n\nIt is quite loud on high speed, but hey...I can live with that since it blends the creamiest smoothies ever.`,
+              },
+            ]}
+          />
+        </div>
       </Show>
     </div>
   );

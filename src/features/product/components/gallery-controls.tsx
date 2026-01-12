@@ -27,7 +27,7 @@ function ZoomButton({ isFullscreen, ...props }: ComponentProps<'button'> & { isF
       type='button'
       aria-label={isFullscreen ? 'Close zoom' : 'Open zoom'}
       className={cn(
-        'absolute top-2.5 left-2.5 z-10',
+        'absolute top-2.5 left-2.5 z-10 md:top-5 md:left-5',
         'inline-flex size-9 items-center justify-center rounded-md',
         'focus:ring-accent focus:ring-2 focus:ring-offset-2 focus:outline-none',
         'text-muted-foreground hover:bg-surface/50 bg-transparent transition duration-200',
