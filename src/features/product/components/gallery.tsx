@@ -44,6 +44,7 @@ export function Gallery({ items, className, ...props }: GalleryProps) {
         />
 
         {!isMobile && <ControlButton disabled={!canGoNext} onClick={handleNext} />}
+
         <div className='absolute top-2.5 right-2.5 z-20 grid gap-y-3.5'>
           <AddToFavoritesBtn className='bg-surface/50' />
           <CompareButton className='bg-surface/50' />

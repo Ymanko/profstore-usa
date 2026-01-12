@@ -23,6 +23,7 @@ import { Rating } from '@/features/product/components/rating';
 import { RatingSummary } from '@/features/product/components/rating-summary';
 import { RelatedProduct } from '@/features/product/components/related-product';
 import { ReviewsList } from '@/features/product/components/reviews-list';
+import { ProductVideoCarousel } from '@/features/product/components/video-carousel';
 import { Show } from '@/shared/components/common/show';
 import { Separator } from '@/shared/components/ui/separator';
 import { Typography } from '@/shared/components/ui/typography';
@@ -35,6 +36,21 @@ export function ProductDetails({ handle }: { handle: string }) {
   const { data: product } = useSuspenseQuery(getProductQueryOptions(handle));
 
   const images = product?.images.edges.map(edge => edge.node) || [];
+
+  const videos = [
+    {
+      id: '1',
+      thumbnail: '/img/video.jpg',
+      title: 'Avantco Planetary Mixers Overview',
+      description: 'Effortlessly prepare food for your cafe or restaurant with Avantco planetary mixers.',
+    },
+    {
+      id: '2',
+      thumbnail: '/img/video.jpg',
+      title: 'Avantco Planetary Mixers Overview',
+      description: 'Effortlessly prepare food for your cafe or restaurant with Avantco planetary mixers.',
+    },
+  ];
 
   return (
     <div className='container'>
@@ -75,13 +91,13 @@ export function ProductDetails({ handle }: { handle: string }) {
 
           {isDesktop && (
             <div className='xl:col-span-5'>
-              <ProductVideo />
+              <ProductVideo videos={videos} />
               <ProductFiles />
             </div>
           )}
 
           <Separator className='bg-accent my-13 h-0.75! xl:hidden' />
-          {isMobileAndTablet && <ProductVideo />}
+          {isMobileAndTablet && <ProductVideoCarousel videos={videos} />}
         </div>
 
         <Separator className='bg-accent mb-13 hidden h-0.75! xl:block' />
@@ -91,7 +107,7 @@ export function ProductDetails({ handle }: { handle: string }) {
         <Separator className='bg-accent my-7.5 h-0.75!' />
         <RelatedProduct />
 
-        {isMobileAndTablet && <ProductFiles />}
+        {isMobileAndTablet && <ProductFiles className='mt-12.5' />}
 
         <Separator className='bg-accent my-7.5 h-0.75!' />
 

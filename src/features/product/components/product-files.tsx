@@ -1,9 +1,12 @@
 import { ProductWrapper } from '@/features/product/components/product-tools';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/shared/components/ui/tabs';
+import { cn } from '@/shared/lib/utils';
 
-export function ProductFiles() {
+import type { ComponentProps } from 'react';
+
+export function ProductFiles({ className, ...props }: ComponentProps<'div'>) {
   return (
-    <ProductWrapper className='p-2.5'>
+    <ProductWrapper className={cn('p-2.5', className)} {...props}>
       <Tabs defaultValue='files'>
         <TabsList className='w-full gap-4.25 rounded-xl bg-white px-5 py-2.5'>
           <TabsTrigger value='files'>Files</TabsTrigger>
