@@ -124,7 +124,7 @@ export function ProductDetails({ handle }: { handle: string }) {
         />
 
         <ReviewsList
-          className='mt-7.5'
+          className='mt-5.75'
           reviews={[
             {
               id: '1',

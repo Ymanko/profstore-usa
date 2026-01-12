@@ -20,30 +20,33 @@ export function RatingSummary({ averageRating, totalReviews, breakdown, classNam
   const maxCount = Math.max(...breakdown.map(b => b.count));
 
   return (
-    <div className={cn('bg-sidebar rounded-xl p-5 md:p-7.5', className)}>
-      <div className='mb-7.5 flex items-start justify-between'>
+    <div className={cn('bg-sidebar-inactive space-y-5.75 rounded-xl px-5 py-8 md:p-7.5', className)}>
+      <div className='flex items-center justify-between'>
         {/* Average Rating */}
-        <div>
-          <Typography className='text-[64px] font-bold leading-none'>
-            {averageRating.toFixed(1)}
-            <span className='text-muted-foreground text-4xl'>/5</span>
-          </Typography>
-        </div>
+
+        <Typography className='inline-flex items-end gap-x-1 text-[50px] leading-none font-bold'>
+          {averageRating.toFixed(1)}
+          <span className='text-3xl'>/</span>
+          <span className='text-3xl'>5</span>
+        </Typography>
 
         {/* Stars and Comments */}
-        <div className='text-right'>
+        <div className='text-center'>
           <div className='mb-2 flex gap-1'>
             {[1, 2, 3, 4, 5].map(star => (
               <Star
                 key={star}
                 className={cn(
-                  'size-6',
-                  star <= Math.round(averageRating) ? 'fill-accent text-accent' : 'fill-muted-primary text-muted-primary',
+                  'size-5',
+                  star <= Math.round(averageRating)
+                    ? 'fill-accent text-accent'
+                    : 'fill-muted-primary text-muted-primary',
                 )}
               />
             ))}
           </div>
-          <Typography className='text-muted-foreground'>
+
+          <Typography className='font-inter'>
             {totalReviews} {totalReviews === 1 ? 'comment' : 'comments'}
           </Typography>
         </div>
@@ -53,28 +56,29 @@ export function RatingSummary({ averageRating, totalReviews, breakdown, classNam
       <List
         data={breakdown}
         renderItem={item => (
-          <div className='flex items-center gap-3'>
+          <>
             {/* Stars */}
-            <div className='flex gap-0.5'>
+            <div className='flex items-center gap-1.25'>
               {[...Array(item.stars)].map((_, i) => (
-                <Star key={i} className='size-5 fill-accent text-accent' />
+                <Star key={i} className='fill-accent text-accent size-3.25' />
               ))}
             </div>
 
+            {/* Count */}
+            <Typography className='font-inter text-right'>{item.count}</Typography>
+
             {/* Progress Bar */}
-            <div className='bg-muted-primary relative h-2 flex-1 overflow-hidden rounded-full'>
+            <div className='bg-muted-primary relative col-span-2 h-1.25 overflow-hidden rounded-full'>
               <div
-                className='bg-accent absolute left-0 top-0 h-full rounded-full transition-all'
+                className='bg-accent absolute top-0 left-0 h-full rounded-full transition-all'
                 style={{ width: maxCount > 0 ? `${(item.count / maxCount) * 100}%` : '0%' }}
               />
             </div>
-
-            {/* Count */}
-            <Typography className='w-4 text-right font-bold'>{item.count}</Typography>
-          </div>
+          </>
         )}
         keyExtractor={item => item.stars.toString()}
         className='space-y-3'
+        itemClassName='grid grid-cols-2 gap-y-2.5'
       />
     </div>
   );

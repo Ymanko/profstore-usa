@@ -25,9 +25,6 @@ interface ProductVideoCarouselProps {
 }
 
 export const ProductVideoCarousel: FC<ProductVideoCarouselProps> = ({ videos, className }) => {
-  const isMobile = useMedia('(max-width: 767px)');
-  const isTabletOrDesktop = useMedia('(min-width: 768px)');
-
   return (
     <>
       <BaseCarousel className='mx-0'>

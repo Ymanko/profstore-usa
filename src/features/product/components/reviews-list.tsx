@@ -1,4 +1,6 @@
+import { ProductTitle } from '@/features/product/components/product-tools';
 import { Rating } from '@/features/product/components/rating';
+import { ProductDetailsAnchor } from '@/features/product/types/product.types';
 import { List } from '@/shared/components/common/list';
 import { Typography } from '@/shared/components/ui/typography';
 import { cn } from '@/shared/lib/utils';
@@ -19,42 +21,36 @@ interface ReviewsListProps {
 
 export function ReviewsList({ reviews, className }: ReviewsListProps) {
   return (
-    <div className={cn('space-y-7.5', className)}>
-      {/* Header */}
-      <Typography variant='h2' as='h2' className='text-[40px] font-bold leading-tight'>
-        Reviews ({reviews.length})
-      </Typography>
+    <div className={cn('space-y-5.5', className)}>
+      <ProductTitle id={ProductDetailsAnchor.Reviews}>Reviews ({reviews.length})</ProductTitle>
 
       {/* Reviews */}
       <List
         data={reviews}
         renderItem={review => (
-          <div className='bg-sidebar rounded-xl p-5 md:p-7.5'>
-            {/* Author and Company */}
-            <Typography className='mb-3 text-lg'>
-              Review by <span className='font-bold'>{review.author}</span>
-              {review.company && (
-                <>
-                  {' '}
-                  from <span className='font-bold'>{review.company}</span>
-                </>
-              )}
-            </Typography>
+          <>
+            <div className='space-y-2.5'>
+              {/* Author and Company */}
+              <Typography className='inline-flex gap-x-1'>
+                Review by <span className='font-bold'>{review.author}</span>
+                {review.company && (
+                  <>
+                    from <span className='font-bold'>{review.company}</span>
+                  </>
+                )}
+              </Typography>
 
-            {/* Date */}
-            <Typography className='text-muted-foreground mb-4 text-sm'>Posted on {review.date}</Typography>
-
-            {/* Rating */}
-            <div className='mb-5'>
-              <Rating rating={review.rating} />
+              {/* Date */}
+              <Typography className='font-light'>Posted on {review.date}</Typography>
             </div>
-
-            {/* Review Content */}
-            <Typography className='whitespace-pre-line leading-relaxed'>{review.content}</Typography>
-          </div>
+            {/* Rating */}
+            <Rating rating={review.rating} />s{/* Review Content */}
+            <Typography className='leading-relaxed whitespace-pre-line'>{review.content}</Typography>
+          </>
         )}
         keyExtractor={review => review.id}
-        className='space-y-5'
+        className='space-y-4'
+        itemClassName='bg-sidebar rounded-xl p-5 md:p-7.5 space-y-3.5'
       />
     </div>
   );
