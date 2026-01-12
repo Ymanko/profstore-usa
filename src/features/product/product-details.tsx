@@ -83,7 +83,7 @@ export function ProductDetails({ handle }: { handle: string }) {
         <ProductNavigation />
 
         <div className='pt-10.5 pb-8.5 md:pt-6.25 md:pb-11.25 xl:grid xl:grid-cols-16 xl:gap-5'>
-          <div className='xl:col-span-11'>
+          <div className='space-y-12 xl:col-span-11'>
             <ProductDescription />
             {isDesktop && <ProductCharacteristics />}
           </div>
