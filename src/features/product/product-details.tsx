@@ -53,7 +53,7 @@ export function ProductDetails({ handle }: { handle: string }) {
   ];
 
   return (
-    <div className='container'>
+    <div className='container mb-21'>
       <Show when={product} fallback={<NotFound>Product not found</NotFound>}>
         <Typography variant='h1' as='h1' className='mb-3.5 md:mb-5'>
           {product?.title}
