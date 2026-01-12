@@ -1,4 +1,4 @@
-'us client';
+'use client';
 
 import { useMedia } from 'react-use';
 
@@ -6,6 +6,8 @@ import { ProductTitle } from '@/features/product/components/product-tools';
 import { Rating } from '@/features/product/components/rating';
 import { ProductDetailsAnchor } from '@/features/product/types/product.types';
 import { List } from '@/shared/components/common/list';
+import { Show } from '@/shared/components/common/show';
+import { useIsMounted } from '@/shared/hooks/use-is-mounted';
 import { Typography } from '@/shared/components/ui/typography';
 import { cn } from '@/shared/lib/utils';
 
@@ -25,6 +27,7 @@ interface ReviewsListProps extends ComponentProps<'div'> {
 }
 
 export function ReviewsList({ className, reviews, ...props }: ReviewsListProps) {
+  const isMounted = useIsMounted();
   const isDesktop = useMedia('(min-width: 1280px)');
 
   return (
@@ -38,7 +41,7 @@ export function ReviewsList({ className, reviews, ...props }: ReviewsListProps) 
           <>
             <div className='space-y-2.5'>
               {/* Author and Company */}
-              <div className={cn(isDesktop && 'flex items-center justify-between')}>
+              <div className='xl:flex xl:items-center xl:justify-between'>
                 <Typography className='inline-flex gap-x-1'>
                   Review by <span className='font-bold'>{review.author}</span>
                   {review.company && (
@@ -48,7 +51,9 @@ export function ReviewsList({ className, reviews, ...props }: ReviewsListProps) 
                   )}
                 </Typography>
 
-                {isDesktop && <Rating rating={review.rating} />}
+                <Show when={isMounted && isDesktop}>
+                  <Rating rating={review.rating} />
+                </Show>
               </div>
 
               {/* Date */}
@@ -56,7 +61,9 @@ export function ReviewsList({ className, reviews, ...props }: ReviewsListProps) 
             </div>
 
             {/* Rating */}
-            {!isDesktop && <Rating className='xl:hidden' rating={review.rating} />}
+            <Show when={isMounted && !isDesktop}>
+              <Rating className='xl:hidden' rating={review.rating} />
+            </Show>
             {/* Review Content */}
             <Typography className='leading-relaxed whitespace-pre-line'>{review.content}</Typography>
           </>
