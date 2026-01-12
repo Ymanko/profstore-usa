@@ -29,28 +29,27 @@ import { Separator } from '@/shared/components/ui/separator';
 import { Typography } from '@/shared/components/ui/typography';
 import { getProductQueryOptions } from '@/shared/queries/products/get-product';
 
+const videos = [
+  {
+    id: '1',
+    thumbnail: '/img/video.jpg',
+    title: 'Avantco Planetary Mixers Overview',
+    description: 'Effortlessly prepare food for your cafe or restaurant with Avantco planetary mixers.',
+  },
+  {
+    id: '2',
+    thumbnail: '/img/video.jpg',
+    title: 'Avantco Planetary Mixers Overview',
+    description: 'Effortlessly prepare food for your cafe or restaurant with Avantco planetary mixers.',
+  },
+];
+
 export function ProductDetails({ handle }: { handle: string }) {
+  const { data: product } = useSuspenseQuery(getProductQueryOptions(handle));
   const isDesktop = useMedia('(min-width: 1280px)');
   const isMobileAndTablet = useMedia('(max-width: 1279px)');
 
-  const { data: product } = useSuspenseQuery(getProductQueryOptions(handle));
-
   const images = product?.images.edges.map(edge => edge.node) || [];
-
-  const videos = [
-    {
-      id: '1',
-      thumbnail: '/img/video.jpg',
-      title: 'Avantco Planetary Mixers Overview',
-      description: 'Effortlessly prepare food for your cafe or restaurant with Avantco planetary mixers.',
-    },
-    {
-      id: '2',
-      thumbnail: '/img/video.jpg',
-      title: 'Avantco Planetary Mixers Overview',
-      description: 'Effortlessly prepare food for your cafe or restaurant with Avantco planetary mixers.',
-    },
-  ];
 
   return (
     <div className='container mb-21'>
@@ -111,9 +110,9 @@ export function ProductDetails({ handle }: { handle: string }) {
 
         <Separator className='bg-accent my-7.5 h-0.75!' />
 
-        <div className='grid gap-5.75 md:grid-cols-6'>
+        <div className='grid gap-5.75 md:grid-cols-6 xl:grid-cols-16'>
           <RatingSummary
-            className='md:col-span-2'
+            className='md:col-span-2 xl:col-span-3'
             averageRating={4.0}
             totalReviews={1}
             breakdown={[
@@ -126,7 +125,7 @@ export function ProductDetails({ handle }: { handle: string }) {
           />
 
           <ReviewsList
-            className='md:col-span-4'
+            className='md:col-span-4 xl:col-span-13'
             reviews={[
               {
                 id: '1',

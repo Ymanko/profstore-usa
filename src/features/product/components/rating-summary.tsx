@@ -21,7 +21,7 @@ export function RatingSummary({ averageRating, totalReviews, breakdown, classNam
 
   return (
     <div className={cn('bg-sidebar-inactive space-y-5.75 rounded-xl px-5 py-8 md:p-7.5', className)}>
-      <div className='flex items-center justify-between md:mx-auto md:grid md:gap-4'>
+      <div className='flex items-center justify-between md:mx-auto md:grid md:justify-center md:gap-4'>
         {/* Average Rating */}
 
         <Typography className='flex items-end gap-x-1 text-[50px] leading-none font-bold'>

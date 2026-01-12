@@ -1,9 +1,15 @@
+'us client';
+
+import { useMedia } from 'react-use';
+
 import { ProductTitle } from '@/features/product/components/product-tools';
 import { Rating } from '@/features/product/components/rating';
 import { ProductDetailsAnchor } from '@/features/product/types/product.types';
 import { List } from '@/shared/components/common/list';
 import { Typography } from '@/shared/components/ui/typography';
 import { cn } from '@/shared/lib/utils';
+
+import type { ComponentProps } from 'react';
 
 export interface Review {
   id: string;
@@ -14,14 +20,15 @@ export interface Review {
   content: string;
 }
 
-interface ReviewsListProps {
+interface ReviewsListProps extends ComponentProps<'div'> {
   reviews: Review[];
-  className?: string;
 }
 
-export function ReviewsList({ reviews, className }: ReviewsListProps) {
+export function ReviewsList({ className, reviews, ...props }: ReviewsListProps) {
+  const isDesktop = useMedia('(min-width: 1280px)');
+
   return (
-    <div className={cn('space-y-5.5', className)}>
+    <div className={cn('space-y-5.5', className)} {...props}>
       <ProductTitle id={ProductDetailsAnchor.Reviews}>Reviews ({reviews.length})</ProductTitle>
 
       {/* Reviews */}
@@ -31,26 +38,32 @@ export function ReviewsList({ reviews, className }: ReviewsListProps) {
           <>
             <div className='space-y-2.5'>
               {/* Author and Company */}
-              <Typography className='inline-flex gap-x-1'>
-                Review by <span className='font-bold'>{review.author}</span>
-                {review.company && (
-                  <>
-                    from <span className='font-bold'>{review.company}</span>
-                  </>
-                )}
-              </Typography>
+              <div className={cn(isDesktop && 'flex items-center justify-between')}>
+                <Typography className='inline-flex gap-x-1'>
+                  Review by <span className='font-bold'>{review.author}</span>
+                  {review.company && (
+                    <>
+                      from <span className='font-bold'>{review.company}</span>
+                    </>
+                  )}
+                </Typography>
+
+                {isDesktop && <Rating rating={review.rating} />}
+              </div>
 
               {/* Date */}
-              <Typography className='font-light'>Posted on {review.date}</Typography>
+              <Typography>Posted on {review.date}</Typography>
             </div>
+
             {/* Rating */}
-            <Rating rating={review.rating} />s{/* Review Content */}
+            {!isDesktop && <Rating className='xl:hidden' rating={review.rating} />}
+            {/* Review Content */}
             <Typography className='leading-relaxed whitespace-pre-line'>{review.content}</Typography>
           </>
         )}
         keyExtractor={review => review.id}
         className='space-y-4'
-        itemClassName='border rounded-xl p-5 md:p-7.5 space-y-3.5'
+        itemClassName='border rounded-xl p-3.75 xl:px-5 xl:py-6 space-y-3.5'
       />
     </div>
   );

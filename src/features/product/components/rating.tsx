@@ -5,12 +5,19 @@ import { List } from '@/shared/components/common/list';
 import { Typography } from '@/shared/components/ui/typography';
 import { cn } from '@/shared/lib/utils';
 
-export function Rating({ rating, commentsCount }: { rating: number; commentsCount?: number }) {
+import type { ComponentProps } from 'react';
+
+interface RatingProps extends ComponentProps<'div'> {
+  rating: number;
+  commentsCount?: number;
+}
+
+export function Rating({ className, rating, commentsCount, ...props }: RatingProps) {
   const DEFAULT_STYLES = 'size-5 text-accent';
   const stars = useRating(rating);
 
   return (
-    <div className='inline-flex items-center gap-1.75'>
+    <div className={cn('inline-flex items-center gap-1.75', className)} {...props}>
       <List
         data={stars}
         renderItem={star => (

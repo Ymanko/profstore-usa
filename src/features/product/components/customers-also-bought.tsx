@@ -22,7 +22,7 @@ export function CustomersAlsoBought() {
   if (error || !products || products.length === 0) return null;
 
   return (
-    <div className='pt-8 md:pt-12.5'>
+    <div className='pt-8 md:pt-12.5 xl:pt-0'>
       <ProductsCarouselWithHeader
         title={<ProductTitle id={ProductDetailsAnchor.CustomersAlsoBought}>Customers also bought</ProductTitle>}
         products={products}
