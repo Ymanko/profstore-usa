@@ -1,15 +1,27 @@
 'use client';
 
 import Link from 'next/link';
-import { useHash } from 'react-use';
+import { useEffect } from 'react';
 
 import { ProductWrapper } from '@/features/product/components/product-tools';
 import { ProductDetailsAnchor } from '@/features/product/types/product.types';
 import { List } from '@/shared/components/common/list';
+import { useHash } from '@/shared/hooks/use-hash';
 import { cn } from '@/shared/lib/utils';
 
 export function ProductNavigation() {
-  const [hash, setHash] = useHash();
+  const { hash, setHash } = useHash();
+
+  useEffect(() => {
+    if (hash) {
+      const elementId = hash.replace('#', '');
+      const element = document.getElementById(elementId);
+
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  });
 
   return (
     <div className='bg-background sticky top-0 z-40 py-3.5'>
@@ -22,10 +34,10 @@ export function ProductNavigation() {
                 'border-accent block rounded-lg border px-2.5 py-2 md:px-5.75 md:py-2.5',
                 'text-muted-foreground text-[15px] leading-3.75 font-bold md:text-[17px] md:leading-4.25',
                 'hover:bg-accent transition-colors duration-200 first-letter:uppercase hover:text-black',
-                hash?.includes(item) && 'bg-accent text-black',
+                hash.includes(item) && 'bg-accent text-black',
               )}
               href={`#${item}`}
-              onClick={() => setHash(item)}
+              onClick={() => setHash(`#${item}`)}
             >
               {item.split('_').join(' ')}
             </Link>
