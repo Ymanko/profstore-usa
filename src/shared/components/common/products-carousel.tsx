@@ -5,9 +5,9 @@ import { useMedia } from 'react-use';
 import { BaseCarousel, CarouselControls } from '@/shared/components/common/base-carousel';
 import { ProductCard } from '@/shared/components/common/product-card';
 import { Show } from '@/shared/components/common/show';
-import { useIsMounted } from '@/shared/hooks/use-is-mounted';
 import { CarouselContent, CarouselItem } from '@/shared/components/ui/carousel';
 import { Typography } from '@/shared/components/ui/typography';
+import { useIsMounted } from '@/shared/hooks/use-is-mounted';
 
 import type { Product } from '@/shared/queries/collections/get-subcategory-products';
 import type { FC, ReactNode } from 'react';

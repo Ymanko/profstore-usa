@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react';
 
 export function useHash() {
-  const [hash, setHash] = useState('');
+  const [hash, setHash] = useState(() => window.location.hash);
 
   useEffect(() => {
-    // Встановлюємо початковий hash після монтування
-    setHash(window.location.hash);
-
     const onHashChanged = () => setHash(window.location.hash);
     const { pushState, replaceState } = window.history;
 

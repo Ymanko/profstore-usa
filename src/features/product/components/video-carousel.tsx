@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { useMedia } from 'react-use';
 
 import { ProductTitle } from '@/features/product/components/product-tools';
 import { BaseCarousel, CarouselControls } from '@/shared/components/common/base-carousel';
