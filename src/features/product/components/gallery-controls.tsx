@@ -1,4 +1,4 @@
-import { Scale, Search } from 'lucide-react';
+import { Scale } from 'lucide-react';
 
 import { cn } from '@/shared/lib/utils';
 
@@ -21,21 +21,17 @@ function ControlButton(props: ComponentProps<'button'>) {
   );
 }
 
-function ZoomButton({ isFullscreen, ...props }: ComponentProps<'button'> & { isFullscreen: boolean }) {
+function ZoomButton({ isZoomIn, ...props }: ComponentProps<'button'> & { isZoomIn: boolean }) {
   return (
     <button
       type='button'
-      aria-label={isFullscreen ? 'Close zoom' : 'Open zoom'}
+      aria-label={isZoomIn ? 'Zoom in' : 'Reset zoom'}
       className={cn(
-        'absolute top-2.5 left-2.5 z-10 md:top-5 md:left-5',
-        'inline-flex size-9 items-center justify-center rounded-md',
-        'focus:ring-accent focus:ring-2 focus:ring-offset-2 focus:outline-none',
+        'inline-flex size-10 items-center justify-center rounded-md',
         'text-muted-foreground hover:bg-surface/50 bg-transparent transition duration-200',
       )}
       {...props}
-    >
-      <Search className='size-6' />
-    </button>
+    />
   );
 }
 

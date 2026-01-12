@@ -7,8 +7,8 @@ import { Rating } from '@/features/product/components/rating';
 import { ProductDetailsAnchor } from '@/features/product/types/product.types';
 import { List } from '@/shared/components/common/list';
 import { Show } from '@/shared/components/common/show';
-import { useIsMounted } from '@/shared/hooks/use-is-mounted';
 import { Typography } from '@/shared/components/ui/typography';
+import { useIsMounted } from '@/shared/hooks/use-is-mounted';
 import { cn } from '@/shared/lib/utils';
 
 import type { ComponentProps } from 'react';

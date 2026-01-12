@@ -25,9 +25,9 @@ import { RelatedProduct } from '@/features/product/components/related-product';
 import { ReviewsList } from '@/features/product/components/reviews-list';
 import { ProductVideoCarousel } from '@/features/product/components/video-carousel';
 import { Show } from '@/shared/components/common/show';
-import { useIsMounted } from '@/shared/hooks/use-is-mounted';
 import { Separator } from '@/shared/components/ui/separator';
 import { Typography } from '@/shared/components/ui/typography';
+import { useIsMounted } from '@/shared/hooks/use-is-mounted';
 import { getProductQueryOptions } from '@/shared/queries/products/get-product';
 
 const videos = [
