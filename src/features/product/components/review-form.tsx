@@ -1,34 +1,47 @@
 'use client';
 
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Star } from 'lucide-react';
-import { useState, useTransition } from 'react';
+import { useState } from 'react';
 
 import { createReview } from '@/shared/actions/create-review';
 import { Button } from '@/shared/components/ui/button';
 import { Input } from '@/shared/components/ui/input';
 import { Typography } from '@/shared/components/ui/typography';
 import { cn } from '@/shared/lib/utils';
+import { getProductReviewsQueryOptions } from '@/shared/queries/reviews/get-product-reviews';
+
+import type { FormEvent } from 'react';
 
 interface ReviewFormProps {
   productId: string;
-  onSuccess?: () => void;
   className?: string;
 }
 
-export function ReviewForm({ productId, onSuccess, className }: ReviewFormProps) {
-  const [isPending, startTransition] = useTransition();
-  const [rating, setRating] = useState(0);
-  const [hoverRating, setHoverRating] = useState(0);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
+export function ReviewForm({ productId, className }: ReviewFormProps) {
+  const queryClient = useQueryClient();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [rating, setRating] = useState<number>(0);
+  const [hoverRating, setHoverRating] = useState<number>(0);
+  const [error, setError] = useState<string | null>(null);
+
+  const mutation = useMutation({
+    mutationFn: async (data: { name: string; email: string; rating: number; title: string; body: string }) => {
+      await createReview({
+        productId,
+        ...data,
+      });
+    },
+    onSuccess: async () => await queryClient.invalidateQueries(getProductReviewsQueryOptions(productId)),
+    onError: error => setError(error.message || 'Failed to submit review'),
+  });
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
 
     if (rating === 0) {
-      setError('Please select a rating');
-      return;
+      throw new Error('Please select a rating');
     }
 
     const formData = new FormData(e.currentTarget);
@@ -38,33 +51,22 @@ export function ReviewForm({ productId, onSuccess, className }: ReviewFormProps)
     const body = formData.get('body') as string;
 
     if (!name || !email || !body) {
-      setError('Please fill in all required fields');
-      return;
+      throw new Error('Please fill in all required fields');
     }
 
-    startTransition(async () => {
-      const result = await createReview({
-        productId,
-        name,
-        email,
-        rating,
-        title,
-        body,
-      });
-
-      if (result.success) {
-        setSuccess(true);
-        onSuccess?.();
-      } else {
-        setError(result.error || 'Failed to submit review');
-      }
+    mutation.mutate({
+      name,
+      email,
+      rating,
+      title,
+      body,
     });
   };
 
-  if (success) {
+  if (mutation.isSuccess) {
     return (
       <div className={cn('rounded-xl border p-6 text-center', className)}>
-        <Typography className='text-lg font-bold text-green-600'>Thank you for your review!</Typography>
+        <Typography className='text-secondary text-lg font-bold'>Thank you for your review!</Typography>
         <Typography className='text-muted-foreground mt-2'>
           Your review has been submitted and is pending approval.
         </Typography>
@@ -136,11 +138,11 @@ export function ReviewForm({ productId, onSuccess, className }: ReviewFormProps)
       </div>
 
       {/* Error */}
-      {error && <Typography className='text-sm text-red-500'>{error}</Typography>}
+      {error && <Typography className='text-sm text-rose-500'>{error}</Typography>}
 
       {/* Submit */}
-      <Button type='submit' disabled={isPending} className='w-full sm:w-auto'>
-        {isPending ? 'Submitting...' : 'Submit Review'}
+      <Button type='submit' disabled={mutation.isPending} className='w-full sm:w-auto'>
+        {mutation.isPending ? 'Submitting...' : 'Submit Review'}
       </Button>
     </form>
   );
