@@ -220,8 +220,8 @@ body {
 }
 
 /*React-image-gallery*/
-.image-gallery-swipe,
 .image-gallery-thumbnail,
+.image-gallery-slides,
 .image-gallery-thumbnail.active,
 .image-gallery-thumbnail:focus {
   @apply border-surface-default! overflow-hidden rounded-[10px] border-2!;

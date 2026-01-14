@@ -1,9 +1,13 @@
 import Image from 'next/image';
 
+import { getPrice } from '@/features/product/utils/price-helpers';
+import { Show } from '@/shared/components/common/show';
 import { Badge } from '@/shared/components/ui/badge';
 import { Typography, type TypographyProps } from '@/shared/components/ui/typography';
 import { cn } from '@/shared/lib/utils';
+import { calculateDiscountPercentage } from '@/shared/utils/calculate-discount-percentage';
 
+import type { ProductData } from '@/shared/queries/products/get-product';
 import type { ImageProps } from 'next/image';
 import type { ComponentProps } from 'react';
 
@@ -11,7 +15,9 @@ function ProductWrapper({ className, ...props }: ComponentProps<'div'>) {
   return <div className={cn('bg-sidebar rounded-xl', className)} data-slot='product-wrapper' {...props} />;
 }
 
-function ProductArticle({ article }: { article: string }) {
+function ProductArticle({ article }: { article?: string }) {
+  if (!article) return null;
+
   return (
     <Typography className='text-muted-foreground font-inter' data-slot='product-article'>
       Article: <span className='text-foreground'>{article}</span>
@@ -29,14 +35,38 @@ function ProductTitle({ className, ...props }: TypographyProps) {
   );
 }
 
-function ProductPrice({ newPrice, oldPrice, discount }: { newPrice: string; oldPrice: string; discount: string }) {
+function ProductPrice({ product }: { product: ProductData['product'] }) {
+  if (!product) return null;
+
+  const currentPrice = product.compareAtPriceRange.minVariantPrice;
+  const previousPrice = product.priceRange.minVariantPrice;
+
+  const currentAmount = Number(currentPrice.amount);
+  const previousAmount = Number(previousPrice.amount);
+
+  // If compareAtPrice is 0 or not set, or if it's >= regular price, show only regular price
+  const hasValidDiscount = currentAmount > 0 && previousAmount > currentAmount;
+
+  const displayPrice = hasValidDiscount
+    ? getPrice(currentPrice.currencyCode, currentPrice.amount)
+    : getPrice(previousPrice.currencyCode, previousPrice.amount);
+
+  const oldPrice = getPrice(previousPrice.currencyCode, previousPrice.amount);
+  const discountPercentage = hasValidDiscount ? calculateDiscountPercentage(previousAmount, currentAmount) : 0;
+
   return (
     <div className='flex items-center gap-x-4 md:gap-x-10'>
-      <Typography className='text-secondary text-3xl font-bold md:text-[40px] md:leading-10'>{newPrice}</Typography>
-      <Typography className='text-muted-foreground font-semibold md:text-xl'>{oldPrice}</Typography>
-      <Badge className='bg-secondary ml-auto rounded-sm px-5 py-1.5 text-sm font-semibold md:ml-0 md:text-base'>
-        {discount}
-      </Badge>
+      <Typography className='text-secondary text-3xl font-bold md:text-[40px] md:leading-10'>{displayPrice}</Typography>
+
+      <Show when={hasValidDiscount}>
+        <Typography className='text-muted-foreground font-semibold md:text-xl'>{oldPrice}</Typography>
+      </Show>
+
+      <Show when={hasValidDiscount && discountPercentage > 0}>
+        <Badge className='bg-secondary ml-auto rounded-sm px-5 py-1.5 text-sm font-semibold md:ml-0 md:text-base'>
+          -{discountPercentage}%
+        </Badge>
+      </Show>
     </div>
   );
 }

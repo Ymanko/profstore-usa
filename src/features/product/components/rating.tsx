@@ -40,11 +40,9 @@ export function Rating({ className, rating, commentsCount, ...props }: RatingPro
         itemClassName='relative'
       />
 
-      {commentsCount !== undefined && commentsCount > 0 && (
-        <Typography className='text-muted-foreground font-inter'>
-          {commentsCount} {commentsCount === 1 ? 'comment' : 'comments'}
-        </Typography>
-      )}
+      <Typography className='text-muted-foreground font-inter'>
+        {commentsCount} {commentsCount === 1 ? 'comment' : 'comments'}
+      </Typography>
     </div>
   );
 }

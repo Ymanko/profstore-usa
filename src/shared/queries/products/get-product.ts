@@ -66,6 +66,7 @@ const GET_PRODUCT = `
           node {
             id
             title
+            sku
             availableForSale
             quantityAvailable
             price {
@@ -99,7 +100,7 @@ const GET_PRODUCT = `
   }
 `;
 
-interface ProductData {
+export interface ProductData {
   product: {
     id: string;
     handle: string;
@@ -155,6 +156,7 @@ interface ProductData {
         node: {
           id: string;
           title: string;
+          sku: string;
           availableForSale: boolean;
           quantityAvailable?: number | null;
           price: {
@@ -197,5 +199,5 @@ export const getProductQueryOptions = (handle: string) =>
       );
     },
     staleTime: STALE_TIME.ONE_HOUR,
-    select: data => data.product,
+    select: (data: ProductData): ProductData['product'] => data.product,
   });

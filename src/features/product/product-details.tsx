@@ -26,55 +26,13 @@ import { RelatedProduct } from '@/features/product/components/related-product';
 import { ReviewForm } from '@/features/product/components/review-form';
 import { ReviewsList } from '@/features/product/components/reviews-list';
 import { ProductVideoCarousel } from '@/features/product/components/video-carousel';
+import { calculateReviewStats, transformReviews } from '@/features/product/utils/review-helpers';
 import { Show } from '@/shared/components/common/show';
 import { Separator } from '@/shared/components/ui/separator';
 import { Typography } from '@/shared/components/ui/typography';
 import { useIsMounted } from '@/shared/hooks/use-is-mounted';
 import { getProductQueryOptions } from '@/shared/queries/products/get-product';
-import { getProductReviewsQueryOptions, type JudgeMeReview } from '@/shared/queries/reviews/get-product-reviews';
-
-function formatReviewDate(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' });
-}
-
-function calculateReviewStats(reviews: JudgeMeReview[]) {
-  const totalReviews = reviews.length;
-
-  if (totalReviews === 0) {
-    return {
-      averageRating: 0,
-      totalReviews: 0,
-      breakdown: [
-        { stars: 5, count: 0 },
-        { stars: 4, count: 0 },
-        { stars: 3, count: 0 },
-        { stars: 2, count: 0 },
-        { stars: 1, count: 0 },
-      ],
-    };
-  }
-
-  const sumRatings = reviews.reduce((sum, r) => sum + r.rating, 0);
-  const averageRating = sumRatings / totalReviews;
-
-  const breakdown = [5, 4, 3, 2, 1].map(stars => ({
-    stars,
-    count: reviews.filter(r => r.rating === stars).length,
-  }));
-
-  return { averageRating, totalReviews, breakdown };
-}
-
-function transformReviews(reviews: JudgeMeReview[]) {
-  return reviews.map(review => ({
-    id: String(review.id),
-    author: review.reviewer.name,
-    date: formatReviewDate(review.created_at),
-    rating: review.rating,
-    content: review.body,
-  }));
-}
+import { getProductReviewsQueryOptions } from '@/shared/queries/reviews/get-product-reviews';
 
 const videos = [
   {
@@ -98,6 +56,8 @@ export function ProductDetails({ handle }: { handle: string }) {
   const isDesktop = useMedia('(min-width: 1280px)');
   const isMobileAndTablet = useMedia('(max-width: 1279px)');
 
+  console.log('product', product?.id);
+
   const images = product?.images.edges.map(edge => edge.node) || [];
   const reviewStats = useMemo(() => calculateReviewStats(reviews), [reviews]);
   const formattedReviews = useMemo(() => transformReviews(reviews), [reviews]);
@@ -111,7 +71,7 @@ export function ProductDetails({ handle }: { handle: string }) {
 
         <div className='mb-6 items-center justify-between sm:flex md:mb-7.5'>
           <Rating rating={reviewStats.averageRating} commentsCount={reviewStats.totalReviews} />
-          <ProductArticle article='0014' />
+          <ProductArticle article={product?.variants.edges.at(0)?.node.sku} />
         </div>
 
         <div className='grid gap-12.5 md:gap-8.75 xl:grid-cols-16 xl:gap-5'>
@@ -119,7 +79,7 @@ export function ProductDetails({ handle }: { handle: string }) {
 
           <div className='space-y-6 xl:col-span-6'>
             <ProductWrapper className='px-2.5 py-5 md:px-7.5 md:py-5.5'>
-              <ProductPrice newPrice='1,099 $' oldPrice='13,233 $' discount='20%' />
+              <ProductPrice product={product} />
               <Separator className='my-3.75 md:mt-7.5 md:mb-5' />
               <ProductBenefits />
             </ProductWrapper>

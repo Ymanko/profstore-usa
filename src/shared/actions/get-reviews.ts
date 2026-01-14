@@ -5,6 +5,9 @@ export interface JudgeMeReview {
   title: string;
   body: string;
   rating: number;
+  product_external_id: number | string;
+  product_title: string;
+  product_handle: string;
   reviewer: {
     id: number;
     email: string;
@@ -41,31 +44,36 @@ export async function getProductReviews(productId: string): Promise<JudgeMeRevie
   const shopDomain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN?.replace('https://', '');
 
   if (!privateToken || !shopDomain) {
-    console.warn('Judge.me private token or shop domain not configured');
     return [];
   }
 
+  // Extract numeric ID from Shopify GID (e.g., "gid://shopify/Product/123" -> "123")
   const numericProductId = productId.split('/').pop();
 
+  // First, try to get reviews using handle from product
+  // We'll need to make a different API call structure
   const url = new URL('https://judge.me/api/v1/reviews');
   url.searchParams.set('api_token', privateToken);
   url.searchParams.set('shop_domain', shopDomain);
-  url.searchParams.set('external_id', numericProductId || '');
-  url.searchParams.set('per_page', '50');
+  url.searchParams.set('per_page', '100');
 
   try {
-    const response = await fetch(url.toString());
+    const response = await fetch(url.toString(), {
+      next: { revalidate: 300 }, // Cache for 5 minutes
+    });
 
     if (!response.ok) {
-      const error = await response.json().catch(() => ({}));
-      console.error('Failed to fetch reviews:', response.status, error);
       return [];
     }
 
-    const data = await response.json();
-    return data.reviews || [];
-  } catch (error) {
-    console.error('Error fetching reviews:', error);
+    const data: JudgeMeReviewsResponse = await response.json();
+    const allReviews = data.reviews || [];
+
+    // Filter reviews by product_external_id which matches Shopify numeric product ID
+    return allReviews.filter(review => {
+      return review.product_external_id?.toString() === numericProductId;
+    });
+  } catch (_error) {
     return [];
   }
 }

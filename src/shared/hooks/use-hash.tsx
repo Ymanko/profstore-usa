@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 
 export function useHash() {
-  const [hash, setHash] = useState(() => window.location.hash);
+  const [hash, setHash] = useState(() => (typeof window !== 'undefined' ? window.location.hash : ''));
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const onHashChanged = () => setHash(window.location.hash);
     const { pushState, replaceState } = window.history;
 
