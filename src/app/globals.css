@@ -237,3 +237,15 @@ body {
 .image-gallery-thumbnail:focus {
   @apply border-accent!;
 }
+
+.image-gallery-slide-wrapper.image-gallery-thumbnails-left {
+  @apply md:w-[calc(100%-140px)]! xl:w-[calc(100%-192px)]! md:ml-3! xl:ml-4.5!;
+}
+
+.image-gallery-thumbnails-wrapper.image-gallery-thumbnails-left {
+  @apply md:w-29.5! xl:w-40.5!;
+}
+
+.image-gallery-thumbnail {
+    @apply md:w-full!
+}

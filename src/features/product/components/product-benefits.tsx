@@ -5,8 +5,8 @@ import { Typography } from '@/shared/components/ui/typography';
 export function ProductBenefits() {
   return (
     <>
-      <div className='inline-grid justify-items-start gap-x-2 sm:inline-flex sm:items-center sm:justify-between'>
-        <Typography className='text-lg font-light'>
+      <div className='mb-3 inline-grid justify-items-start gap-x-0.5 sm:inline-flex sm:items-center sm:justify-between'>
+        <Typography className='text-lg font-light text-nowrap'>
           4 interest-free payments of <span className='font-bold'>$274.75</span>
         </Typography>
 

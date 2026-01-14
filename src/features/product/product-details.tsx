@@ -1,6 +1,7 @@
 'use client';
 
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
 import { useMedia } from 'react-use';
 
 import { NotFound } from '@/features/layout/not-found';
@@ -22,6 +23,7 @@ import { ProductVideo } from '@/features/product/components/product-video';
 import { Rating } from '@/features/product/components/rating';
 import { RatingSummary } from '@/features/product/components/rating-summary';
 import { RelatedProduct } from '@/features/product/components/related-product';
+import { ReviewForm } from '@/features/product/components/review-form';
 import { ReviewsList } from '@/features/product/components/reviews-list';
 import { ProductVideoCarousel } from '@/features/product/components/video-carousel';
 import { Show } from '@/shared/components/common/show';
@@ -29,6 +31,50 @@ import { Separator } from '@/shared/components/ui/separator';
 import { Typography } from '@/shared/components/ui/typography';
 import { useIsMounted } from '@/shared/hooks/use-is-mounted';
 import { getProductQueryOptions } from '@/shared/queries/products/get-product';
+import { getProductReviewsQueryOptions, type JudgeMeReview } from '@/shared/queries/reviews/get-product-reviews';
+
+function formatReviewDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}
+
+function calculateReviewStats(reviews: JudgeMeReview[]) {
+  const totalReviews = reviews.length;
+
+  if (totalReviews === 0) {
+    return {
+      averageRating: 0,
+      totalReviews: 0,
+      breakdown: [
+        { stars: 5, count: 0 },
+        { stars: 4, count: 0 },
+        { stars: 3, count: 0 },
+        { stars: 2, count: 0 },
+        { stars: 1, count: 0 },
+      ],
+    };
+  }
+
+  const sumRatings = reviews.reduce((sum, r) => sum + r.rating, 0);
+  const averageRating = sumRatings / totalReviews;
+
+  const breakdown = [5, 4, 3, 2, 1].map(stars => ({
+    stars,
+    count: reviews.filter(r => r.rating === stars).length,
+  }));
+
+  return { averageRating, totalReviews, breakdown };
+}
+
+function transformReviews(reviews: JudgeMeReview[]) {
+  return reviews.map(review => ({
+    id: String(review.id),
+    author: review.reviewer.name,
+    date: formatReviewDate(review.created_at),
+    rating: review.rating,
+    content: review.body,
+  }));
+}
 
 const videos = [
   {
@@ -47,11 +93,14 @@ const videos = [
 
 export function ProductDetails({ handle }: { handle: string }) {
   const { data: product } = useSuspenseQuery(getProductQueryOptions(handle));
+  const { data: reviews = [] } = useQuery(getProductReviewsQueryOptions(product?.id || ''));
   const isMounted = useIsMounted();
   const isDesktop = useMedia('(min-width: 1280px)');
   const isMobileAndTablet = useMedia('(max-width: 1279px)');
 
   const images = product?.images.edges.map(edge => edge.node) || [];
+  const reviewStats = useMemo(() => calculateReviewStats(reviews), [reviews]);
+  const formattedReviews = useMemo(() => transformReviews(reviews), [reviews]);
 
   return (
     <div className='container mb-21'>
@@ -61,7 +110,7 @@ export function ProductDetails({ handle }: { handle: string }) {
         </Typography>
 
         <div className='mb-6 items-center justify-between sm:flex md:mb-7.5'>
-          <Rating rating={3.5} commentsCount={1} />
+          <Rating rating={reviewStats.averageRating} commentsCount={reviewStats.totalReviews} />
           <ProductArticle article='0014' />
         </div>
 
@@ -71,7 +120,7 @@ export function ProductDetails({ handle }: { handle: string }) {
           <div className='space-y-6 xl:col-span-6'>
             <ProductWrapper className='px-2.5 py-5 md:px-7.5 md:py-5.5'>
               <ProductPrice newPrice='1,099 $' oldPrice='13,233 $' discount='20%' />
-              <Separator className='my-3.75 md:mt-7.5 md:mb-6.25' />
+              <Separator className='my-3.75 md:mt-7.5 md:mb-5' />
               <ProductBenefits />
             </ProductWrapper>
 
@@ -123,31 +172,16 @@ export function ProductDetails({ handle }: { handle: string }) {
         <div className='grid gap-5.75 md:grid-cols-6 xl:grid-cols-16'>
           <RatingSummary
             className='md:col-span-2 xl:col-span-3'
-            averageRating={4.0}
-            totalReviews={1}
-            breakdown={[
-              { stars: 5, count: 3 },
-              { stars: 4, count: 3 },
-              { stars: 3, count: 3 },
-              { stars: 2, count: 3 },
-              { stars: 1, count: 0 },
-            ]}
+            averageRating={reviewStats.averageRating}
+            totalReviews={reviewStats.totalReviews}
+            breakdown={reviewStats.breakdown}
           />
 
-          <ReviewsList
-            className='md:col-span-4 xl:col-span-13'
-            reviews={[
-              {
-                id: '1',
-                author: 'Jana L.',
-                company: "Nanna's Sweets",
-                date: '16.02.2021',
-                rating: 2,
-                content: `Wow, this Vitamix blender I purchased is extremely durable, has awesome power and so easy to clean.\n\nIt is quite loud on high speed, but hey...I can live with that since it blends the creamiest smoothies ever.`,
-              },
-            ]}
-          />
+          <ReviewsList className='md:col-span-4 xl:col-span-13' reviews={formattedReviews} />
         </div>
+
+        <Separator className='bg-accent my-7.5 h-0.75!' />
+        <ReviewForm productId={product?.id || ''} className='max-w-2xl' />
       </Show>
     </div>
   );

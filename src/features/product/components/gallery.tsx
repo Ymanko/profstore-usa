@@ -1,6 +1,6 @@
 'use client';
 
-import { ZoomIn, ZoomOut } from 'lucide-react';
+import { Search, ZoomOut } from 'lucide-react';
 import ImageGallery from 'react-image-gallery';
 import { useMedia } from 'react-use';
 
@@ -37,12 +37,12 @@ export function Gallery({ items, className, ...props }: GalleryProps) {
       fallback={<div className='bg-muted-primary/50 h-96 w-full animate-pulse rounded-md xl:col-span-10 xl:h-152' />}
     >
       <div className={cn('relative overflow-hidden px-0.5', className)} {...props}>
-        <div className='absolute top-2.5 left-2.5 z-20 md:top-5 md:left-30 xl:left-32'>
+        <div className='absolute top-2.5 left-2.5 z-20 md:top-3 md:left-37.5 xl:left-50'>
           <Show
             when={on}
             fallback={
               <ZoomButton isZoomIn={false} onClick={handleZoomIn}>
-                <ZoomIn className='size-6' />
+                <Search className='size-6' />
               </ZoomButton>
             }
           >

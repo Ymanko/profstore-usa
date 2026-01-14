@@ -32,9 +32,9 @@ function ProductTitle({ className, ...props }: TypographyProps) {
 function ProductPrice({ newPrice, oldPrice, discount }: { newPrice: string; oldPrice: string; discount: string }) {
   return (
     <div className='flex items-center gap-x-4 md:gap-x-10'>
-      <Typography className='text-secondary text-3xl font-black md:text-[40px] md:leading-10'>{newPrice}</Typography>
+      <Typography className='text-secondary text-3xl font-bold md:text-[40px] md:leading-10'>{newPrice}</Typography>
       <Typography className='text-muted-foreground font-semibold md:text-xl'>{oldPrice}</Typography>
-      <Badge className='bg-secondary ml-auto rounded-md px-5 py-1.5 text-sm font-semibold md:ml-0 md:text-base'>
+      <Badge className='bg-secondary ml-auto rounded-sm px-5 py-1.5 text-sm font-semibold md:ml-0 md:text-base'>
         {discount}
       </Badge>
     </div>
