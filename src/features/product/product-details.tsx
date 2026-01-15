@@ -42,27 +42,34 @@ export function ProductDetails({ handle }: { handle: string }) {
   return (
     <div className='container mb-21'>
       <Show when={product} fallback={<NotFound>Product not found</NotFound>}>
+        {/* Title */}
         <Typography variant='h1' as='h1' className='mb-3.5 md:mb-5'>
           {product?.title}
         </Typography>
 
+        {/* Rating & Article */}
         <div className='mb-6 items-center justify-between sm:flex md:mb-7.5'>
           <Rating rating={reviewStats.averageRating} commentsCount={reviewStats.totalReviews} />
           <Product.Article article={product?.variants.edges.at(0)?.node.sku} />
         </div>
 
+        {/* Gallery & Product Info */}
         <div className='grid gap-12.5 md:gap-8.75 xl:grid-cols-16 xl:gap-5'>
           <Gallery className='xl:col-span-10' items={images} />
 
           <div className='space-y-6 xl:col-span-6'>
+            {/* Price & Benefits */}
             <Product.Wrapper className='px-2.5 py-5 md:px-7.5 md:py-5.5'>
               <Product.Price product={product} />
               <Separator className='my-3.75 md:mt-7.5 md:mb-5' />
               <ProductBenefits />
             </Product.Wrapper>
 
+            {/* Actions */}
             <ProductActions />
             <Separator className='mt-1.5 mb-7.5' />
+
+            {/* Brand */}
             <Product.Brand
               title={product?.manufacturer?.value}
               src={product?.brandLogo?.reference?.image?.url ?? ''}
@@ -74,17 +81,22 @@ export function ProductDetails({ handle }: { handle: string }) {
         </div>
 
         <Separator className='my-7.5' />
+
+        {/* Navigation */}
         <ProductNavigation />
 
+        {/* Description & Characteristics & Videos */}
         <div className='pt-10.5 pb-8.5 md:pt-6.25 md:pb-11.25 xl:grid xl:grid-cols-16 xl:gap-5'>
           <div className='space-y-12 xl:col-span-11'>
             <ProductDescription description={descriptionBlocks} />
 
+            {/* Characteristics (Desktop) */}
             <Show when={isMounted && isDesktop}>
               <ProductCharacteristics data={characteristics} />
             </Show>
           </div>
 
+          {/* Videos & Files (Desktop) */}
           <Show when={isMounted && isDesktop}>
             <div className='xl:col-span-5'>
               <ProductVideo videos={videos} />
@@ -93,26 +105,35 @@ export function ProductDetails({ handle }: { handle: string }) {
           </Show>
 
           <Separator className='bg-accent my-13 h-0.75! xl:hidden' />
+
+          {/* Video Carousel (Mobile & Tablet) */}
           <Show when={isMounted && isMobileAndTablet}>
             <ProductVideoCarousel videos={videos} />
           </Show>
         </div>
 
         <Separator className='bg-accent mb-13 hidden h-0.75! xl:block' />
+
+        {/* Characteristics (Mobile & Tablet) */}
         <Show when={isMounted && isMobileAndTablet}>
           <ProductCharacteristics data={characteristics} />
         </Show>
 
+        {/* Customers Also Bought */}
         <CustomersAlsoBought />
         <Separator className='bg-accent my-7.5 h-0.75!' />
+
+        {/* Related Products */}
         <RelatedProduct />
 
+        {/* Files (Mobile & Tablet) */}
         <Show when={isMounted && isMobileAndTablet}>
           <ProductFiles files={productFiles} className='mt-12.5' />
         </Show>
 
         <Separator className='bg-accent my-7.5 h-0.75!' />
 
+        {/* Reviews Section */}
         <div className='grid gap-5.75 md:grid-cols-6 xl:grid-cols-16'>
           <RatingSummary
             className='md:col-span-2 xl:col-span-3'
@@ -125,6 +146,8 @@ export function ProductDetails({ handle }: { handle: string }) {
         </div>
 
         <Separator className='bg-accent my-7.5 h-0.75!' />
+
+        {/* Review Form */}
         <ReviewForm productId={product?.id || ''} className='max-w-2xl' />
       </Show>
     </div>
