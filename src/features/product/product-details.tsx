@@ -39,8 +39,6 @@ export function ProductDetails({ handle }: { handle: string }) {
   const { images, reviewStats, formattedReviews, productFiles, descriptionBlocks, characteristics, videos } =
     useProductData(product, reviews);
 
-  console.log(product?.variants.edges.at(0)?.node);
-
   return (
     <div className='container mb-21'>
       <Show when={product} fallback={<NotFound>Product not found</NotFound>}>
