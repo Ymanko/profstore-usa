@@ -39,6 +39,8 @@ export function ProductDetails({ handle }: { handle: string }) {
   const { images, reviewStats, formattedReviews, productFiles, descriptionBlocks, characteristics, videos } =
     useProductData(product, reviews);
 
+  console.log(product?.variants.edges.at(0)?.node);
+
   return (
     <div className='container mb-21'>
       <Show when={product} fallback={<NotFound>Product not found</NotFound>}>
@@ -50,7 +52,7 @@ export function ProductDetails({ handle }: { handle: string }) {
         {/* Rating & Article */}
         <div className='mb-6 items-center justify-between sm:flex md:mb-7.5'>
           <Rating rating={reviewStats.averageRating} commentsCount={reviewStats.totalReviews} />
-          <Product.Article article={product?.variants.edges.at(0)?.node.sku} />
+          <Product.Article article={product?.id} />
         </div>
 
         {/* Gallery & Product Info */}

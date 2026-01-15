@@ -18,9 +18,11 @@ function ProductWrapper({ className, ...props }: ComponentProps<'div'>) {
 function ProductArticle({ article }: { article?: string }) {
   if (!article) return null;
 
+  const formattedArticle = article.replace('gid://shopify/Product/', '');
+
   return (
     <Typography className='text-muted-foreground font-inter' data-slot='product-article'>
-      Article: <span className='text-foreground'>{article}</span>
+      Article: <span className='text-foreground'>{formattedArticle}</span>
     </Typography>
   );
 }
