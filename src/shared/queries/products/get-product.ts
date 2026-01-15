@@ -2,6 +2,10 @@ import { queryOptions } from '@tanstack/react-query';
 
 import { STALE_TIME } from '@/shared/constants/stale-time';
 import { serverGraphqlFetcher } from '@/shared/lib/graphql/server-graphql-fetcher';
+import {
+  CONTENT_BLOCK_FIELDS_FRAGMENT,
+  type ContentMetaobjectField,
+} from '@/shared/utils/parsers/parse-content-blocks';
 
 const GET_PRODUCT = `
   query GetProduct($handle: String!) {
@@ -98,12 +102,19 @@ const GET_PRODUCT = `
       }
 
       # Metafields
-      fullDescription: metafield(namespace: "custom", key: "full_description") {
-        value
-        type
+      fullDescription: metafield(namespace: "custom", key: "full_decription") {
+        references(first: 20) {
+          edges {
+            node {
+              ... on Metaobject {
+                ${CONTENT_BLOCK_FIELDS_FRAGMENT}
+              }
+            }
+          }
+        }
       }
 
-      videos: metafield(namespace: "custom", key: "product") {
+      videos: metafield(namespace: "custom", key: "video") {
         references(first: 10) {
           edges {
             node {
@@ -130,7 +141,7 @@ const GET_PRODUCT = `
         }
       }
 
-      characteristics: metafield(namespace: "custom", key: "characteristics") {
+      characteristics: metafield(namespace: "custom", key: "haracteristics") {
         references(first: 50) {
           edges {
             node {
@@ -277,8 +288,14 @@ export interface ProductData {
       values: string[];
     }>;
     fullDescription: {
-      value: string;
-      type: string;
+      references: {
+        edges: Array<{
+          node: {
+            id: string;
+            fields: ContentMetaobjectField[];
+          };
+        }>;
+      };
     } | null;
     videos: {
       references: {

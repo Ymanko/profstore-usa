@@ -1,7 +1,6 @@
 'use client';
 
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
-import { useMemo } from 'react';
 import { useMedia } from 'react-use';
 
 import { NotFound } from '@/features/layout/not-found';
@@ -11,7 +10,7 @@ import { ProductActions } from '@/features/product/components/product-actions';
 import { ProductBenefits } from '@/features/product/components/product-benefits';
 import { ProductCharacteristics } from '@/features/product/components/product-characteristics';
 import { ProductDescription } from '@/features/product/components/product-description';
-import { ProductFiles, type ProductFile } from '@/features/product/components/product-files';
+import { ProductFiles } from '@/features/product/components/product-files';
 import { ProductNavigation } from '@/features/product/components/product-navigation';
 import {
   ProductArticle,
@@ -26,28 +25,7 @@ import { RelatedProduct } from '@/features/product/components/related-product';
 import { ReviewForm } from '@/features/product/components/review-form';
 import { ReviewsList } from '@/features/product/components/reviews-list';
 import { ProductVideoCarousel } from '@/features/product/components/video-carousel';
-import { calculateReviewStats, transformReviews } from '@/features/product/utils/review-helpers';
-import type { ProductData } from '@/shared/queries/products/get-product';
-
-type FilesMetafield = NonNullable<NonNullable<ProductData['product']>['files']>;
-
-function transformFiles(filesMetafield: FilesMetafield | null | undefined): ProductFile[] {
-  if (!filesMetafield?.references?.edges) return [];
-
-  return filesMetafield.references.edges.map(edge => {
-    const fields = edge.node.fields;
-    const getField = (key: string) => fields.find(f => f.key === key);
-
-    return {
-      handle: edge.node.handle,
-      title: getField('title')?.value || 'Untitled',
-      category: (getField('category')?.value as 'file' | 'manual') || 'file',
-      url: getField('file')?.reference?.url || '',
-      fileSize: getField('file')?.reference?.originalFileSize || 0,
-      mimeType: getField('file')?.reference?.mimeType || '',
-    };
-  });
-}
+import { useProductData } from '@/features/product/hooks/use-product-data';
 import { Show } from '@/shared/components/common/show';
 import { Separator } from '@/shared/components/ui/separator';
 import { Typography } from '@/shared/components/ui/typography';
@@ -73,31 +51,23 @@ const videos = [
 export function ProductDetails({ handle }: { handle: string }) {
   const { data: product } = useSuspenseQuery(getProductQueryOptions(handle));
   const { data: reviews = [] } = useQuery(getProductReviewsQueryOptions(product?.id || ''));
+
   const isMounted = useIsMounted();
   const isDesktop = useMedia('(min-width: 1280px)');
   const isMobileAndTablet = useMedia('(max-width: 1279px)');
 
+  const productData = useProductData(product, reviews);
+  const { images, reviewStats, formattedReviews, productFiles, descriptionBlocks, characteristics } = productData;
+
   // Debug metafields
   console.log('=== METAFIELDS ===');
-  console.log('fullDescription:', product?.fullDescription);
   console.log('videos:', product?.videos);
-  console.log('characteristics:', product?.characteristics);
-  console.log(
-    'files:',
-    product?.files?.references.edges.map(edge => edge.node),
-  );
-  console.log('==================');
-
-  const images = product?.images.edges.map(edge => edge.node) || [];
-  const reviewStats = useMemo(() => calculateReviewStats(reviews), [reviews]);
-  const formattedReviews = useMemo(() => transformReviews(reviews), [reviews]);
-  const productFiles = useMemo(() => transformFiles(product?.files), [product?.files]);
 
   return (
     <div className='container mb-21'>
       <Show when={product} fallback={<NotFound>Product not found</NotFound>}>
         <Typography variant='h1' as='h1' className='mb-3.5 md:mb-5'>
-          {product?.title}
+          s{product?.title}
         </Typography>
 
         <div className='mb-6 items-center justify-between sm:flex md:mb-7.5'>
@@ -132,9 +102,10 @@ export function ProductDetails({ handle }: { handle: string }) {
 
         <div className='pt-10.5 pb-8.5 md:pt-6.25 md:pb-11.25 xl:grid xl:grid-cols-16 xl:gap-5'>
           <div className='space-y-12 xl:col-span-11'>
-            <ProductDescription />
+            <ProductDescription description={descriptionBlocks} />
+
             <Show when={isMounted && isDesktop}>
-              <ProductCharacteristics />
+              <ProductCharacteristics data={characteristics} />
             </Show>
           </div>
 

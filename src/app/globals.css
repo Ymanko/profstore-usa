@@ -239,7 +239,7 @@ body {
 }
 
 .image-gallery-slide-wrapper.image-gallery-thumbnails-left {
-  @apply md:w-[calc(100%-140px)]! xl:w-[calc(100%-192px)]! md:ml-3! xl:ml-4.5!;
+  @apply md:ml-3! md:w-[calc(100%-140px)]! xl:ml-4.5! xl:w-[calc(100%-192px)]!;
 }
 
 .image-gallery-thumbnails-wrapper.image-gallery-thumbnails-left {
@@ -247,5 +247,5 @@ body {
 }
 
 .image-gallery-thumbnail {
-    @apply md:w-full!
+  @apply md:w-full!;
 }

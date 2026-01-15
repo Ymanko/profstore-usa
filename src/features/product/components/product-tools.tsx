@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { getPrice } from '@/features/product/utils/price-helpers';
+import { getPrice } from '@/features/product/utils/helpers';
 import { Show } from '@/shared/components/common/show';
 import { Badge } from '@/shared/components/ui/badge';
 import { Typography, type TypographyProps } from '@/shared/components/ui/typography';
