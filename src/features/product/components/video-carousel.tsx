@@ -8,7 +8,7 @@ import { CarouselContent, CarouselItem } from '@/shared/components/ui/carousel';
 import { Typography } from '@/shared/components/ui/typography';
 import { cn } from '@/shared/lib/utils';
 
-import type { FC } from 'react';
+import type { ComponentProps } from 'react';
 
 export interface Video {
   id: string;
@@ -17,12 +17,9 @@ export interface Video {
   url: string;
 }
 
-interface ProductVideoCarouselProps {
-  videos: Video[];
-  className?: string;
-}
+export function ProductVideoCarousel({ videos, className }: ComponentProps<'div'> & { videos: Video[] }) {
+  if (videos.length === 0) return null;
 
-export const ProductVideoCarousel: FC<ProductVideoCarouselProps> = ({ videos, className }) => {
   return (
     <>
       <BaseCarousel className='mx-0'>
@@ -50,4 +47,4 @@ export const ProductVideoCarousel: FC<ProductVideoCarouselProps> = ({ videos, cl
       </BaseCarousel>
     </>
   );
-};
+}

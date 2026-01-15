@@ -13,6 +13,8 @@ interface ProductVideoProps {
 }
 
 export const ProductVideo: FC<ProductVideoProps> = ({ videos, className }) => {
+  if (videos.length === 0) return null;
+
   return (
     <div className={className}>
       <ProductTitle className='mb-7.5'>Video</ProductTitle>

@@ -9,6 +9,8 @@ interface ProductCharacteristicsProps {
 }
 
 export function ProductCharacteristics({ data }: { data?: ProductCharacteristicsProps[] }) {
+  if (!data) return null;
+
   return (
     <ProductWrapper className='p-2.5 pt-6'>
       <ProductTitle className='mb-3.75' id={ProductDetailsAnchor.Characteristics}>

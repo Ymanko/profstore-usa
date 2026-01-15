@@ -7,24 +7,22 @@ import type { ContentBlockProps } from '@/shared/types/content-block.types';
 
 export function ProductDescription({ description }: { description: ContentBlockProps[] }) {
   return (
-    <>
+    <Show when={description.length < 0}>
       <ProductTitle className='mb-5' id={ProductDetailsAnchor.Description}>
         Detailed description
       </ProductTitle>
 
-      <Show when={description}>
-        <div className='space-y-5'>
-          {description.map((block, index) => (
-            <ContentBlock
-              key={index}
-              text={block.text}
-              media={block.media}
-              poster={block.poster}
-              mediaPosition={block.mediaPosition}
-            />
-          ))}
-        </div>
-      </Show>
-    </>
+      <div className='space-y-5'>
+        {description.map((block, index) => (
+          <ContentBlock
+            key={index}
+            text={block.text}
+            media={block.media}
+            poster={block.poster}
+            mediaPosition={block.mediaPosition}
+          />
+        ))}
+      </div>
+    </Show>
   );
 }

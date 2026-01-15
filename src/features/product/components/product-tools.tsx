@@ -74,10 +74,12 @@ function ProductPrice({ product }: { product: ProductData['product'] }) {
 function ProductBrand({ title, ...props }: ImageProps & { title?: string }) {
   return (
     <div className='flex items-center gap-x-4 md:gap-x-5'>
-      <div className='flex h-18.75 w-40 items-center justify-center md:h-21.5 md:w-45.5'>
-        {/* eslint-disable-next-line jsx-a11y/alt-text */}
-        <Image className='h-auto w-40 object-cover object-center md:w-45.5' {...props} />
-      </div>
+      {props.src !== '' && (
+        <div className='flex h-18.75 w-40 items-center justify-center md:h-21.5 md:w-45.5'>
+          {/* eslint-disable-next-line jsx-a11y/alt-text */}
+          <Image className='h-auto w-40 object-cover object-center md:w-45.5' {...props} />
+        </div>
+      )}
 
       {title && (
         <div className='space-y-1'>
