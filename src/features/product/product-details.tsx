@@ -50,7 +50,7 @@ export function ProductDetails({ handle }: { handle: string }) {
         {/* Rating & Article */}
         <div className='mb-6 items-center justify-between sm:flex md:mb-7.5'>
           <Rating rating={reviewStats.averageRating} commentsCount={reviewStats.totalReviews} />
-          <Product.Article article={product?.id} />
+          <Product.Article article={product?.variants?.edges[0]?.node?.sku || '-'} />
         </div>
 
         {/* Gallery & Product Info */}
