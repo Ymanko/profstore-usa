@@ -62,7 +62,7 @@ export function ProductDetails({ handle }: { handle: string }) {
             <Product.Wrapper className='px-2.5 py-5 md:px-7.5 md:py-5.5'>
               <Product.Price product={product} />
               <Separator className='my-3.75 md:mt-7.5 md:mb-5' />
-              <ProductBenefits />
+              <ProductBenefits productId={product?.id} />
             </Product.Wrapper>
 
             {/* Actions */}
@@ -120,11 +120,11 @@ export function ProductDetails({ handle }: { handle: string }) {
         </Show>
 
         {/* Customers Also Bought */}
-        <CustomersAlsoBought />
+        <CustomersAlsoBought productId={product?.id || ''} />
         <Separator className='bg-accent my-7.5 h-0.75!' />
 
         {/* Related Products */}
-        <RelatedProduct />
+        <RelatedProduct productId={product?.id || ''} />
 
         {/* Files (Mobile & Tablet) */}
         <Show when={isMounted && isMobileAndTablet}>
