@@ -9,18 +9,18 @@ import { CarouselContent, CarouselItem } from '@/shared/components/ui/carousel';
 import { Typography } from '@/shared/components/ui/typography';
 import { useIsMounted } from '@/shared/hooks/use-is-mounted';
 
-import type { Product } from '@/shared/queries/collections/get-subcategory-products';
-import type { FC, ReactNode } from 'react';
+import type { BaseProduct } from '@/shared/types/product';
+import type { ReactNode } from 'react';
 
-interface ProductsCarouselProps {
-  products: Product[];
+interface ProductsCarouselProps<T extends BaseProduct = BaseProduct> {
+  products: T[];
 }
 
-interface ProductsCarouselWithHeaderProps extends ProductsCarouselProps {
+interface ProductsCarouselWithHeaderProps<T extends BaseProduct = BaseProduct> extends ProductsCarouselProps<T> {
   title: string | ReactNode;
 }
 
-export const ProductsCarousel: FC<ProductsCarouselProps> = ({ products }) => {
+export const ProductsCarousel = <T extends BaseProduct = BaseProduct>({ products }: ProductsCarouselProps<T>) => {
   const isMounted = useIsMounted();
   const isMobile = useMedia('(max-width: 767px)');
 
@@ -41,7 +41,10 @@ export const ProductsCarousel: FC<ProductsCarouselProps> = ({ products }) => {
   );
 };
 
-export const ProductsCarouselWithHeader: FC<ProductsCarouselWithHeaderProps> = ({ title, products }) => {
+export const ProductsCarouselWithHeader = <T extends BaseProduct = BaseProduct>({
+  title,
+  products,
+}: ProductsCarouselWithHeaderProps<T>) => {
   const isMounted = useIsMounted();
   const isMobile = useMedia('(max-width: 767px)');
   const isTabletOrDesktop = useMedia('(min-width: 768px)');

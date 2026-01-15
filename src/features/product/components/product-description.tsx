@@ -7,7 +7,7 @@ import type { ContentBlockProps } from '@/shared/types/content-block.types';
 
 export function ProductDescription({ description }: { description: ContentBlockProps[] }) {
   return (
-    <Show when={description.length < 0}>
+    <Show when={!!description.length}>
       <ProductTitle className='mb-5' id={ProductDetailsAnchor.Description}>
         Detailed description
       </ProductTitle>

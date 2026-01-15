@@ -2,6 +2,7 @@ import { queryOptions } from '@tanstack/react-query';
 
 import { STALE_TIME } from '@/shared/constants/stale-time';
 import { serverGraphqlFetcher } from '@/shared/lib/graphql/server-graphql-fetcher';
+import { type BaseProduct } from '@/shared/queries/products/get-product';
 
 const GET_PRODUCT_RECOMMENDATIONS = `
   query GetProductRecommendations($productId: ID!, $intent: ProductRecommendationIntent) {
@@ -47,29 +48,8 @@ const GET_PRODUCT_RECOMMENDATIONS = `
   }
 `;
 
-export interface RecommendedProduct {
-  id: string;
-  handle: string;
-  title: string;
-  availableForSale: boolean;
-  featuredImage: {
-    url: string;
-    altText: string | null;
-    width: number;
-    height: number;
-  } | null;
-  priceRange: {
-    minVariantPrice: {
-      amount: string;
-      currencyCode: string;
-    };
-  };
-  compareAtPriceRange: {
-    minVariantPrice: {
-      amount: string;
-      currencyCode: string;
-    };
-  };
+// RecommendedProduct extends BaseProduct with variants info
+export interface RecommendedProduct extends BaseProduct {
   variants: {
     edges: Array<{
       node: {
@@ -93,10 +73,7 @@ interface RecommendationsData {
 
 type RecommendationIntent = 'RELATED' | 'COMPLEMENTARY';
 
-export const getProductRecommendationsQueryOptions = (
-  productId: string,
-  intent: RecommendationIntent = 'RELATED',
-) =>
+export const getProductRecommendationsQueryOptions = (productId: string, intent: RecommendationIntent = 'RELATED') =>
   queryOptions({
     queryKey: ['product-recommendations', productId, intent],
     queryFn: async () => {

@@ -77,16 +77,15 @@ function parseGlobalBenefits(data: GlobalBenefitsData): ParsedGlobalBenefits | n
   };
 }
 
-export const getGlobalBenefitsQueryOptions = () =>
-  queryOptions({
-    queryKey: ['global-benefits'],
-    queryFn: async () => {
-      return serverGraphqlFetcher<GlobalBenefitsData>(
-        GET_GLOBAL_BENEFITS,
-        {},
-        { tags: ['global-benefits'], revalidate: 3600 },
-      );
-    },
-    staleTime: STALE_TIME.ONE_HOUR,
-    select: parseGlobalBenefits,
-  });
+export const getGlobalBenefitsQueryOptions = queryOptions({
+  queryKey: ['global-benefits'],
+  queryFn: async () => {
+    return serverGraphqlFetcher<GlobalBenefitsData>(
+      GET_GLOBAL_BENEFITS,
+      {},
+      { tags: ['global-benefits'], revalidate: 3600 },
+    );
+  },
+  staleTime: STALE_TIME.ONE_HOUR,
+  select: parseGlobalBenefits,
+});

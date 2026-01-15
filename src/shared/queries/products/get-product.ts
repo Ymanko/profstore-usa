@@ -202,6 +202,32 @@ const GET_PRODUCT = `
   }
 `;
 
+// Base product type with minimum required fields that all product types share
+export interface BaseProduct {
+  id: string;
+  handle: string;
+  title: string;
+  availableForSale: boolean;
+  featuredImage?: {
+    url: string;
+    altText?: string | null;
+    width?: number | null;
+    height?: number | null;
+  } | null;
+  priceRange: {
+    minVariantPrice: {
+      amount: string;
+      currencyCode: string;
+    };
+  };
+  compareAtPriceRange: {
+    minVariantPrice: {
+      amount: string;
+      currencyCode: string;
+    };
+  };
+}
+
 export interface ProductData {
   product: {
     id: string;

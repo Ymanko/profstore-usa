@@ -13,14 +13,7 @@ interface RelatedProductProps {
 }
 
 export function RelatedProduct({ productId }: RelatedProductProps) {
-  const {
-    data: products,
-    isLoading,
-    error,
-  } = useQuery(getRelatedProductsQueryOptions(productId));
-
-  // Debug
-  console.log('RelatedProducts (RELATED):', products);
+  const { data: products, isLoading, error } = useQuery(getRelatedProductsQueryOptions(productId));
 
   if (isLoading) return <ProductCardsSkeleton />;
   if (error || !products || products.length === 0) return null;
