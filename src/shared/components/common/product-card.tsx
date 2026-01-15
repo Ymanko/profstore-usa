@@ -8,12 +8,12 @@ import { Typography } from '@/shared/components/ui/typography';
 import { cn } from '@/shared/lib/utils';
 import { calculateDiscountPercentage } from '@/shared/utils/calculate-discount-percentage';
 
-import type { Product } from '@/shared/queries/collections/get-subcategory-products';
+import type { BaseProduct } from '@/shared/types/product';
 import type { LinkProps } from 'next/link';
 import type { ComponentPropsWithoutRef, FC, PropsWithChildren } from 'react';
 
 interface ProductCardProps extends ComponentPropsWithoutRef<'div'> {
-  product: Product;
+  product: BaseProduct;
   view?: 'grid' | 'list';
   variant?: 'default' | 'discount';
   showDiscountBadge?: boolean;

@@ -27,7 +27,7 @@ export function GalleryItem({ item, index = 0, transformRefs, isZoomEnabled }: R
       {() => (
         <TransformComponent>
           <Image
-            className='max-h-152'
+            className='object-contain object-center md:h-128.5 xl:h-152'
             src={item.original}
             alt={item.originalAlt || 'Product image'}
             width={800}

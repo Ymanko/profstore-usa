@@ -2,6 +2,7 @@ import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query';
 
 import { STALE_TIME } from '@/shared/constants/stale-time';
 import { serverGraphqlFetcher } from '@/shared/lib/graphql/server-graphql-fetcher';
+import { type BaseProduct } from '@/shared/queries/products/get-product';
 import {
   parseContentBlocks,
   CONTENT_BLOCK_FIELDS_FRAGMENT,
@@ -159,11 +160,8 @@ export type Filter = {
   values: FilterValue[];
 };
 
-export type Product = {
-  id: string;
-  handle: string;
-  title: string;
-  availableForSale: boolean;
+// Product extends BaseProduct with additional catalog-specific fields
+export interface Product extends BaseProduct {
   productType: string;
   vendor: string;
   tags: string[];
@@ -177,18 +175,6 @@ export type Product = {
       currencyCode: string;
     };
   };
-  compareAtPriceRange: {
-    minVariantPrice: {
-      amount: string;
-      currencyCode: string;
-    };
-  };
-  featuredImage?: {
-    url: string;
-    altText?: string | null;
-    width?: number | null;
-    height?: number | null;
-  } | null;
   variants: {
     edges: Array<{
       node: {
@@ -210,7 +196,7 @@ export type Product = {
       };
     }>;
   };
-};
+}
 
 export type SubcategoryProductsData = {
   collection: {

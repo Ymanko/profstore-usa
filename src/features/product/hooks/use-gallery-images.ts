@@ -17,7 +17,7 @@ export function useGalleryImages(images: GalleryImage[]): ReactImageGalleryItem[
         thumbnail: image.url,
         originalClass: 'object-contain object-center w-full h-auto max-w-full',
         thumbnailClass:
-          'object-cover object-center w-auto h-auto aspect-[78/66] md:aspect-[120/102] xl:aspect-[162/136] mr-2.5 mt-5 md:mt-0 md:mr-0 md:mb-4.5',
+          'object-cover object-center w-[78px] h-[66px] aspect-[78/66] md:aspect-[120/102] md:w-[118px] md:h-[102px] xl:h-[136px] xl:w-[162px] xl:aspect-[162/136] mr-2.5 mt-5 md:mt-0 md:mr-0 md:mb-4 md:mr-5',
         originalAlt: image?.altText || 'Product image',
       })),
     [images],

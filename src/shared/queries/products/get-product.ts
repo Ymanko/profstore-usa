@@ -2,6 +2,10 @@ import { queryOptions } from '@tanstack/react-query';
 
 import { STALE_TIME } from '@/shared/constants/stale-time';
 import { serverGraphqlFetcher } from '@/shared/lib/graphql/server-graphql-fetcher';
+import {
+  CONTENT_BLOCK_FIELDS_FRAGMENT,
+  type ContentMetaobjectField,
+} from '@/shared/utils/parsers/parse-content-blocks';
 
 const GET_PRODUCT = `
   query GetProduct($handle: String!) {
@@ -66,6 +70,7 @@ const GET_PRODUCT = `
           node {
             id
             title
+            sku
             availableForSale
             quantityAvailable
             price {
@@ -95,11 +100,135 @@ const GET_PRODUCT = `
         name
         values
       }
+
+      # Metafields
+      fullDescription: metafield(namespace: "custom", key: "full_decription") {
+        references(first: 20) {
+          edges {
+            node {
+              ... on Metaobject {
+                ${CONTENT_BLOCK_FIELDS_FRAGMENT}
+              }
+            }
+          }
+        }
+      }
+
+      videos: metafield(namespace: "custom", key: "video") {
+        references(first: 10) {
+          edges {
+            node {
+              ... on Metaobject {
+                handle
+                type
+                fields {
+                  key
+                  value
+                  reference {
+                    ... on MediaImage {
+                      image {
+                        url
+                        altText
+                        width
+                        height
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      characteristics: metafield(namespace: "custom", key: "haracteristics") {
+        references(first: 50) {
+          edges {
+            node {
+              ... on Metaobject {
+                handle
+                type
+                fields {
+                  key
+                  value
+                }
+              }
+            }
+          }
+        }
+      }
+
+      files: metafield(namespace: "custom", key: "files") {
+        references(first: 20) {
+          edges {
+            node {
+              ... on Metaobject {
+                handle
+                type
+                fields {
+                  key
+                  value
+                  reference {
+                    ... on GenericFile {
+                      url
+                      originalFileSize
+                      mimeType
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      manufacturer: metafield(namespace: "custom", key: "manufacturer") {
+        value
+      }
+
+      brandLogo: metafield(namespace: "custom", key: "brand_logo") {
+        reference {
+          ... on MediaImage {
+            image {
+              url
+              altText
+              width
+              height
+            }
+          }
+        }
+      }
     }
   }
 `;
 
-interface ProductData {
+// Base product type with minimum required fields that all product types share
+export interface BaseProduct {
+  id: string;
+  handle: string;
+  title: string;
+  availableForSale: boolean;
+  featuredImage?: {
+    url: string;
+    altText?: string | null;
+    width?: number | null;
+    height?: number | null;
+  } | null;
+  priceRange: {
+    minVariantPrice: {
+      amount: string;
+      currencyCode: string;
+    };
+  };
+  compareAtPriceRange: {
+    minVariantPrice: {
+      amount: string;
+      currencyCode: string;
+    };
+  };
+}
+
+export interface ProductData {
   product: {
     id: string;
     handle: string;
@@ -155,6 +284,7 @@ interface ProductData {
         node: {
           id: string;
           title: string;
+          sku: string;
           availableForSale: boolean;
           quantityAvailable?: number | null;
           price: {
@@ -183,6 +313,84 @@ interface ProductData {
       name: string;
       values: string[];
     }>;
+    fullDescription: {
+      references: {
+        edges: Array<{
+          node: {
+            id: string;
+            fields: ContentMetaobjectField[];
+          };
+        }>;
+      };
+    } | null;
+    videos: {
+      references: {
+        edges: Array<{
+          node: {
+            handle: string;
+            type: string;
+            fields: Array<{
+              key: string;
+              value: string | null;
+              reference: {
+                image: {
+                  url: string;
+                  altText: string | null;
+                  width: number;
+                  height: number;
+                };
+              } | null;
+            }>;
+          };
+        }>;
+      };
+    } | null;
+    characteristics: {
+      references: {
+        edges: Array<{
+          node: {
+            handle: string;
+            type: string;
+            fields: Array<{
+              key: string;
+              value: string | null;
+            }>;
+          };
+        }>;
+      };
+    } | null;
+    files: {
+      references: {
+        edges: Array<{
+          node: {
+            handle: string;
+            type: string;
+            fields: Array<{
+              key: string;
+              value: string | null;
+              reference: {
+                url: string;
+                originalFileSize: number;
+                mimeType: string;
+              } | null;
+            }>;
+          };
+        }>;
+      };
+    } | null;
+    manufacturer: {
+      value: string;
+    } | null;
+    brandLogo: {
+      reference: {
+        image: {
+          url: string;
+          altText: string | null;
+          width: number;
+          height: number;
+        };
+      };
+    } | null;
   } | null;
 }
 
@@ -197,5 +405,5 @@ export const getProductQueryOptions = (handle: string) =>
       );
     },
     staleTime: STALE_TIME.ONE_HOUR,
-    select: data => data.product,
+    select: (data: ProductData): ProductData['product'] => data.product,
   });

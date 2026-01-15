@@ -10,8 +10,8 @@ function ControlButton(props: ComponentProps<'button'>) {
       type='button'
       aria-label='Next image'
       className={cn(
-        'absolute bottom-0 left-1 z-50',
-        'flex h-12 w-21 items-center justify-center xl:h-14 xl:w-26',
+        'absolute -bottom-1 z-50 xl:bottom-0 xl:left-1.5',
+        'flex h-11 w-31 items-center justify-center xl:h-14 xl:w-41',
         'hover:bg-muted rounded-md bg-white transition-colors duration-200',
       )}
       {...props}
