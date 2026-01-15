@@ -3,6 +3,7 @@ import {
   transformCharacteristics,
   transformFiles,
   transformReviews,
+  transformVideos,
 } from '@/features/product/utils/helpers';
 import { parseContentBlocks } from '@/shared/utils/parsers/parse-content-blocks';
 
@@ -16,9 +17,11 @@ export function useProductData(product: ProductData['product'], reviews: JudgeMe
   const productFiles = transformFiles(product?.files);
   const descriptionBlocks = parseContentBlocks(product?.fullDescription?.references);
   const characteristics = transformCharacteristics(product);
+  const videos = transformVideos(product);
 
   return {
     images,
+    videos,
     reviewStats,
     productFiles,
     characteristics,

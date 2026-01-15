@@ -79,3 +79,14 @@ export function transformCharacteristics(product: ProductData['product']) {
     description: edge.node.fields.find(f => f.key === 'value')?.value,
   }));
 }
+
+export function transformVideos(product: ProductData['product']) {
+  return (
+    product?.videos?.references.edges.map(edge => ({
+      id: edge.node.handle,
+      title: edge.node.fields.find(f => f.key === 'title')?.value || 'Untitled',
+      description: edge.node.fields.find(f => f.key === 'description')?.value || '',
+      url: edge.node.fields.find(f => f.key === 'url')?.value || '',
+    })) || []
+  );
+}

@@ -12,12 +12,7 @@ import { ProductCharacteristics } from '@/features/product/components/product-ch
 import { ProductDescription } from '@/features/product/components/product-description';
 import { ProductFiles } from '@/features/product/components/product-files';
 import { ProductNavigation } from '@/features/product/components/product-navigation';
-import {
-  ProductArticle,
-  ProductBrand,
-  ProductPrice,
-  ProductWrapper,
-} from '@/features/product/components/product-tools';
+import { Product } from '@/features/product/components/product-tools';
 import { ProductVideo } from '@/features/product/components/product-video';
 import { Rating } from '@/features/product/components/rating';
 import { RatingSummary } from '@/features/product/components/rating-summary';
@@ -33,21 +28,6 @@ import { useIsMounted } from '@/shared/hooks/use-is-mounted';
 import { getProductQueryOptions } from '@/shared/queries/products/get-product';
 import { getProductReviewsQueryOptions } from '@/shared/queries/reviews/get-product-reviews';
 
-const videos = [
-  {
-    id: '1',
-    thumbnail: '/img/video.jpg',
-    title: 'Avantco Planetary Mixers Overview',
-    description: 'Effortlessly prepare food for your cafe or restaurant with Avantco planetary mixers.',
-  },
-  {
-    id: '2',
-    thumbnail: '/img/video.jpg',
-    title: 'Avantco Planetary Mixers Overview',
-    description: 'Effortlessly prepare food for your cafe or restaurant with Avantco planetary mixers.',
-  },
-];
-
 export function ProductDetails({ handle }: { handle: string }) {
   const { data: product } = useSuspenseQuery(getProductQueryOptions(handle));
   const { data: reviews = [] } = useQuery(getProductReviewsQueryOptions(product?.id || ''));
@@ -56,38 +36,34 @@ export function ProductDetails({ handle }: { handle: string }) {
   const isDesktop = useMedia('(min-width: 1280px)');
   const isMobileAndTablet = useMedia('(max-width: 1279px)');
 
-  const productData = useProductData(product, reviews);
-  const { images, reviewStats, formattedReviews, productFiles, descriptionBlocks, characteristics } = productData;
-
-  // Debug metafields
-  console.log('=== METAFIELDS ===');
-  console.log('videos:', product?.videos);
+  const { images, reviewStats, formattedReviews, productFiles, descriptionBlocks, characteristics, videos } =
+    useProductData(product, reviews);
 
   return (
     <div className='container mb-21'>
       <Show when={product} fallback={<NotFound>Product not found</NotFound>}>
         <Typography variant='h1' as='h1' className='mb-3.5 md:mb-5'>
-          s{product?.title}
+          {product?.title}
         </Typography>
 
         <div className='mb-6 items-center justify-between sm:flex md:mb-7.5'>
           <Rating rating={reviewStats.averageRating} commentsCount={reviewStats.totalReviews} />
-          <ProductArticle article={product?.variants.edges.at(0)?.node.sku} />
+          <Product.Article article={product?.variants.edges.at(0)?.node.sku} />
         </div>
 
         <div className='grid gap-12.5 md:gap-8.75 xl:grid-cols-16 xl:gap-5'>
           <Gallery className='xl:col-span-10' items={images} />
 
           <div className='space-y-6 xl:col-span-6'>
-            <ProductWrapper className='px-2.5 py-5 md:px-7.5 md:py-5.5'>
-              <ProductPrice product={product} />
+            <Product.Wrapper className='px-2.5 py-5 md:px-7.5 md:py-5.5'>
+              <Product.Price product={product} />
               <Separator className='my-3.75 md:mt-7.5 md:mb-5' />
               <ProductBenefits />
-            </ProductWrapper>
+            </Product.Wrapper>
 
             <ProductActions />
             <Separator className='mt-1.5 mb-7.5' />
-            <ProductBrand
+            <Product.Brand
               title={product?.manufacturer?.value}
               src={product?.brandLogo?.reference?.image?.url ?? ''}
               width={182}
@@ -124,7 +100,7 @@ export function ProductDetails({ handle }: { handle: string }) {
 
         <Separator className='bg-accent mb-13 hidden h-0.75! xl:block' />
         <Show when={isMounted && isMobileAndTablet}>
-          <ProductCharacteristics />
+          <ProductCharacteristics data={characteristics} />
         </Show>
 
         <CustomersAlsoBought />

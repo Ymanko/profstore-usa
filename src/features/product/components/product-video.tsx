@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import ReactPlayer from 'react-player';
 
 import { ProductTitle } from '@/features/product/components/product-tools';
 import { List } from '@/shared/components/common/list';
@@ -22,7 +22,7 @@ export const ProductVideo: FC<ProductVideoProps> = ({ videos, className }) => {
         renderItem={video => (
           <>
             <div className='overflow-hidden rounded'>
-              <Image src={video.thumbnail} alt={video.title} width={434} height={245} />
+              <ReactPlayer src={video.url} playIcon controls />
             </div>
 
             <div className='space-y-5 text-[17px] leading-4.5'>

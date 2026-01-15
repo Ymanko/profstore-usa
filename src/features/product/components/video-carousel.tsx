@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+import ReactPlayer from 'react-player';
 
 import { ProductTitle } from '@/features/product/components/product-tools';
 import { BaseCarousel, CarouselControls } from '@/shared/components/common/base-carousel';
@@ -12,10 +12,9 @@ import type { FC } from 'react';
 
 export interface Video {
   id: string;
-  thumbnail: string;
   title: string;
   description: string;
-  url?: string;
+  url: string;
 }
 
 interface ProductVideoCarouselProps {
@@ -37,7 +36,7 @@ export const ProductVideoCarousel: FC<ProductVideoCarouselProps> = ({ videos, cl
             <CarouselItem key={video.id} className='basis-full sm:basis-1/2'>
               <div className='space-y-5.75'>
                 <div className='overflow-hidden rounded'>
-                  <Image src={video.thumbnail} alt={video.title} width={434} height={245} className='w-full' />
+                  <ReactPlayer src={video.url} playIcon controls />
                 </div>
 
                 <div className='space-y-5 text-[17px] leading-4.5'>
@@ -48,8 +47,6 @@ export const ProductVideoCarousel: FC<ProductVideoCarouselProps> = ({ videos, cl
             </CarouselItem>
           ))}
         </CarouselContent>
-
-        {/*{isMobile && <CarouselControls className='mt-5 justify-end' />}*/}
       </BaseCarousel>
     </>
   );
