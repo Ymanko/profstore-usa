@@ -11,7 +11,7 @@ import { ProductActions } from '@/features/product/components/product-actions';
 import { ProductBenefits } from '@/features/product/components/product-benefits';
 import { ProductCharacteristics } from '@/features/product/components/product-characteristics';
 import { ProductDescription } from '@/features/product/components/product-description';
-import { ProductFiles } from '@/features/product/components/product-files';
+import { ProductFiles, type ProductFile } from '@/features/product/components/product-files';
 import { ProductNavigation } from '@/features/product/components/product-navigation';
 import {
   ProductArticle,
@@ -27,6 +27,27 @@ import { ReviewForm } from '@/features/product/components/review-form';
 import { ReviewsList } from '@/features/product/components/reviews-list';
 import { ProductVideoCarousel } from '@/features/product/components/video-carousel';
 import { calculateReviewStats, transformReviews } from '@/features/product/utils/review-helpers';
+import type { ProductData } from '@/shared/queries/products/get-product';
+
+type FilesMetafield = NonNullable<NonNullable<ProductData['product']>['files']>;
+
+function transformFiles(filesMetafield: FilesMetafield | null | undefined): ProductFile[] {
+  if (!filesMetafield?.references?.edges) return [];
+
+  return filesMetafield.references.edges.map(edge => {
+    const fields = edge.node.fields;
+    const getField = (key: string) => fields.find(f => f.key === key);
+
+    return {
+      handle: edge.node.handle,
+      title: getField('title')?.value || 'Untitled',
+      category: (getField('category')?.value as 'file' | 'manual') || 'file',
+      url: getField('file')?.reference?.url || '',
+      fileSize: getField('file')?.reference?.originalFileSize || 0,
+      mimeType: getField('file')?.reference?.mimeType || '',
+    };
+  });
+}
 import { Show } from '@/shared/components/common/show';
 import { Separator } from '@/shared/components/ui/separator';
 import { Typography } from '@/shared/components/ui/typography';
@@ -56,11 +77,21 @@ export function ProductDetails({ handle }: { handle: string }) {
   const isDesktop = useMedia('(min-width: 1280px)');
   const isMobileAndTablet = useMedia('(max-width: 1279px)');
 
-  console.log('product', product?.id);
+  // Debug metafields
+  console.log('=== METAFIELDS ===');
+  console.log('fullDescription:', product?.fullDescription);
+  console.log('videos:', product?.videos);
+  console.log('characteristics:', product?.characteristics);
+  console.log(
+    'files:',
+    product?.files?.references.edges.map(edge => edge.node),
+  );
+  console.log('==================');
 
   const images = product?.images.edges.map(edge => edge.node) || [];
   const reviewStats = useMemo(() => calculateReviewStats(reviews), [reviews]);
   const formattedReviews = useMemo(() => transformReviews(reviews), [reviews]);
+  const productFiles = useMemo(() => transformFiles(product?.files), [product?.files]);
 
   return (
     <div className='container mb-21'>
@@ -86,7 +117,13 @@ export function ProductDetails({ handle }: { handle: string }) {
 
             <ProductActions />
             <Separator className='mt-1.5 mb-7.5' />
-            <ProductBrand title='Quamar (Italy)' src='/img/quamar-logo.png' width={182} height={86} alt='quamar-logo' />
+            <ProductBrand
+              title={product?.manufacturer?.value}
+              src={product?.brandLogo?.reference?.image?.url ?? ''}
+              width={182}
+              height={86}
+              alt={`${product?.manufacturer?.value} logo`}
+            />
           </div>
         </div>
 
@@ -104,7 +141,7 @@ export function ProductDetails({ handle }: { handle: string }) {
           <Show when={isMounted && isDesktop}>
             <div className='xl:col-span-5'>
               <ProductVideo videos={videos} />
-              <ProductFiles />
+              <ProductFiles files={productFiles} />
             </div>
           </Show>
 
@@ -124,7 +161,7 @@ export function ProductDetails({ handle }: { handle: string }) {
         <RelatedProduct />
 
         <Show when={isMounted && isMobileAndTablet}>
-          <ProductFiles className='mt-12.5' />
+          <ProductFiles files={productFiles} className='mt-12.5' />
         </Show>
 
         <Separator className='bg-accent my-7.5 h-0.75!' />

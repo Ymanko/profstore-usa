@@ -96,6 +96,97 @@ const GET_PRODUCT = `
         name
         values
       }
+
+      # Metafields
+      fullDescription: metafield(namespace: "custom", key: "full_description") {
+        value
+        type
+      }
+
+      videos: metafield(namespace: "custom", key: "product") {
+        references(first: 10) {
+          edges {
+            node {
+              ... on Metaobject {
+                handle
+                type
+                fields {
+                  key
+                  value
+                  reference {
+                    ... on MediaImage {
+                      image {
+                        url
+                        altText
+                        width
+                        height
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      characteristics: metafield(namespace: "custom", key: "characteristics") {
+        references(first: 50) {
+          edges {
+            node {
+              ... on Metaobject {
+                handle
+                type
+                fields {
+                  key
+                  value
+                }
+              }
+            }
+          }
+        }
+      }
+
+      files: metafield(namespace: "custom", key: "files") {
+        references(first: 20) {
+          edges {
+            node {
+              ... on Metaobject {
+                handle
+                type
+                fields {
+                  key
+                  value
+                  reference {
+                    ... on GenericFile {
+                      url
+                      originalFileSize
+                      mimeType
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      manufacturer: metafield(namespace: "custom", key: "manufacturer") {
+        value
+      }
+
+      brandLogo: metafield(namespace: "custom", key: "brand_logo") {
+        reference {
+          ... on MediaImage {
+            image {
+              url
+              altText
+              width
+              height
+            }
+          }
+        }
+      }
     }
   }
 `;
@@ -185,6 +276,78 @@ export interface ProductData {
       name: string;
       values: string[];
     }>;
+    fullDescription: {
+      value: string;
+      type: string;
+    } | null;
+    videos: {
+      references: {
+        edges: Array<{
+          node: {
+            handle: string;
+            type: string;
+            fields: Array<{
+              key: string;
+              value: string | null;
+              reference: {
+                image: {
+                  url: string;
+                  altText: string | null;
+                  width: number;
+                  height: number;
+                };
+              } | null;
+            }>;
+          };
+        }>;
+      };
+    } | null;
+    characteristics: {
+      references: {
+        edges: Array<{
+          node: {
+            handle: string;
+            type: string;
+            fields: Array<{
+              key: string;
+              value: string | null;
+            }>;
+          };
+        }>;
+      };
+    } | null;
+    files: {
+      references: {
+        edges: Array<{
+          node: {
+            handle: string;
+            type: string;
+            fields: Array<{
+              key: string;
+              value: string | null;
+              reference: {
+                url: string;
+                originalFileSize: number;
+                mimeType: string;
+              } | null;
+            }>;
+          };
+        }>;
+      };
+    } | null;
+    manufacturer: {
+      value: string;
+    } | null;
+    brandLogo: {
+      reference: {
+        image: {
+          url: string;
+          altText: string | null;
+          width: number;
+          height: number;
+        };
+      };
+    } | null;
   } | null;
 }
 
