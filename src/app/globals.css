@@ -249,3 +249,7 @@ body {
 .image-gallery-thumbnail {
   @apply md:w-full!;
 }
+
+.image-gallery-thumbnail-image {
+  @apply max-h-15! md:max-h-full!
+}
