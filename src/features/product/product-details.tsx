@@ -22,6 +22,7 @@ import { ReviewsList } from '@/features/product/components/reviews-list';
 import { ProductVideoCarousel } from '@/features/product/components/video-carousel';
 import { useProductData } from '@/features/product/hooks/use-product-data';
 import { Show } from '@/shared/components/common/show';
+import { ProductRatingSkeleton } from '@/shared/components/skeletons/product-rating-skeleton';
 import { Separator } from '@/shared/components/ui/separator';
 import { Typography } from '@/shared/components/ui/typography';
 import { useIsMounted } from '@/shared/hooks/use-is-mounted';
@@ -30,7 +31,7 @@ import { getProductReviewsQueryOptions } from '@/shared/queries/reviews/get-prod
 
 export function ProductDetails({ handle }: { handle: string }) {
   const { data: product } = useSuspenseQuery(getProductQueryOptions(handle));
-  const { data: reviews = [] } = useQuery(getProductReviewsQueryOptions(product?.id || ''));
+  const { data: reviews = [], isLoading } = useQuery(getProductReviewsQueryOptions(product?.id || ''));
 
   const isMounted = useIsMounted();
   const isDesktop = useMedia('(min-width: 1280px)');
@@ -49,7 +50,13 @@ export function ProductDetails({ handle }: { handle: string }) {
 
         {/* Rating & Article */}
         <div className='mb-6 items-center justify-between sm:flex md:mb-7.5'>
-          <Rating rating={reviewStats.averageRating} commentsCount={reviewStats.totalReviews} />
+          <Show
+            when={isLoading}
+            fallback={<Rating rating={reviewStats.averageRating} commentsCount={reviewStats.totalReviews} />}
+          >
+            <ProductRatingSkeleton />
+          </Show>
+
           <Product.Article article={product?.variants?.edges[0]?.node?.sku || '-'} />
         </div>
 

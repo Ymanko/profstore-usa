@@ -38,42 +38,61 @@ interface JudgeMeReviewsResponse {
   reviews: JudgeMeReview[];
 }
 
+const BASE_URL = 'https://judge.me/api/v1';
+
+async function getJudgeMeProductId(
+  externalId: string,
+  privateToken: string,
+  shopDomain: string,
+): Promise<number | null> {
+  const url = new URL(`${BASE_URL}/products/-1`);
+
+  url.searchParams.set('api_token', privateToken);
+  url.searchParams.set('shop_domain', shopDomain);
+  url.searchParams.set('external_id', externalId);
+
+  const response = await fetch(url.toString(), { cache: 'no-store' });
+
+  if (!response.ok) return null;
+
+  const data = await response.json();
+  return data.product?.id || null;
+}
+
 export async function getProductReviews(productId: string): Promise<JudgeMeReview[]> {
-  // Judge.me requires private token for reading reviews
   const privateToken = process.env.JUDGEME_PRIVATE_TOKEN;
   const shopDomain = process.env.NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN?.replace('https://', '');
 
   if (!privateToken || !shopDomain) {
+    throw new Error('Judge.me private token or Shopify store domain is not set in environment variables.');
+  }
+
+  const externalProductId = productId.split('/').pop() || '';
+
+  const judgeMeProductId = await getJudgeMeProductId(externalProductId, privateToken, shopDomain);
+
+  if (!judgeMeProductId) {
     return [];
   }
 
-  // Extract numeric ID from Shopify GID (e.g., "gid://shopify/Product/123" -> "123")
-  const numericProductId = productId.split('/').pop();
-
-  // First, try to get reviews using handle from product
-  // We'll need to make a different API call structure
-  const url = new URL('https://judge.me/api/v1/reviews');
+  const url = new URL(`${BASE_URL}/reviews`);
   url.searchParams.set('api_token', privateToken);
   url.searchParams.set('shop_domain', shopDomain);
-  url.searchParams.set('per_page', '100');
+  url.searchParams.set('product_id', judgeMeProductId.toString());
+  url.searchParams.set('per_page', '50');
 
   try {
-    const response = await fetch(url.toString(), {
-      next: { revalidate: 300 }, // Cache for 5 minutes
-    });
+    const response = await fetch(url.toString(), { cache: 'no-store' });
 
     if (!response.ok) {
-      return [];
+      throw new Error(`Failed to fetch reviews: ${response.status} ${response.statusText}`);
     }
 
     const data: JudgeMeReviewsResponse = await response.json();
-    const allReviews = data.reviews || [];
-
-    // Filter reviews by product_external_id which matches Shopify numeric product ID
-    return allReviews.filter(review => {
-      return review.product_external_id?.toString() === numericProductId;
-    });
-  } catch (_error) {
+    return data.reviews || [];
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Error fetching product reviews:', error);
     return [];
   }
 }
