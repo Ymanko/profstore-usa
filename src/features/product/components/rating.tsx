@@ -10,9 +10,10 @@ import type { ComponentProps } from 'react';
 interface RatingProps extends ComponentProps<'div'> {
   rating: number;
   commentsCount?: number;
+  withText?: boolean;
 }
 
-export function Rating({ className, rating, commentsCount, ...props }: RatingProps) {
+export function Rating({ className, rating, commentsCount, withText = true, ...props }: RatingProps) {
   const DEFAULT_STYLES = 'size-5 text-accent';
   const stars = useRating(rating);
 
@@ -40,9 +41,11 @@ export function Rating({ className, rating, commentsCount, ...props }: RatingPro
         itemClassName='relative'
       />
 
-      <Typography className='text-muted-foreground font-inter'>
-        {commentsCount} {commentsCount === 1 ? 'comment' : 'comments'}
-      </Typography>
+      {withText && (
+        <Typography className='text-muted-foreground font-inter'>
+          {commentsCount} {commentsCount === 1 ? 'comment' : 'comments'}
+        </Typography>
+      )}
     </div>
   );
 }
