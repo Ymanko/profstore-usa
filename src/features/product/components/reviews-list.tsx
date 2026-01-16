@@ -52,7 +52,7 @@ export function ReviewsList({ className, reviews, ...props }: ReviewsListProps) 
                 </Typography>
 
                 <Show when={isMounted && isDesktop}>
-                  <Rating rating={review.rating} />
+                  <Rating rating={review.rating} withText={false} />
                 </Show>
               </div>
 
@@ -62,7 +62,7 @@ export function ReviewsList({ className, reviews, ...props }: ReviewsListProps) 
 
             {/* Rating */}
             <Show when={isMounted && !isDesktop}>
-              <Rating className='xl:hidden' rating={review.rating} />
+              <Rating className='xl:hidden' rating={review.rating} withText={false} />
             </Show>
             {/* Review Content */}
             <Typography className='leading-relaxed whitespace-pre-line'>{review.content}</Typography>
