@@ -1,7 +1,6 @@
-import ReactPlayer from 'react-player';
-
 import { ProductTitle } from '@/features/product/components/product-tools';
 import { List } from '@/shared/components/common/list';
+import { VideoPlayer } from '@/shared/components/common/video-player';
 import { Typography } from '@/shared/components/ui/typography';
 
 import type { Video } from '@/features/product/components/video-carousel';
@@ -23,9 +22,7 @@ export const ProductVideo: FC<ProductVideoProps> = ({ videos, className }) => {
         data={videos}
         renderItem={video => (
           <>
-            <div className='overflow-hidden rounded'>
-              <ReactPlayer src={video.url} playIcon controls />
-            </div>
+            <VideoPlayer src={video.url} />
 
             <div className='space-y-5 text-[17px] leading-4.5'>
               <Typography className='font-bold'>{video.title}</Typography>

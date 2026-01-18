@@ -30,7 +30,10 @@ function ProductArticle({ article }: { article?: string }) {
 function ProductTitle({ className, ...props }: TypographyProps) {
   return (
     <Typography
-      className={cn('scroll-mt-20 text-[25px] leading-6.5 font-bold md:scroll-mt-30 xl:text-3xl', className)}
+      className={cn(
+        'scroll-mt-48 text-[25px] leading-6.5 font-bold md:scroll-mt-40 xl:scroll-mt-30 xl:text-3xl',
+        className,
+      )}
       data-slot='product-description-title'
       {...props}
     />
