@@ -32,6 +32,20 @@ const SEARCH_QUERY = `
               }
             }
           }
+          collections(first: 1) {
+            edges {
+              node {
+                handle
+                metafield(namespace: "custom", key: "parent_category") {
+                  reference {
+                    ... on Metaobject {
+                      handle
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -41,6 +55,13 @@ const SEARCH_QUERY = `
           id
           title
           handle
+          metafield(namespace: "custom", key: "parent_category") {
+            reference {
+              ... on Metaobject {
+                handle
+              }
+            }
+          }
         }
       }
     }

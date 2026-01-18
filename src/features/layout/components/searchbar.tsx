@@ -63,9 +63,21 @@ export function Searchbar() {
                     const imageUrl = product.images.edges[0]?.node?.url;
                     const price = product.priceRange.maxVariantPrice.amount;
 
+                    // Build product URL: /{category}/{subcategory}/{product}
+                    const collection = product.collections?.edges[0]?.node;
+                    const reference = collection?.metafield?.reference;
+                    const categoryHandle =
+                      reference && 'handle' in reference ? (reference.handle as string) : undefined;
+                    const subcategoryHandle = collection?.handle;
+
+                    const productUrl =
+                      categoryHandle && subcategoryHandle
+                        ? `/${categoryHandle}/${subcategoryHandle}/${product.handle}`
+                        : `/catalog/${product.handle}`;
+
                     return (
                       <CommandItem key={product.id} asChild>
-                        <Link href={`/catalog/${product.handle}`} className='flex items-center gap-3'>
+                        <Link href={productUrl} className='flex items-center gap-3'>
                           {imageUrl && (
                             <Image
                               src={imageUrl}
@@ -95,13 +107,22 @@ export function Searchbar() {
                 <>
                   <CommandSeparator />
                   <CommandGroup heading='Collections'>
-                    {searchData.collections.map(collection => (
-                      <CommandItem key={collection.id} asChild>
-                        <Link href={`/collections/${collection.handle}`}>
-                          <Typography as='span'>{collection.title}</Typography>
-                        </Link>
-                      </CommandItem>
-                    ))}
+                    {searchData.collections.map(collection => {
+                      const reference = collection.metafield?.reference;
+                      const categoryHandle =
+                        reference && 'handle' in reference ? (reference.handle as string) : undefined;
+                      const collectionUrl = categoryHandle
+                        ? `/${categoryHandle}/${collection.handle}`
+                        : `/collections/${collection.handle}`;
+
+                      return (
+                        <CommandItem key={collection.id} asChild>
+                          <Link href={collectionUrl}>
+                            <Typography as='span'>{collection.title}</Typography>
+                          </Link>
+                        </CommandItem>
+                      );
+                    })}
                   </CommandGroup>
                 </>
               )}
