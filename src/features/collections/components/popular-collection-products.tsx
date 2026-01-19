@@ -7,7 +7,9 @@ import { ProductCardsSkeleton } from '@/shared/components/skeletons/product-card
 import { Separator } from '@/shared/components/ui/separator';
 import { getPopularCollectionProductsQueryOptions } from '@/shared/queries/collections/get-popular-collection-products';
 
-export function PopularCollectionProducts({ handle }: { handle: string }) {
+import type { HandleProps } from '@/shared/types/common';
+
+export function PopularCollectionProducts({ handle }: HandleProps) {
   const { data: products, isLoading, error } = useQuery(getPopularCollectionProductsQueryOptions(handle));
 
   if (isLoading) return <ProductCardsSkeleton />;

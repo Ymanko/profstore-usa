@@ -11,7 +11,9 @@ import { Show } from '@/shared/components/common/show';
 import { Typography } from '@/shared/components/ui/typography';
 import { getCategoryQueryOptions } from '@/shared/queries/categories/get-category';
 
-export function CategoryDetail({ handle }: { handle: string }) {
+import type { HandleProps } from '@/shared/types/common';
+
+export function CategoryDetail({ handle }: HandleProps) {
   const { data: category } = useSuspenseQuery(getCategoryQueryOptions(handle));
 
   if (!category) {

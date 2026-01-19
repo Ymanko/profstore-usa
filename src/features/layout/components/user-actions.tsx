@@ -1,15 +1,15 @@
 import Link from 'next/link';
 import React from 'react';
 
+import { Icon } from '@/shared/components/common/icon';
 import { List } from '@/shared/components/common/list';
-import { Icon } from '@/shared/components/ui/icon';
 import { Typography } from '@/shared/components/ui/typography';
 import { HEADER_USER_ACTIONS } from '@/shared/constants/user-menu';
 
-import type { IconName } from '@/shared/components/ui/icon';
+import type { IconName } from '@/shared/components/common/icon';
 import type { FC, ComponentPropsWithoutRef } from 'react';
 
-export const UserActions: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ...props }) => {
+export function UserActions({ className, ...props }: ComponentPropsWithoutRef<'div'>) {
   const firstItem = HEADER_USER_ACTIONS[0];
 
   return (
@@ -18,7 +18,7 @@ export const UserActions: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ..
         href={firstItem.href}
         className='hover:text-accent grid justify-items-center gap-2 transition-colors duration-300 xl:hidden'
       >
-        <Icon name={firstItem.icon as IconName} className='' width='24' height='24' />
+        <Icon name={firstItem.icon as IconName} width='24' height='24' />
         <Typography variant='body' as='span'>
           {firstItem.label}
         </Typography>
@@ -31,7 +31,7 @@ export const UserActions: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ..
             href={item.href}
             className='hover:text-accent grid justify-items-center gap-2 transition-colors duration-300'
           >
-            <Icon name={item.icon as IconName} className='' width='24' height='24' />
+            <Icon name={item.icon as IconName} width='24' height='24' />
             <Typography variant='body' as='span'>
               {item.label}
             </Typography>
@@ -42,4 +42,4 @@ export const UserActions: FC<ComponentPropsWithoutRef<'div'>> = ({ className, ..
       />
     </div>
   );
-};
+}

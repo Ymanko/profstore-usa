@@ -8,8 +8,9 @@ import { Button } from '@/shared/components/ui/button';
 import { Typography } from '@/shared/components/ui/typography';
 import { getGlobalBenefitsQueryOptions } from '@/shared/queries/global/get-global-benefits';
 
-interface ProductBenefitsProps {
-  productId?: string;
+import type { ProductIdProps } from '@/shared/types/common';
+
+interface ProductBenefitsProps extends Partial<ProductIdProps> {
   installmentAmount?: string;
 }
 

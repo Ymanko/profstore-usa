@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { SEARCH_BLUR_DELAY_MS } from '@/shared/constants/search';
+const SEARCH_BLUR_DELAY_MS = 100;
 
 export function useSearchState() {
   const [searchValue, setSearchValue] = useState('');

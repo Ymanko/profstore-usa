@@ -1,4 +1,4 @@
-import { Icon } from '@/shared/components/ui/icon';
+import { Icon } from '@/shared/components/common/icon';
 import { cn } from '@/shared/lib/utils';
 
 import type { ComponentProps } from 'react';

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 
-export const Email = () => {
+export function Email() {
   return (
     <Link
       href='mailto:office@prof-store.com.ua'
@@ -10,4 +10,4 @@ export const Email = () => {
       office@prof-store.com.ua
     </Link>
   );
-};
+}

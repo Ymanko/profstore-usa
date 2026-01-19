@@ -11,10 +11,10 @@ import { Typography } from '@/shared/components/ui/typography';
 import { cn } from '@/shared/lib/utils';
 import { getProductReviewsQueryOptions } from '@/shared/queries/reviews/get-product-reviews';
 
+import type { ProductIdProps } from '@/shared/types/common';
 import type { FormEvent } from 'react';
 
-interface ReviewFormProps {
-  productId: string;
+interface ReviewFormProps extends ProductIdProps {
   className?: string;
 }
 

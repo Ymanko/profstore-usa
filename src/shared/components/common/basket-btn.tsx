@@ -1,5 +1,5 @@
+import { Icon } from '@/shared/components/common/icon';
 import { Button } from '@/shared/components/ui/button';
-import { Icon } from '@/shared/components/ui/icon';
 import { Typography } from '@/shared/components/ui/typography';
 import { cn } from '@/shared/lib/utils';
 

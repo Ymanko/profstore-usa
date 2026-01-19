@@ -1,7 +1,8 @@
 'use server';
 
-interface CreateReviewData {
-  productId: string;
+import type { ProductIdProps } from '@/shared/types/common';
+
+interface CreateReviewData extends ProductIdProps {
   name: string;
   email: string;
   rating: number;

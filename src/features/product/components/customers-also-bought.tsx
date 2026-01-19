@@ -11,12 +11,9 @@ import { getPopularCollectionProductsQueryOptions } from '@/shared/queries/colle
 import { getComplementaryProductsQueryOptions } from '@/shared/queries/products/get-product-recommendations';
 
 import type { BaseProduct } from '@/shared/queries/products/types';
+import type { ProductIdProps } from '@/shared/types/common';
 
-interface CustomersAlsoBoughtProps {
-  productId: string;
-}
-
-export function CustomersAlsoBought({ productId }: CustomersAlsoBoughtProps) {
+export function CustomersAlsoBought({ productId }: ProductIdProps) {
   const { subcategory } = useParams();
 
   const { data: complementaryProducts, isLoading: isLoadingComplementary } = useQuery(

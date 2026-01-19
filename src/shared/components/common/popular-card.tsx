@@ -16,11 +16,7 @@ type PopularProductBanner = {
   className?: string;
 };
 
-type PopularProductBannerProps = {
-  product: PopularProductBanner;
-};
-
-export function PopularProductBanner({ product }: PopularProductBannerProps) {
+export function PopularProductBanner({ product }: { product: PopularProductBanner }) {
   const { title, image, price, oldPrice, description: rawDescription, className } = product;
 
   const description =

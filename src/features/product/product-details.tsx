@@ -29,7 +29,9 @@ import { useIsMounted } from '@/shared/hooks/use-is-mounted';
 import { getProductQueryOptions } from '@/shared/queries/products/get-product';
 import { getProductReviewsQueryOptions } from '@/shared/queries/reviews/get-product-reviews';
 
-export function ProductDetails({ handle }: { handle: string }) {
+import type { HandleProps } from '@/shared/types/common';
+
+export function ProductDetails({ handle }: HandleProps) {
   const { data: product } = useSuspenseQuery(getProductQueryOptions(handle));
   const { data: reviews = [], isLoading } = useQuery(getProductReviewsQueryOptions(product?.id || ''));
 

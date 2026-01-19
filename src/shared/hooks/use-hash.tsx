@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
 export function useHash() {
-  // Always start with empty string to match SSR, then sync on client
   const [hash, setHash] = useState('');
   const isInitializedRef = useRef(false);
 
@@ -12,10 +11,9 @@ export function useHash() {
       setHash(window.location.hash);
     };
 
-    // Initialize hash from current location on first effect run
     if (!isInitializedRef.current) {
       isInitializedRef.current = true;
-      onHashChanged(); // Call via the handler to keep it consistent
+      onHashChanged();
     }
 
     const { pushState, replaceState } = window.history;

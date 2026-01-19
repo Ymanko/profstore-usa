@@ -11,7 +11,7 @@ import { SocialLinks } from '@/shared/components/links/social-links';
 import { TrainingLink } from '@/shared/components/links/training-link';
 import { NAV_ITEMS } from '@/shared/constants/user-menu';
 
-export const Header = () => {
+export function Header() {
   return (
     <header className='bg-primary-foreground border-border relative border-b'>
       {/*Top Bar*/}
@@ -46,4 +46,4 @@ export const Header = () => {
       </div>
     </header>
   );
-};
+}

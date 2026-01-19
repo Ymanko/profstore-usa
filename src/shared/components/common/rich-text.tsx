@@ -3,13 +3,13 @@ import { convertSchemaToHtml } from '@thebeyondgroup/shopify-rich-text-renderer'
 import { cn } from '@/shared/lib/utils';
 
 import type { Schema } from '@thebeyondgroup/shopify-rich-text-renderer';
-import type { ComponentPropsWithoutRef, FC } from 'react';
+import type { ComponentPropsWithoutRef } from 'react';
 
 interface RichTextSchema extends ComponentPropsWithoutRef<'div'> {
   schema: string | Schema | Schema[];
 }
 
-export const RichText: FC<RichTextSchema> = ({ schema, className, ...props }) => {
+export function RichText({ schema, className, ...props }: RichTextSchema) {
   const html = convertSchemaToHtml(schema, { scoped: true });
 
   return (
@@ -37,4 +37,4 @@ export const RichText: FC<RichTextSchema> = ({ schema, className, ...props }) =>
       {...props}
     />
   );
-};
+}

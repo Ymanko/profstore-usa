@@ -2,15 +2,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { AddToFavoritesBtn } from '@/shared/components/common/add-to favorites-btn';
+import { Icon } from '@/shared/components/common/icon';
 import { Show } from '@/shared/components/common/show';
-import { Icon } from '@/shared/components/ui/icon';
 import { Typography } from '@/shared/components/ui/typography';
 import { cn } from '@/shared/lib/utils';
 import { calculateDiscountPercentage } from '@/shared/utils/calculate-discount-percentage';
 
 import type { BaseProduct } from '@/shared/queries/products/types';
 import type { LinkProps } from 'next/link';
-import type { ComponentPropsWithoutRef, FC, PropsWithChildren } from 'react';
+import type { ComponentPropsWithoutRef, PropsWithChildren } from 'react';
 
 interface ProductCardProps extends ComponentPropsWithoutRef<'div'> {
   product: BaseProduct;
@@ -22,7 +22,7 @@ interface ProductCardProps extends ComponentPropsWithoutRef<'div'> {
   onAddToFavorites?: (productId: string) => void;
 }
 
-export const ProductCard: FC<ProductCardProps> = ({
+export function ProductCard({
   product,
   view = 'grid',
   variant = 'default',
@@ -31,7 +31,7 @@ export const ProductCard: FC<ProductCardProps> = ({
   onAddToCart,
   onAddToFavorites,
   className,
-}) => {
+}: ProductCardProps) {
   const { id, title, featuredImage, availableForSale, priceRange, compareAtPriceRange } = product;
 
   const currentPrice = parseFloat(compareAtPriceRange?.minVariantPrice.amount);
@@ -102,7 +102,7 @@ export const ProductCard: FC<ProductCardProps> = ({
       </div>
     </div>
   );
-};
+}
 
 function DiscountBadge({ percentage }: { percentage: number }) {
   return (

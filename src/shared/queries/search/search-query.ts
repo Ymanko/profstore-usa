@@ -3,7 +3,6 @@ import { queryOptions } from '@tanstack/react-query';
 import { STALE_TIME } from '@/shared/constants/stale-time';
 import { graphqlFetcher } from '@/shared/lib/graphql/graphql-fetcher';
 import { SEARCH_QUERY } from '@/shared/queries/search/query';
-import { flattenEdges } from '@/shared/utils/flatten-edges';
 
 import type { QueryRoot } from '@/shared/lib/graphql/graphql';
 
@@ -20,3 +19,16 @@ export const searchQueryOptions = (searchQuery: string) =>
       collections: flattenEdges(data.collections),
     }),
   });
+
+type Connection<T> =
+  | {
+      edges: Array<{
+        node: T;
+      }>;
+    }
+  | null
+  | undefined;
+
+function flattenEdges<T>(connection: Connection<T>): T[] {
+  return connection?.edges?.map(edge => edge.node) ?? [];
+}

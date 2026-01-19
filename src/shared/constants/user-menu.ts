@@ -14,5 +14,3 @@ export const NAV_ITEMS = [
   { label: 'Shares', href: '/shares' },
   { label: 'Warranty and service', href: '/warranty' },
 ];
-
-export type NavItem = (typeof NAV_ITEMS)[number];

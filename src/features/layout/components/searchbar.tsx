@@ -17,9 +17,10 @@ import {
   CommandSeparator,
 } from '@/shared/components/ui/command';
 import { Typography } from '@/shared/components/ui/typography';
-import { SEARCH_DEBOUNCE_MS } from '@/shared/constants/search';
 import { useSearchState } from '@/shared/hooks/use-search-state';
 import { searchQueryOptions } from '@/shared/queries/search/search-query';
+
+const SEARCH_DEBOUNCE_MS = 300;
 
 export function Searchbar() {
   const { searchValue, setSearchValue, isFocus, handleFocus, handleBlur } = useSearchState();
