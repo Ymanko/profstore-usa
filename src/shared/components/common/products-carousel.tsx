@@ -9,7 +9,7 @@ import { CarouselContent, CarouselItem } from '@/shared/components/ui/carousel';
 import { Typography } from '@/shared/components/ui/typography';
 import { useIsMounted } from '@/shared/hooks/use-is-mounted';
 
-import type { BaseProduct } from '@/shared/types/product';
+import type { BaseProduct } from '@/shared/queries/products/types';
 import type { ReactNode } from 'react';
 
 interface ProductsCarouselProps<T extends BaseProduct = BaseProduct> {

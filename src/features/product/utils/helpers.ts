@@ -1,6 +1,6 @@
 import type { ProductFile } from '@/features/product/components/product-files';
 import type { JudgeMeReview } from '@/shared/actions/get-reviews';
-import type { ProductData } from '@/shared/queries/products/get-product';
+import type { ProductData } from '@/shared/queries/products/types';
 
 type FilesMetafield = NonNullable<NonNullable<ProductData['product']>['files']>;
 

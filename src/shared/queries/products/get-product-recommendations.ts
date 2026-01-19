@@ -2,76 +2,9 @@ import { queryOptions } from '@tanstack/react-query';
 
 import { STALE_TIME } from '@/shared/constants/stale-time';
 import { serverGraphqlFetcher } from '@/shared/lib/graphql/server-graphql-fetcher';
-import { type BaseProduct } from '@/shared/queries/products/get-product';
+import { GET_PRODUCT_RECOMMENDATIONS } from '@/shared/queries/products/query';
 
-const GET_PRODUCT_RECOMMENDATIONS = `
-  query GetProductRecommendations($productId: ID!, $intent: ProductRecommendationIntent) {
-    productRecommendations(productId: $productId, intent: $intent) {
-      id
-      handle
-      title
-      availableForSale
-      featuredImage {
-        url
-        altText
-        width
-        height
-      }
-      priceRange {
-        minVariantPrice {
-          amount
-          currencyCode
-        }
-      }
-      compareAtPriceRange {
-        minVariantPrice {
-          amount
-          currencyCode
-        }
-      }
-      variants(first: 1) {
-        edges {
-          node {
-            id
-            price {
-              amount
-              currencyCode
-            }
-            compareAtPrice {
-              amount
-              currencyCode
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-// RecommendedProduct extends BaseProduct with variants info
-export interface RecommendedProduct extends BaseProduct {
-  variants: {
-    edges: Array<{
-      node: {
-        id: string;
-        price: {
-          amount: string;
-          currencyCode: string;
-        };
-        compareAtPrice: {
-          amount: string;
-          currencyCode: string;
-        } | null;
-      };
-    }>;
-  };
-}
-
-interface RecommendationsData {
-  productRecommendations: RecommendedProduct[] | null;
-}
-
-type RecommendationIntent = 'RELATED' | 'COMPLEMENTARY';
+import type { RecommendationIntent, RecommendationsData } from '@/shared/queries/products/types';
 
 export const getProductRecommendationsQueryOptions = (productId: string, intent: RecommendationIntent = 'RELATED') =>
   queryOptions({

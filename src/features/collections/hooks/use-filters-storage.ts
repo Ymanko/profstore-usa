@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSessionStorage } from 'react-use';
 
-import type { Filter } from '@/shared/queries/collections/get-subcategory-products';
+import type { Filter } from '@/shared/queries/collections/types';
 
 interface UseFiltersStorageParams {
   handle: string;

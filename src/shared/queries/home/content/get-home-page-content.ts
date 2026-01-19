@@ -2,128 +2,15 @@ import { queryOptions } from '@tanstack/react-query';
 
 import { STALE_TIME } from '@/shared/constants/stale-time';
 import { serverGraphqlFetcher } from '@/shared/lib/graphql/server-graphql-fetcher';
+import { GET_HOME_PAGE_CONTENT } from '@/shared/queries/home/content/query';
 
 import type { QueryRoot } from '@/shared/lib/graphql/graphql';
-
-const GET_HOME_PAGE_CONTENT = `
-  query GetHomePageContent {
-    metaobject(handle: {type: "home_page", handle: "home"}) {
-      fields {
-        key
-        value
-        reference {
-          ... on Metaobject {
-            id
-            type
-            fields {
-              key
-              value
-              reference {
-                ... on MediaImage {
-                  image {
-                    url
-                    altText
-                  }
-                }
-              }
-            }
-          }
-        }
-        references(first: 10) {
-          edges {
-            node {
-              ... on Metaobject {
-                id
-                type
-                fields {
-                  key
-                  value
-                  reference {
-                    ... on MediaImage {
-                      image {
-                        url
-                        altText
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-type MetaobjectField = {
-  key: string;
-  value: string;
-  reference?: {
-    image?: {
-      url: string;
-      altText?: string;
-    };
-  } | null;
-};
-
-type MetaobjectNode = {
-  id: string;
-  type: string;
-  fields: MetaobjectField[];
-};
-
-type MetaobjectEdge = {
-  node: MetaobjectNode;
-};
-
-type MetaobjectFieldWithReferences = {
-  key: string;
-  value: string;
-  references?: {
-    edges: MetaobjectEdge[];
-  } | null;
-};
-
-export type BannerSlide = {
-  image: string;
-  imageAlt?: string;
-  title: string;
-  subtitle: string;
-  buttonText: string;
-  buttonLink: string;
-};
-
-type Brand = {
-  name: string;
-  logo: string;
-  logoAlt: string;
-};
-
-type HomePageContent = {
-  bannerSlides: BannerSlide[];
-  showCategories: boolean;
-  showRecommended: boolean;
-  showNewAndSaleProducts: boolean;
-  descriptionTitle: string;
-  descriptionContent: string;
-  brands: Brand[];
-};
-
-function parseMetaobjectFields(fields: MetaobjectField[]): Record<string, unknown> {
-  const result: Record<string, unknown> = {};
-
-  fields.forEach(field => {
-    if (field.reference?.image) {
-      result[field.key] = field.reference.image.url;
-      result[`${field.key}Alt`] = field.reference.image.altText || '';
-    } else {
-      result[field.key] = field.value;
-    }
-  });
-
-  return result;
-}
+import type {
+  HomePageContent,
+  MetaobjectField,
+  MetaobjectFieldWithReferences,
+  MetaobjectEdge,
+} from '@/shared/queries/home/content/types';
 
 export const getHomePageContentQueryOptions = queryOptions({
   queryKey: ['home-page-content'],
@@ -202,3 +89,18 @@ export const getHomePageContentQueryOptions = queryOptions({
   },
   staleTime: STALE_TIME.ONE_HOUR,
 });
+
+function parseMetaobjectFields(fields: MetaobjectField[]): Record<string, unknown> {
+  const result: Record<string, unknown> = {};
+
+  fields.forEach(field => {
+    if (field.reference?.image) {
+      result[field.key] = field.reference.image.url;
+      result[`${field.key}Alt`] = field.reference.image.altText || '';
+    } else {
+      result[field.key] = field.value;
+    }
+  });
+
+  return result;
+}

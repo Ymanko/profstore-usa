@@ -7,7 +7,7 @@ import { Typography, type TypographyProps } from '@/shared/components/ui/typogra
 import { cn } from '@/shared/lib/utils';
 import { calculateDiscountPercentage } from '@/shared/utils/calculate-discount-percentage';
 
-import type { ProductData } from '@/shared/queries/products/get-product';
+import type { ProductData } from '@/shared/queries/products/types';
 import type { ImageProps } from 'next/image';
 import type { ComponentProps } from 'react';
 

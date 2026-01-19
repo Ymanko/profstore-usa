@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
-import type { SubcategoryProductsParams } from '@/shared/queries/collections/get-subcategory-products';
+
+import type { SubcategoryProductsParams } from '@/shared/queries/collections/types';
 
 interface UseCollectionFiltersProps {
   decodedFilters: SubcategoryProductsParams['filters'];

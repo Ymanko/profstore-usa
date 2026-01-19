@@ -10,7 +10,7 @@ import { ProductCardsSkeleton } from '@/shared/components/skeletons/product-card
 import { getPopularCollectionProductsQueryOptions } from '@/shared/queries/collections/get-popular-collection-products';
 import { getComplementaryProductsQueryOptions } from '@/shared/queries/products/get-product-recommendations';
 
-import type { BaseProduct } from '@/shared/types/product';
+import type { BaseProduct } from '@/shared/queries/products/types';
 
 interface CustomersAlsoBoughtProps {
   productId: string;
@@ -19,18 +19,15 @@ interface CustomersAlsoBoughtProps {
 export function CustomersAlsoBought({ productId }: CustomersAlsoBoughtProps) {
   const { subcategory } = useParams();
 
-  // Try complementary products first
   const { data: complementaryProducts, isLoading: isLoadingComplementary } = useQuery(
     getComplementaryProductsQueryOptions(productId),
   );
 
-  // Fallback to collection products
   const { data: collectionProducts, isLoading: isLoadingCollection } = useQuery({
     ...getPopularCollectionProductsQueryOptions(subcategory as string),
     enabled: !isLoadingComplementary && (!complementaryProducts || complementaryProducts.length === 0),
   });
 
-  // Use complementary if available, otherwise fallback to collection
   const products = (complementaryProducts?.length ? complementaryProducts : collectionProducts) as
     | BaseProduct[]
     | undefined;

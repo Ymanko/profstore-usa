@@ -18,7 +18,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/shared
 import { Icon } from '@/shared/components/ui/icon';
 import { Typography } from '@/shared/components/ui/typography';
 import { cn } from '@/shared/lib/utils';
-import { getMenuItemsQueryOptions } from '@/shared/queries/get-menu-items';
+import { getMenuItemsQueryOptions } from '@/shared/queries/menu/get-menu-items';
 import { getCleanTitle } from '@/shared/utils/parsers/get-clean-title';
 import { getCollectionPath } from '@/shared/utils/parsers/get-collection-path';
 import { getMenuItemIcon } from '@/shared/utils/parsers/get-menu-item-icon';

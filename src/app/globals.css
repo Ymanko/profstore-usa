@@ -251,5 +251,5 @@ body {
 }
 
 .image-gallery-thumbnail-image {
-  @apply max-h-15! md:max-h-full!
+  @apply max-h-15! md:max-h-full!;
 }

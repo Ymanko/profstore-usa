@@ -2,20 +2,11 @@ import { queryOptions } from '@tanstack/react-query';
 
 import { STALE_TIME } from '@/shared/constants/stale-time';
 import { serverGraphqlFetcher } from '@/shared/lib/graphql/server-graphql-fetcher';
+import { GET_NEW_PRODUCTS_SETTINGS } from '@/shared/queries/home/new-product/query';
 
 import type { QueryRoot } from '@/shared/lib/graphql/graphql';
 
 const COUNT_DEFAULT = 10;
-
-const GET_NEW_PRODUCTS_SETTINGS = `
-  query GetNewProductsSettings {
-    shop {
-      metafield(namespace: "custom", key: "new_products_count") {
-        value
-      }
-    }
-  }
-`;
 
 export const getNewProductsSettingsQueryOptions = queryOptions({
   queryKey: ['new-products-settings'],

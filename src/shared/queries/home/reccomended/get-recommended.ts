@@ -2,44 +2,9 @@ import { queryOptions } from '@tanstack/react-query';
 
 import { STALE_TIME } from '@/shared/constants/stale-time';
 import { serverGraphqlFetcher } from '@/shared/lib/graphql/server-graphql-fetcher';
+import { GET_RECOMMENDED } from '@/shared/queries/home/reccomended/query';
 
 import type { QueryRoot } from '@/shared/lib/graphql/graphql';
-
-const GET_RECOMMENDED = `
-  query GetRecommended {
-    collection(handle: "recommended") {
-      id
-      handle
-      title
-      products(first: 8) {
-        edges {
-          node {
-            id
-            handle
-            title
-            priceRange {
-              minVariantPrice {
-                amount
-                currencyCode
-              }
-            }
-            compareAtPriceRange {
-              minVariantPrice {
-                amount
-                currencyCode
-              }
-            }
-            availableForSale
-            featuredImage {
-              url
-              altText
-            }
-          }
-        }
-      }
-    }
-  }
-`;
 
 export const getRecommendedQueryOptions = queryOptions({
   queryKey: ['recommended'],

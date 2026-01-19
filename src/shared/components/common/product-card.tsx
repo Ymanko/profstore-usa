@@ -8,7 +8,7 @@ import { Typography } from '@/shared/components/ui/typography';
 import { cn } from '@/shared/lib/utils';
 import { calculateDiscountPercentage } from '@/shared/utils/calculate-discount-percentage';
 
-import type { BaseProduct } from '@/shared/types/product';
+import type { BaseProduct } from '@/shared/queries/products/types';
 import type { LinkProps } from 'next/link';
 import type { ComponentPropsWithoutRef, FC, PropsWithChildren } from 'react';
 

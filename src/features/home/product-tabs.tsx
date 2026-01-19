@@ -8,8 +8,8 @@ import { Section } from '@/shared/components/common/section';
 import { Show } from '@/shared/components/common/show';
 import { ScrollArea, ScrollBar } from '@/shared/components/ui/scroll-area';
 import { Typography } from '@/shared/components/ui/typography';
-import { getNewProductsQueryOptions } from '@/shared/queries/home/get-new-products';
-import { getSaleHitsQueryOptions } from '@/shared/queries/home/get-sale-hits';
+import { getSaleHitsQueryOptions } from '@/shared/queries/home/hits/get-sale-hits';
+import { getNewProductsQueryOptions } from '@/shared/queries/home/new-product/get-new-products';
 
 type Tab = 'new' | 'saleHits';
 

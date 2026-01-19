@@ -7,12 +7,12 @@ import { Recommended } from '@/features/home/recommended';
 import { PageWrapper } from '@/shared/components/common/page-wrapper';
 import { Typography } from '@/shared/components/ui/typography';
 import { getQueryClient } from '@/shared/lib/tanstack/get-query-client';
-import { getCategoriesQueryOptions } from '@/shared/queries/home/get-categories';
-import { getHomePageContentQueryOptions } from '@/shared/queries/home/get-home-page-content';
-import { getNewProductsQueryOptions } from '@/shared/queries/home/get-new-products';
-import { getPopularProductsQueryOptions } from '@/shared/queries/home/get-popular-products';
-import { getRecommendedQueryOptions } from '@/shared/queries/home/get-recommended';
-import { getSaleHitsQueryOptions } from '@/shared/queries/home/get-sale-hits';
+import { getCategoriesQueryOptions } from '@/shared/queries/home/categories/get-categories';
+import { getHomePageContentQueryOptions } from '@/shared/queries/home/content/get-home-page-content';
+import { getSaleHitsQueryOptions } from '@/shared/queries/home/hits/get-sale-hits';
+import { getNewProductsQueryOptions } from '@/shared/queries/home/new-product/get-new-products';
+import { getPopularProductsQueryOptions } from '@/shared/queries/home/popular/get-popular-products';
+import { getRecommendedQueryOptions } from '@/shared/queries/home/reccomended/get-recommended';
 
 import type { Metadata } from 'next';
 

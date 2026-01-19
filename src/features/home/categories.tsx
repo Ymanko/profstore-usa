@@ -13,7 +13,7 @@ import {
   CarouselPrevious,
 } from '@/shared/components/ui/carousel';
 import { Typography } from '@/shared/components/ui/typography';
-import { getCategoriesQueryOptions } from '@/shared/queries/home/get-categories';
+import { getCategoriesQueryOptions } from '@/shared/queries/home/categories/get-categories';
 
 export function Categories() {
   const { data: categories } = useSuspenseQuery(getCategoriesQueryOptions);

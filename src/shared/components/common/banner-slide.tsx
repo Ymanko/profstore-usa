@@ -5,7 +5,7 @@ import React from 'react';
 import { Typography } from '@/shared/components/ui/typography';
 import { cn } from '@/shared/lib/utils';
 
-import type { BannerSlide } from '@/shared/queries/home/get-home-page-content';
+import type { BannerSlide } from '@/shared/queries/home/content/types';
 
 type BannerSlideProps = {
   data: BannerSlide;

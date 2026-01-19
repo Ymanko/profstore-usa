@@ -27,11 +27,9 @@ import { Typography } from '@/shared/components/ui/typography';
 import { useIsMounted } from '@/shared/hooks/use-is-mounted';
 import { useLayoutMode } from '@/shared/hooks/use-layout-mode';
 import { cn } from '@/shared/lib/utils';
-import {
-  getSubcategoryProductsInfiniteQueryOptions,
-  type Filter,
-} from '@/shared/queries/collections/get-subcategory-products';
+import { getSubcategoryProductsInfiniteQueryOptions } from '@/shared/queries/collections/get-subcategory-products';
 
+import type { Filter } from '@/shared/queries/collections/types';
 import type { FC } from 'react';
 
 export const CollectionProducts: FC<{
