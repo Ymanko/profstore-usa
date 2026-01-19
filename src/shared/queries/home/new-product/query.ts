@@ -28,6 +28,20 @@ export const GET_NEW_PRODUCTS = `
             url
             altText
           }
+          collections(first: 1) {
+            edges {
+              node {
+                handle
+                metafield(namespace: "custom", key: "parent_category") {
+                  reference {
+                    ... on Metaobject {
+                      handle
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }

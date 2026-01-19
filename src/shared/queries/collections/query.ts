@@ -1,4 +1,4 @@
-import { CONTENT_BLOCK_FIELDS_FRAGMENT } from '@/shared/utils/parsers/parse-content-blocks';
+import { CONTENT_BLOCK_FIELDS_FRAGMENT } from '@/shared/queries/fragments';
 
 export const GET_POPULAR_COLLECTION_PRODUCTS = `
   query GetPopularCollectionProducts($handle: String!, $first: Int = 6) {
@@ -39,6 +39,20 @@ export const GET_POPULAR_COLLECTION_PRODUCTS = `
               altText
               width
               height
+            }
+            collections(first: 1) {
+              edges {
+                node {
+                  handle
+                  metafield(namespace: "custom", key: "parent_category") {
+                    reference {
+                      ... on Metaobject {
+                        handle
+                      }
+                    }
+                  }
+                }
+              }
             }
             variants(first: 10) {
               edges {
@@ -150,6 +164,20 @@ export const GET_SUBCATEGORY_PRODUCTS = `
               altText
               width
               height
+            }
+            collections(first: 1) {
+              edges {
+                node {
+                  handle
+                  metafield(namespace: "custom", key: "parent_category") {
+                    reference {
+                      ... on Metaobject {
+                        handle
+                      }
+                    }
+                  }
+                }
+              }
             }
             variants(first: 10) {
               edges {

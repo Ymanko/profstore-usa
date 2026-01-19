@@ -10,9 +10,9 @@ import { calculateDiscountPercentage } from '@/shared/utils/calculate-discount-p
 
 import type { BaseProduct } from '@/shared/queries/products/types';
 import type { LinkProps } from 'next/link';
-import type { ComponentPropsWithoutRef, PropsWithChildren } from 'react';
+import type { ComponentProps, PropsWithChildren } from 'react';
 
-interface ProductCardProps extends ComponentPropsWithoutRef<'div'> {
+interface ProductCardProps extends ComponentProps<'div'> {
   product: BaseProduct;
   view?: 'grid' | 'list';
   variant?: 'default' | 'discount';
@@ -141,7 +141,7 @@ function PriceStacked({ previousPrice, currentPrice }: { previousPrice: number; 
   );
 }
 
-function AddToCartButton({ ...props }: ComponentPropsWithoutRef<'button'>) {
+function AddToCartButton({ ...props }: ComponentProps<'button'>) {
   return (
     <button
       type='button'
@@ -170,7 +170,6 @@ function CardLink({ ...props }: LinkProps & PropsWithChildren) {
 function AvailabilityIndicator({ isAvailable }: { isAvailable: boolean }) {
   return (
     <div className='flex items-center gap-2'>
-      {/*<Icon name='checkmarkSmall' width={20} height={20} className={isAvailable ? 'text-secondary' : 'text-rose-600'} />*/}
       <Icon id='checkmark-small' width={20} height={20} className={isAvailable ? 'text-secondary' : 'text-rose-600'} />
       <Typography variant='body' className='text-muted-foreground text-base'>
         {isAvailable ? 'In stock' : 'Out of stock'}

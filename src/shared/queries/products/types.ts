@@ -33,6 +33,9 @@ export interface BaseProduct {
       currencyCode: string;
     };
   };
+  // Optional collection info for building product URL
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  collections?: any;
 }
 
 export interface ProductData {

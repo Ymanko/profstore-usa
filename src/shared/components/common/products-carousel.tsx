@@ -8,6 +8,7 @@ import { Show } from '@/shared/components/common/show';
 import { CarouselContent, CarouselItem } from '@/shared/components/ui/carousel';
 import { Typography } from '@/shared/components/ui/typography';
 import { useIsMounted } from '@/shared/hooks/use-is-mounted';
+import { buildProductUrl } from '@/shared/utils/build-product-url';
 
 import type { BaseProduct } from '@/shared/queries/products/types';
 import type { ReactNode } from 'react';
@@ -29,7 +30,7 @@ export function ProductsCarousel<T extends BaseProduct = BaseProduct>({ products
       <CarouselContent>
         {products.map(product => (
           <CarouselItem key={product.id} className='sm:basis-1/2 lg:basis-1/4'>
-            <ProductCard product={product} />
+            <ProductCard product={product} href={buildProductUrl(product)} />
           </CarouselItem>
         ))}
       </CarouselContent>
@@ -68,7 +69,7 @@ export function ProductsCarouselWithHeader<T extends BaseProduct = BaseProduct>(
       <CarouselContent>
         {products.map(product => (
           <CarouselItem key={product.id} className='sm:basis-1/2 lg:basis-1/4'>
-            <ProductCard product={product} />
+            <ProductCard product={product} href={buildProductUrl(product)} />
           </CarouselItem>
         ))}
       </CarouselContent>

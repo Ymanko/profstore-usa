@@ -42,31 +42,6 @@ export function parseContentMetaobject(fields: ContentMetaobjectField[]): Omit<C
   };
 }
 
-export const CONTENT_BLOCK_FIELDS_FRAGMENT = `
-  id
-  fields {
-    key
-    value
-    type
-    reference {
-      ... on MediaImage {
-        image {
-          url
-          altText
-          width
-          height
-        }
-      }
-      ... on Video {
-        sources {
-          url
-          mimeType
-        }
-      }
-    }
-  }
-`;
-
 export function parseContentBlocks(
   references?: {
     edges: Array<{

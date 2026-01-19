@@ -1,4 +1,4 @@
-import { CONTENT_BLOCK_FIELDS_FRAGMENT } from '@/shared/utils/parsers/parse-content-blocks';
+import { CONTENT_BLOCK_FIELDS_FRAGMENT } from '@/shared/queries/fragments';
 
 export const GET_CATEGORY = `
   query GetCategory($handle: String!) {

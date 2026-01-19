@@ -2,7 +2,6 @@
 
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import { LayoutGrid, LayoutList } from 'lucide-react';
-import { useParams } from 'next/navigation';
 
 import { ContentBlock } from '@/features/categories/components/content-block';
 import { DiscountedProduct } from '@/features/collections/components/discounted-product';
@@ -28,6 +27,7 @@ import { useIsMounted } from '@/shared/hooks/use-is-mounted';
 import { useLayoutMode } from '@/shared/hooks/use-layout-mode';
 import { cn } from '@/shared/lib/utils';
 import { getSubcategoryProductsInfiniteQueryOptions } from '@/shared/queries/collections/get-subcategory-products';
+import { buildProductUrl } from '@/shared/utils/build-product-url';
 
 import type { Filter } from '@/shared/queries/collections/types';
 import type { FC } from 'react';
@@ -35,7 +35,6 @@ import type { FC } from 'react';
 export const CollectionProducts: FC<{
   handle: string;
 }> = ({ handle }) => {
-  const { category, subcategory } = useParams();
   const isMounted = useIsMounted();
   const { setMode, isGrid, isList } = useLayoutMode('grid');
   const { params, setParams, handlers } = useCollectionParams();
@@ -232,7 +231,7 @@ export const CollectionProducts: FC<{
                     data={allProducts}
                     renderItem={product => (
                       <ProductCard
-                        href={`/${category}/${subcategory}/${product.handle}`}
+                        href={buildProductUrl(product)}
                         product={product}
                         view={isGrid ? 'grid' : 'list'}
                       />

@@ -10,6 +10,7 @@ import { ScrollArea, ScrollBar } from '@/shared/components/ui/scroll-area';
 import { Typography } from '@/shared/components/ui/typography';
 import { getSaleHitsQueryOptions } from '@/shared/queries/home/hits/get-sale-hits';
 import { getNewProductsQueryOptions } from '@/shared/queries/home/new-product/get-new-products';
+import { buildProductUrl } from '@/shared/utils/build-product-url';
 
 type Tab = 'new' | 'saleHits';
 
@@ -28,6 +29,12 @@ export function ProductTabs() {
 
   return (
     <Section className='py-2.5'>
+      <Show when={activeProducts.length === 0}>
+        <Typography variant='body-lg' className='text-center text-gray-500'>
+          No products found
+        </Typography>
+      </Show>
+
       {/* Tabs */}
       <div className='mb-5 flex gap-2.5 rounded-[10px] bg-[#B6CEB4] p-1.5'>
         {tabs.map(tab => (
@@ -47,18 +54,12 @@ export function ProductTabs() {
         <div className='flex gap-5 pb-4'>
           {activeProducts.map(({ node: product }) => (
             <div key={product.id} className='w-full shrink-0 sm:w-[calc((100%-20px)/2)] lg:w-[calc((100%-60px)/4)]'>
-              <ProductCard product={product} />
+              <ProductCard product={product} href={buildProductUrl(product)} />
             </div>
           ))}
         </div>
         <ScrollBar orientation='horizontal' />
       </ScrollArea>
-
-      <Show when={activeProducts.length === 0}>
-        <Typography variant='body-lg' className='text-center text-gray-500'>
-          No products found
-        </Typography>
-      </Show>
     </Section>
   );
 }

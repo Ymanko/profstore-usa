@@ -1,4 +1,4 @@
-import { CONTENT_BLOCK_FIELDS_FRAGMENT } from '@/shared/utils/parsers/parse-content-blocks';
+import { CONTENT_BLOCK_FIELDS_FRAGMENT } from '@/shared/queries/fragments';
 
 export const GET_DISCOUNTED_PRODUCTS = `
   query GetDiscountedProducts($first: Int = 10) {
@@ -36,6 +36,20 @@ export const GET_DISCOUNTED_PRODUCTS = `
             minVariantPrice {
               amount
               currencyCode
+            }
+          }
+          collections(first: 1) {
+            edges {
+              node {
+                handle
+                metafield(namespace: "custom", key: "parent_category") {
+                  reference {
+                    ... on Metaobject {
+                      handle
+                    }
+                  }
+                }
+              }
             }
           }
           variants(first: 10) {
@@ -283,6 +297,20 @@ export const GET_PRODUCT_RECOMMENDATIONS = `
         minVariantPrice {
           amount
           currencyCode
+        }
+      }
+      collections(first: 1) {
+        edges {
+          node {
+            handle
+            metafield(namespace: "custom", key: "parent_category") {
+              reference {
+                ... on Metaobject {
+                  handle
+                }
+              }
+            }
+          }
         }
       }
       variants(first: 1) {
