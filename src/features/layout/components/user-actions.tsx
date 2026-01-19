@@ -7,9 +7,9 @@ import { Typography } from '@/shared/components/ui/typography';
 import { HEADER_USER_ACTIONS } from '@/shared/constants/user-menu';
 
 import type { IconName } from '@/shared/components/common/icon';
-import type { FC, ComponentPropsWithoutRef } from 'react';
+import type { ComponentProps } from 'react';
 
-export function UserActions({ className, ...props }: ComponentPropsWithoutRef<'div'>) {
+export function UserActions({ className, ...props }: ComponentProps<'div'>) {
   const firstItem = HEADER_USER_ACTIONS[0];
 
   return (
