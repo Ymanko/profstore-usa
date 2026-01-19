@@ -1,14 +1,14 @@
 import Link from 'next/link';
+import React from 'react';
 
 import { Icon } from '@/shared/components/common/icon';
 import { List } from '@/shared/components/common/list';
 import { HEADER_USER_ACTIONS } from '@/shared/constants/user-menu';
 import { cn } from '@/shared/lib/utils';
 
-import type { IconName } from '@/shared/components/common/icon';
-import type { ComponentPropsWithoutRef } from 'react';
+import type { ComponentProps } from 'react';
 
-export function MobileUserActions({ className, ...props }: ComponentPropsWithoutRef<'ul'>) {
+export function MobileUserActions({ className, ...props }: ComponentProps<'ul'>) {
   return (
     <List
       data={HEADER_USER_ACTIONS}
@@ -17,7 +17,7 @@ export function MobileUserActions({ className, ...props }: ComponentPropsWithout
 
         return (
           <Link href={item.href} className='text-primary-foreground'>
-            <Icon name={item.icon as IconName} className='' width='24' height='24' />
+            <Icon id={item.icon} />
           </Link>
         );
       }}

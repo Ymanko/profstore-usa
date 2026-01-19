@@ -1,5 +1,11 @@
-export const HEADER_USER_ACTIONS = [
-  { href: '/basket', icon: 'shoppingCart', label: 'Basket' },
+import type { IconNameProps } from '@/shared/components/common/icon';
+
+export const HEADER_USER_ACTIONS: Array<{
+  href: string;
+  icon: IconNameProps;
+  label: string;
+}> = [
+  { href: '/basket', icon: 'shopping-cart', label: 'Basket' },
   { href: '/comparison', icon: 'scales', label: 'Comparison' },
   { href: '/favorites', icon: 'heart', label: 'Favorites' },
   { href: '/sign-in', icon: 'user', label: 'Sign in' },

@@ -6,7 +6,6 @@ import { List } from '@/shared/components/common/list';
 import { Typography } from '@/shared/components/ui/typography';
 import { HEADER_USER_ACTIONS } from '@/shared/constants/user-menu';
 
-import type { IconName } from '@/shared/components/common/icon';
 import type { ComponentProps } from 'react';
 
 export function UserActions({ className, ...props }: ComponentProps<'div'>) {
@@ -18,7 +17,7 @@ export function UserActions({ className, ...props }: ComponentProps<'div'>) {
         href={firstItem.href}
         className='hover:text-accent grid justify-items-center gap-2 transition-colors duration-300 xl:hidden'
       >
-        <Icon name={firstItem.icon as IconName} width='24' height='24' />
+        <Icon id={firstItem.icon} />
         <Typography variant='body' as='span'>
           {firstItem.label}
         </Typography>
@@ -31,7 +30,7 @@ export function UserActions({ className, ...props }: ComponentProps<'div'>) {
             href={item.href}
             className='hover:text-accent grid justify-items-center gap-2 transition-colors duration-300'
           >
-            <Icon name={item.icon as IconName} width='24' height='24' />
+            <Icon id={item.icon} />
             <Typography variant='body' as='span'>
               {item.label}
             </Typography>

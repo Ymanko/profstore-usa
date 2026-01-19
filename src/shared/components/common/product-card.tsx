@@ -149,7 +149,7 @@ function AddToCartButton({ ...props }: ComponentPropsWithoutRef<'button'>) {
       aria-label='Add to cart'
       {...props}
     >
-      <Icon name='shoppingCart' width={18} height={18} />
+      <Icon id='shopping-cart' width={18} height={18} />
     </button>
   );
 }
@@ -170,7 +170,8 @@ function CardLink({ ...props }: LinkProps & PropsWithChildren) {
 function AvailabilityIndicator({ isAvailable }: { isAvailable: boolean }) {
   return (
     <div className='flex items-center gap-2'>
-      <Icon name='checkmarkSmall' width={20} height={20} className={isAvailable ? 'text-secondary' : 'text-rose-600'} />
+      {/*<Icon name='checkmarkSmall' width={20} height={20} className={isAvailable ? 'text-secondary' : 'text-rose-600'} />*/}
+      <Icon id='checkmark-small' width={20} height={20} className={isAvailable ? 'text-secondary' : 'text-rose-600'} />
       <Typography variant='body' className='text-muted-foreground text-base'>
         {isAvailable ? 'In stock' : 'Out of stock'}
       </Typography>
