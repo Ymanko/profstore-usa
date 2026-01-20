@@ -61,16 +61,34 @@ async function generateSvgSprite({ files, inputDir }: { files: string[]; inputDi
       svg.removeAttribute('width');
       svg.removeAttribute('height');
 
-      return svg.toString().trim();
+      // Get the symbol as string and format it
+      const symbolString = svg.toString();
+
+      // Clean up and format
+      const formatted = symbolString
+        .replace(/\n/g, ' ') // Remove all newlines first
+        .replace(/\s+/g, ' ') // Replace multiple spaces with single space
+        .replace(/\s*>\s*/g, '>') // Remove spaces around >
+        .replace(/\s*<\s*/g, '<') // Remove spaces around <
+        .replace(/>\s+</g, '>\n<') // Add newlines between tags
+        .split('\n')
+        .map((line, index, array) => {
+          const trimmed = line.trim();
+          if (index === 0) return `    ${trimmed}`; // Opening symbol tag
+          if (index === array.length - 1) return `    ${trimmed}`; // Closing symbol tag
+          return `      ${trimmed}`; // Inner content
+        })
+        .join('\n');
+
+      return formatted;
     }),
   );
 
   return [
-    `<?xml version="1.0" encoding="UTF-8"?>`,
     `<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0">`,
-    `<defs>`, // https://developer.mozilla.org/en-US/docs/Web/SVG/Element/defs
+    `  <defs>`,
     ...symbols,
-    `</defs>`,
+    `  </defs>`,
     `</svg>`,
   ].join('\n');
 }

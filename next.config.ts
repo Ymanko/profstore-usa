@@ -17,7 +17,7 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
-    qualities: [75, 90],
+    qualities: [75, 90, 95],
   },
 
   reactCompiler: true,

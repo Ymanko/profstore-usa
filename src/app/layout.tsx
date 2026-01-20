@@ -5,6 +5,7 @@ import { Montserrat, Inter } from 'next/font/google';
 import Providers from '@/app/providers';
 import { Footer } from '@/features/layout/footer';
 import { Header } from '@/features/layout/header';
+import { SvgSprite } from '@/shared/components/common/svg-sprite';
 import { getQueryClient } from '@/shared/lib/tanstack/get-query-client';
 import { cn } from '@/shared/lib/utils';
 import { getMenuItemsQueryOptions } from '@/shared/queries/menu/get-menu-items';
@@ -46,6 +47,7 @@ export default async function RootLayout({ children }: LayoutProps) {
   return (
     <html lang='en'>
       <body className={cn('flex min-h-dvh flex-col antialiased', montserratFont.variable, interFont.variable)}>
+        <SvgSprite />
         <Providers>
           <HydrationBoundary state={dehydrate(queryClient)}>
             <Header />
