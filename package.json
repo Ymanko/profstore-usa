@@ -13,7 +13,6 @@
     "format:check": "prettier --check .",
     "check": "npm run lint:check && npm run typecheck && npm run format:check",
     "build:icons": "tsx scripts/build-icons.ts",
-    "svgr": "svgr --typescript --icon --no-prettier --out-dir src/icons-react public/icons",
     "codegen": "graphql-codegen --config codegen.ts",
     "codegen:watch": "graphql-codegen --config codegen.ts --watch"
   },
@@ -63,7 +62,6 @@
   "devDependencies": {
     "@graphql-codegen/cli": "^6.1.0",
     "@graphql-codegen/client-preset": "^5.2.1",
-    "@svgr/cli": "^8.1.0",
     "@tailwindcss/typography": "^0.5.19",
     "@tanstack/eslint-plugin-query": "^5.91.2",
     "@types/node": "^20",
