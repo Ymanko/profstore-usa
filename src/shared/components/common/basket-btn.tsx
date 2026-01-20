@@ -15,7 +15,7 @@ export function BasketBtn({ className, ...props }: ComponentPropsWithoutRef<'but
       )}
       {...props}
     >
-      <Icon id='shopping-cart' className='size-6 shrink-0' />
+      <Icon name='shopping-cart' className='size-6 shrink-0' />
       <span className='h-full w-px bg-[#FFFFFF66]' />
       <Typography variant='h3' as='span' className='font-medium'>
         Basket

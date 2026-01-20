@@ -17,7 +17,7 @@ export function MobileUserActions({ className, ...props }: ComponentProps<'ul'>)
 
         return (
           <Link href={item.href} className='text-primary-foreground'>
-            <Icon id={item.icon} />
+            <Icon name={item.icon} />
           </Link>
         );
       }}

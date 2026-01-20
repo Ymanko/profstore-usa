@@ -15,7 +15,7 @@ export function AddToFavoritesBtn({ className, ...props }: ComponentProps<'butto
       )}
       {...props}
     >
-      <Icon id='heart' width={18} height={18} />
+      <Icon name='heart' width={18} height={18} />
     </button>
   );
 }

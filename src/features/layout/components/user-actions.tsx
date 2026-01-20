@@ -17,7 +17,7 @@ export function UserActions({ className, ...props }: ComponentProps<'div'>) {
         href={firstItem.href}
         className='hover:text-accent grid justify-items-center gap-2 transition-colors duration-300 xl:hidden'
       >
-        <Icon id={firstItem.icon} />
+        <Icon name={firstItem.icon} />
         <Typography variant='body' as='span'>
           {firstItem.label}
         </Typography>
@@ -30,7 +30,7 @@ export function UserActions({ className, ...props }: ComponentProps<'div'>) {
             href={item.href}
             className='hover:text-accent grid justify-items-center gap-2 transition-colors duration-300'
           >
-            <Icon id={item.icon} />
+            <Icon name={item.icon} />
             <Typography variant='body' as='span'>
               {item.label}
             </Typography>

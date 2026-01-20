@@ -102,7 +102,7 @@ export function SiteMenu() {
                       when={iconUrl}
                       fallback={
                         <Icon
-                          id='equipment'
+                          name='equipment'
                           className={cn('size-5 shrink-0', activeId === category.id && 'text-sidebar-active')}
                         />
                       }
@@ -139,12 +139,12 @@ export function SiteMenu() {
                       {hasSub ? (
                         <Accordion.Trigger className='group hover:bg-sidebar-active/10 hover:text-sidebar-active data-[state=open]:accordion-open flex w-full items-center gap-3 px-5 py-3 text-left transition-colors'>
                           {iconUrl && <Image src={iconUrl} alt='' width={20} height={20} className='size-5 shrink-0' />}
-                          {!iconUrl && <Icon id='equipment' className='size-5 shrink-0' />}
+                          {!iconUrl && <Icon name='equipment' className='size-5 shrink-0' />}
                           <Typography as='span' className='flex-1 font-normal'>
                             {cleanTitle}
                           </Typography>
                           <Icon
-                            id='arrow-down'
+                            name='arrow-down'
                             className='size-5 transition-transform group-data-[state=open]:rotate-180'
                           />
                         </Accordion.Trigger>
@@ -154,7 +154,7 @@ export function SiteMenu() {
                           onClick={() => handleCategoryClick(category)}
                         >
                           {iconUrl && <Image src={iconUrl} alt='' width={20} height={20} className='size-5 shrink-0' />}
-                          {!iconUrl && <Icon id='equipment' className='size-5 shrink-0' />}
+                          {!iconUrl && <Icon name='equipment' className='size-5 shrink-0' />}
                           <Typography as='span' className='font-normal'>
                             {cleanTitle}
                           </Typography>
@@ -207,7 +207,7 @@ export function SiteMenu() {
                 onClick={() => setIsCatalogOpen(false)}
                 className='hover:bg-sidebar-active/10 absolute top-2 right-2 rounded-sm p-1 opacity-70 transition-opacity hover:opacity-100'
               >
-                <Icon id='close' className='size-6' />
+                <Icon name='close' className='size-6' />
               </button>
 
               <div className='grid grid-cols-[repeat(auto-fill,minmax(140px,1fr))] gap-5'>

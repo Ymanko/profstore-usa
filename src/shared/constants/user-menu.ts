@@ -1,8 +1,8 @@
-import type { IconNameProps } from '@/shared/components/common/icon';
+import type { IconName } from '@/shared/types/icon-names';
 
 export const HEADER_USER_ACTIONS: Array<{
   href: string;
-  icon: IconNameProps;
+  icon: IconName;
   label: string;
 }> = [
   { href: '/basket', icon: 'shopping-cart', label: 'Basket' },

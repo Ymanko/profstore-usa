@@ -230,11 +230,7 @@ export const CollectionProducts: FC<{
                   <List
                     data={allProducts}
                     renderItem={product => (
-                      <ProductCard
-                        href={buildProductUrl(product)}
-                        product={product}
-                        view={isGrid ? 'grid' : 'list'}
-                      />
+                      <ProductCard href={buildProductUrl(product)} product={product} view={isGrid ? 'grid' : 'list'} />
                     )}
                     keyExtractor={product => product.id}
                     className={cn(
