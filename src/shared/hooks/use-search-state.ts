@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-const SEARCH_BLUR_DELAY_MS = 100;
+const SEARCH_BLUR_DELAY_MS = 200;
 
 export function useSearchState() {
   const [searchValue, setSearchValue] = useState('');
@@ -30,6 +30,11 @@ export function useSearchState() {
     setIsCatalogOpen(false);
   };
 
+  const closeSearch = () => {
+    setIsFocus(false);
+    setSearchValue('');
+  };
+
   useEffect(() => {
     return () => {
       if (timeoutRef.current) {
@@ -47,5 +52,6 @@ export function useSearchState() {
     handleBlur,
     toggleCatalog,
     closeCatalog,
+    closeSearch,
   };
 }
