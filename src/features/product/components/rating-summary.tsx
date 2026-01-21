@@ -84,10 +84,7 @@ export function RatingSummary({ averageRating, totalReviews, breakdown, classNam
         />
 
         <div className='flex justify-center'>
-          <Button
-            className='h-13.5 self-center bg-[linear-gradient(90deg,rgba(87,144,64,1),rgba(58,111,67,1)_100%)] text-xl'
-            size='lg'
-          >
+          <Button className='h-13.5 self-center text-xl' size='lg' options='gradient'>
             Leave a Review
           </Button>
         </div>

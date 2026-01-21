@@ -33,16 +33,17 @@ export function SearchContent() {
 
   return (
     <>
+      <Typography variant='h3' className='mb-2.5 text-lg font-bold md:mb-4 md:text-[22px] md:leading-5.5'>
+        Search criteria
+      </Typography>
+
       <SearchCriteriaForm />
 
-      <Separator className='bg-primary h-0.5' />
+      <Separator className='bg-accent mt-13 mb-10.5 h-0.75! md:mt-14.5 md:mb-11.5' />
 
-      <div className='space-y-6'>
-        <Typography variant='h3' className='font-semibold'>
+      <div className='space-y-6.5 md:space-y-6 xl:space-y-8.5'>
+        <Typography variant='h3' className='text-[22px] leading-5.5 font-bold'>
           Products matching your search criteria
-          <Show when={allProducts.length > 0}>
-            <span className='text-muted-foreground ml-2 text-base font-normal'>({allProducts.length})</span>
-          </Show>
         </Typography>
 
         <Show

@@ -22,9 +22,11 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const { q } = await searchParams;
 
   return (
-    <PageWrapper>
-      <div className='container space-y-6'>
-        <Typography variant='h1'>Search{q && <span className='text-primary'> - {q}</span>}</Typography>
+    <PageWrapper className='pb-25 xl:pb-50'>
+      <div className='container'>
+        <Typography className='mb-5 text-2xl font-bold md:mb-5.5 md:text-3xl xl:mb-7' variant='h1'>
+          Search{q && <span className='text-secondary'> - {q}</span>}
+        </Typography>
 
         <Suspense fallback={<div className='py-12 text-center'>Loading...</div>}>
           <SearchContent />
