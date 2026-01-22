@@ -8,11 +8,9 @@ import { ProductsCarouselWithHeader } from '@/shared/components/common/products-
 import { ProductCardsSkeleton } from '@/shared/components/skeletons/product-cards-skeleton';
 import { getRelatedProductsQueryOptions } from '@/shared/queries/products/get-product-recommendations';
 
-interface RelatedProductProps {
-  productId: string;
-}
+import type { ProductIdProps } from '@/shared/types/common';
 
-export function RelatedProduct({ productId }: RelatedProductProps) {
+export function RelatedProduct({ productId }: ProductIdProps) {
   const { data: products, isLoading, error } = useQuery(getRelatedProductsQueryOptions(productId));
 
   if (isLoading) return <ProductCardsSkeleton />;

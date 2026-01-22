@@ -24,7 +24,7 @@ interface GalleryProps extends ComponentPropsWithoutRef<'div'> {
 }
 
 export function Gallery({ items, className, ...props }: GalleryProps) {
-  const isMobile = useMedia('(max-width: 767px)');
+  const isMobile = useMedia('(max-width: 767px)', false);
   const isMounted = useIsMounted();
   const images = useGalleryImages(items);
 

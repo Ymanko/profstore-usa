@@ -3,13 +3,13 @@ import Image from 'next/image';
 import { List } from '@/shared/components/common/list';
 import { cn } from '@/shared/lib/utils';
 
-import type { ComponentPropsWithoutRef, FC } from 'react';
+import type { ComponentProps } from 'react';
 
-interface SocialLinksProps extends ComponentPropsWithoutRef<'ul'> {
+interface SocialLinksProps extends ComponentProps<'ul'> {
   size?: number;
 }
 
-export const SocialLinks: FC<SocialLinksProps> = ({ className, size = 30 }) => {
+export function SocialLinks({ className, size = 30 }: SocialLinksProps) {
   return (
     <List
       data={[
@@ -27,4 +27,4 @@ export const SocialLinks: FC<SocialLinksProps> = ({ className, size = 30 }) => {
       className={cn('flex items-center gap-x-3.75', className)}
     />
   );
-};
+}

@@ -1,6 +1,7 @@
 import { Loader2 } from 'lucide-react';
 
 import { Show } from '@/shared/components/common/show';
+import { Button } from '@/shared/components/ui/button';
 
 import type { ComponentPropsWithoutRef, FC } from 'react';
 
@@ -10,17 +11,13 @@ interface LoadMoreProps extends ComponentPropsWithoutRef<'button'> {
 
 export const LoadMore: FC<LoadMoreProps> = ({ isLoading, className, ...props }) => {
   return (
-    <button
-      className='bg-secondary hover:bg-secondary/90 disabled:bg-muted-primary disabled:text-muted-foreground flex items-center gap-2 rounded-lg px-8 py-3 font-medium text-white transition-colors'
-      type='button'
-      {...props}
-    >
+    <Button type='button' options='gradient' size='lg' className='h-13.75 w-40.5 text-xl font-medium' {...props}>
       <Show when={isLoading} fallback='Load More'>
         <>
           <Loader2 className='size-4 animate-spin' />
           Loading...
         </>
       </Show>
-    </button>
+    </Button>
   );
 };

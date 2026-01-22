@@ -7,7 +7,7 @@ import { SiteLogo } from '@/shared/components/common/site-logo';
 import { SocialLinks } from '@/shared/components/links/social-links';
 import { Typography } from '@/shared/components/ui/typography';
 
-export const Footer = () => {
+export function Footer() {
   return (
     <footer className='bg-primary-dark py-12.5'>
       <div className='container'>
@@ -67,4 +67,4 @@ export const Footer = () => {
       </div>
     </footer>
   );
-};
+}

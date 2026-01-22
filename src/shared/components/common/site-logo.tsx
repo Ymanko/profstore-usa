@@ -7,11 +7,11 @@ import React from 'react';
 
 import { cn } from '@/shared/lib/utils';
 
-import type { ComponentPropsWithoutRef, FC } from 'react';
+import type { ComponentProps } from 'react';
 
 const HOME_PATH = '/';
 
-export const SiteLogo: FC<ComponentPropsWithoutRef<'a'>> = ({ className }) => {
+export function SiteLogo({ className }: ComponentProps<'a'>) {
   const pathname = usePathname();
 
   return (
@@ -26,4 +26,4 @@ export const SiteLogo: FC<ComponentPropsWithoutRef<'a'>> = ({ className }) => {
       />
     </Link>
   );
-};
+}

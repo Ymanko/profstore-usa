@@ -7,8 +7,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/shared/co
 import { Label } from '@/shared/components/ui/label';
 import { Typography } from '@/shared/components/ui/typography';
 
-import type { Filter } from '@/shared/queries/collections/get-subcategory-products';
-import type { SubcategoryProductsParams } from '@/shared/queries/collections/get-subcategory-products';
+import type { Filter, SubcategoryProductsParams } from '@/shared/queries/collections/types';
 
 interface FilterItemProps {
   filter: Filter;

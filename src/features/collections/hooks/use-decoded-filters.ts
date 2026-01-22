@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import type { SubcategoryProductsParams } from '@/shared/queries/collections/get-subcategory-products';
+import type { SubcategoryProductsParams } from '@/shared/queries/collections/types';
 
 interface UseDecodedFiltersParams {
   f: string;

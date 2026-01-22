@@ -23,6 +23,7 @@
   --color-border: var(--border);
   --color-surface-default: var(--surface-default);
   --color-surface: var(--surface-secondary);
+  --color-surface-foreground: var(--surface-secondary-foreground);
   --color-ring: var(--ring);
   --color-sidebar: var(--surface);
   --color-sidebar-active: var(--sidebar-active);
@@ -64,6 +65,7 @@
   --border: #e6e6e6;
   --surface-default: #efefef;
   --surface-secondary: #dadce2;
+  --surface-secondary-foreground: #efeeee;
   --ring: #579040;
 
   /* Sidebar */
@@ -251,5 +253,5 @@ body {
 }
 
 .image-gallery-thumbnail-image {
-  @apply max-h-15! md:max-h-full!
+  @apply max-h-15! md:max-h-full!;
 }

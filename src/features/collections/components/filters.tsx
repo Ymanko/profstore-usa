@@ -13,7 +13,7 @@ import { cn } from '@/shared/lib/utils';
 import type { useCollectionFilters } from '@/features/collections/hooks/use-collection-filters';
 import type { useDecodedFilters } from '@/features/collections/hooks/use-decoded-filters';
 import type { usePriceRangeStorage } from '@/features/collections/hooks/use-price-range-storage';
-import type { Filter } from '@/shared/queries/collections/get-subcategory-products';
+import type { Filter } from '@/shared/queries/collections/types';
 import type { ComponentPropsWithoutRef, FC } from 'react';
 
 interface FiltersProps extends ComponentPropsWithoutRef<'div'> {

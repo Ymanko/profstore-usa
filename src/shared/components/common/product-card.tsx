@@ -2,17 +2,17 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { AddToFavoritesBtn } from '@/shared/components/common/add-to favorites-btn';
+import { Icon } from '@/shared/components/common/icon';
 import { Show } from '@/shared/components/common/show';
-import { Icon } from '@/shared/components/ui/icon';
 import { Typography } from '@/shared/components/ui/typography';
 import { cn } from '@/shared/lib/utils';
 import { calculateDiscountPercentage } from '@/shared/utils/calculate-discount-percentage';
 
-import type { BaseProduct } from '@/shared/types/product';
+import type { BaseProduct } from '@/shared/queries/products/types';
 import type { LinkProps } from 'next/link';
-import type { ComponentPropsWithoutRef, FC, PropsWithChildren } from 'react';
+import type { ComponentProps, PropsWithChildren } from 'react';
 
-interface ProductCardProps extends ComponentPropsWithoutRef<'div'> {
+interface ProductCardProps extends ComponentProps<'div'> {
   product: BaseProduct;
   view?: 'grid' | 'list';
   variant?: 'default' | 'discount';
@@ -22,7 +22,7 @@ interface ProductCardProps extends ComponentPropsWithoutRef<'div'> {
   onAddToFavorites?: (productId: string) => void;
 }
 
-export const ProductCard: FC<ProductCardProps> = ({
+export function ProductCard({
   product,
   view = 'grid',
   variant = 'default',
@@ -31,7 +31,7 @@ export const ProductCard: FC<ProductCardProps> = ({
   onAddToCart,
   onAddToFavorites,
   className,
-}) => {
+}: ProductCardProps) {
   const { id, title, featuredImage, availableForSale, priceRange, compareAtPriceRange } = product;
 
   const currentPrice = parseFloat(compareAtPriceRange?.minVariantPrice.amount);
@@ -102,7 +102,7 @@ export const ProductCard: FC<ProductCardProps> = ({
       </div>
     </div>
   );
-};
+}
 
 function DiscountBadge({ percentage }: { percentage: number }) {
   return (
@@ -141,7 +141,7 @@ function PriceStacked({ previousPrice, currentPrice }: { previousPrice: number; 
   );
 }
 
-function AddToCartButton({ ...props }: ComponentPropsWithoutRef<'button'>) {
+function AddToCartButton({ ...props }: ComponentProps<'button'>) {
   return (
     <button
       type='button'
@@ -149,7 +149,7 @@ function AddToCartButton({ ...props }: ComponentPropsWithoutRef<'button'>) {
       aria-label='Add to cart'
       {...props}
     >
-      <Icon name='shoppingCart' width={18} height={18} />
+      <Icon name='shopping-cart' width={18} height={18} />
     </button>
   );
 }
@@ -170,7 +170,12 @@ function CardLink({ ...props }: LinkProps & PropsWithChildren) {
 function AvailabilityIndicator({ isAvailable }: { isAvailable: boolean }) {
   return (
     <div className='flex items-center gap-2'>
-      <Icon name='checkmarkSmall' width={20} height={20} className={isAvailable ? 'text-secondary' : 'text-rose-600'} />
+      <Icon
+        name='checkmark-small'
+        width={20}
+        height={20}
+        className={isAvailable ? 'text-secondary' : 'text-rose-600'}
+      />
       <Typography variant='body' className='text-muted-foreground text-base'>
         {isAvailable ? 'In stock' : 'Out of stock'}
       </Typography>

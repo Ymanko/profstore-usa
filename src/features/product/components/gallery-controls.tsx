@@ -4,7 +4,9 @@ import { cn } from '@/shared/lib/utils';
 
 import type { ComponentProps } from 'react';
 
-function ControlButton(props: ComponentProps<'button'>) {
+type ButtonProps = ComponentProps<'button'>;
+
+function ControlButton(props: ButtonProps) {
   return (
     <button
       type='button'
@@ -21,7 +23,7 @@ function ControlButton(props: ComponentProps<'button'>) {
   );
 }
 
-function ZoomButton({ isZoomIn, ...props }: ComponentProps<'button'> & { isZoomIn: boolean }) {
+function ZoomButton({ isZoomIn, ...props }: ButtonProps & { isZoomIn: boolean }) {
   return (
     <button
       type='button'
@@ -35,7 +37,7 @@ function ZoomButton({ isZoomIn, ...props }: ComponentProps<'button'> & { isZoomI
   );
 }
 
-function CompareButton({ className, ...props }: ComponentProps<'button'>) {
+function CompareButton({ className, ...props }: ButtonProps) {
   return (
     <button
       type='button'

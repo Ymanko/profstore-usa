@@ -7,9 +7,9 @@ import { Typography } from '@/shared/components/ui/typography';
 import { cn } from '@/shared/lib/utils';
 
 import type { LinkProps } from 'next/link';
-import type { ComponentPropsWithoutRef, FC } from 'react';
+import type { ComponentProps } from 'react';
 
-export const NavLink: FC<ComponentPropsWithoutRef<'a'> & LinkProps> = ({ children, className, ...props }) => {
+export function NavLink({ children, className, ...props }: ComponentProps<'a'> & LinkProps) {
   const pathname = usePathname();
 
   return (
@@ -26,4 +26,4 @@ export const NavLink: FC<ComponentPropsWithoutRef<'a'> & LinkProps> = ({ childre
       </Typography>
     </Link>
   );
-};
+}

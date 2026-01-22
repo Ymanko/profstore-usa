@@ -11,14 +11,14 @@ import { useBoolean, useMedia } from 'react-use';
 
 import { TransitionLayout } from '@/features/layout/transition-layout';
 import { CategoryCard } from '@/shared/components/common/category-card';
+import { Icon } from '@/shared/components/common/icon';
 import { List } from '@/shared/components/common/list';
 import { Show } from '@/shared/components/common/show';
 import { Button } from '@/shared/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/shared/components/ui/dropdown-menu';
-import { Icon } from '@/shared/components/ui/icon';
 import { Typography } from '@/shared/components/ui/typography';
 import { cn } from '@/shared/lib/utils';
-import { getMenuItemsQueryOptions } from '@/shared/queries/get-menu-items';
+import { getMenuItemsQueryOptions } from '@/shared/queries/menu/get-menu-items';
 import { getCleanTitle } from '@/shared/utils/parsers/get-clean-title';
 import { getCollectionPath } from '@/shared/utils/parsers/get-collection-path';
 import { getMenuItemIcon } from '@/shared/utils/parsers/get-menu-item-icon';
@@ -144,7 +144,7 @@ export function SiteMenu() {
                             {cleanTitle}
                           </Typography>
                           <Icon
-                            name='arrowDown'
+                            name='arrow-down'
                             className='size-5 transition-transform group-data-[state=open]:rotate-180'
                           />
                         </Accordion.Trigger>

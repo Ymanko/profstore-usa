@@ -7,8 +7,8 @@ import { MainBannerSlide } from '@/shared/components/common/banner-slide';
 import { PopularProductBanner } from '@/shared/components/common/popular-card';
 import { Section } from '@/shared/components/common/section';
 import { Typography } from '@/shared/components/ui/typography';
-import { getHomePageContentQueryOptions } from '@/shared/queries/home/get-home-page-content';
-import { getPopularProductsQueryOptions } from '@/shared/queries/home/get-popular-products';
+import { getHomePageContentQueryOptions } from '@/shared/queries/home/content/get-home-page-content';
+import { getPopularProductsQueryOptions } from '@/shared/queries/home/popular/get-popular-products';
 
 export function Banner() {
   const { data: popularProducts } = useSuspenseQuery(getPopularProductsQueryOptions);

@@ -6,6 +6,7 @@ import { useCounter } from 'react-use';
 import { BasketBtn } from '@/shared/components/common/basket-btn';
 import { Button } from '@/shared/components/ui/button';
 import { Typography } from '@/shared/components/ui/typography';
+import { cn } from '@/shared/lib/utils';
 
 export function ProductActions() {
   const [value, { inc, dec }] = useCounter(0, null, 0);
@@ -14,7 +15,11 @@ export function ProductActions() {
     <div className='grid grid-cols-2 gap-5 md:grid-cols-3'>
       <div
         aria-label='Quantity selector'
-        className='border-border col-span-2 mx-auto flex w-full max-w-43 items-center justify-between rounded-xl border px-1.5 py-1.25 md:col-span-1 md:mx-0 md:max-w-full'
+        className={cn(
+          'border-border rounded-xl border px-1.5 py-1.25',
+          'mx-auto flex items-center justify-between',
+          'col-span-2 w-full max-w-43 md:col-span-1 md:mx-0 md:max-w-full',
+        )}
       >
         <Button
           className='bg-accent hover:bg-accent/70 size-11.25 text-black'
@@ -33,7 +38,7 @@ export function ProductActions() {
 
       <BasketBtn />
 
-      <Button className='h-13.5 bg-[linear-gradient(90deg,rgba(87,144,64,1),rgba(58,111,67,1)_100%)] text-xl' size='lg'>
+      <Button className='h-13.5 text-xl' size='lg' options='gradient'>
         Buy
       </Button>
     </div>

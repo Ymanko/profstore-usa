@@ -11,7 +11,7 @@ import { Button } from '@/shared/components/ui/button';
 import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/shared/components/ui/sheet';
 import { NAV_ITEMS } from '@/shared/constants/user-menu';
 
-export const MobileMenu = () => {
+export function MobileMenu() {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -51,4 +51,4 @@ export const MobileMenu = () => {
       </SheetContent>
     </Sheet>
   );
-};
+}

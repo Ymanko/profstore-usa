@@ -7,7 +7,7 @@ import { BrandCard } from '@/shared/components/common/brand-card';
 import { Section } from '@/shared/components/common/section';
 import { CarouselContent, CarouselItem } from '@/shared/components/ui/carousel';
 import { Typography } from '@/shared/components/ui/typography';
-import { getHomePageContentQueryOptions } from '@/shared/queries/home/get-home-page-content';
+import { getHomePageContentQueryOptions } from '@/shared/queries/home/content/get-home-page-content';
 
 export function OurBrands() {
   const {

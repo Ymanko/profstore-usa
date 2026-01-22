@@ -5,7 +5,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { RichText } from '@/shared/components/common/rich-text';
 import { Section } from '@/shared/components/common/section';
 import { Typography } from '@/shared/components/ui/typography';
-import { getHomePageContentQueryOptions } from '@/shared/queries/home/get-home-page-content';
+import { getHomePageContentQueryOptions } from '@/shared/queries/home/content/get-home-page-content';
 
 export function Description() {
   const {

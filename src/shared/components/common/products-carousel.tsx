@@ -8,8 +8,9 @@ import { Show } from '@/shared/components/common/show';
 import { CarouselContent, CarouselItem } from '@/shared/components/ui/carousel';
 import { Typography } from '@/shared/components/ui/typography';
 import { useIsMounted } from '@/shared/hooks/use-is-mounted';
+import { buildProductUrl } from '@/shared/utils/build-product-url';
 
-import type { BaseProduct } from '@/shared/types/product';
+import type { BaseProduct } from '@/shared/queries/products/types';
 import type { ReactNode } from 'react';
 
 interface ProductsCarouselProps<T extends BaseProduct = BaseProduct> {
@@ -20,7 +21,7 @@ interface ProductsCarouselWithHeaderProps<T extends BaseProduct = BaseProduct> e
   title: string | ReactNode;
 }
 
-export const ProductsCarousel = <T extends BaseProduct = BaseProduct>({ products }: ProductsCarouselProps<T>) => {
+export function ProductsCarousel<T extends BaseProduct = BaseProduct>({ products }: ProductsCarouselProps<T>) {
   const isMounted = useIsMounted();
   const isMobile = useMedia('(max-width: 767px)');
 
@@ -29,7 +30,7 @@ export const ProductsCarousel = <T extends BaseProduct = BaseProduct>({ products
       <CarouselContent>
         {products.map(product => (
           <CarouselItem key={product.id} className='sm:basis-1/2 lg:basis-1/4'>
-            <ProductCard product={product} />
+            <ProductCard product={product} href={buildProductUrl(product)} />
           </CarouselItem>
         ))}
       </CarouselContent>
@@ -39,12 +40,12 @@ export const ProductsCarousel = <T extends BaseProduct = BaseProduct>({ products
       </Show>
     </BaseCarousel>
   );
-};
+}
 
-export const ProductsCarouselWithHeader = <T extends BaseProduct = BaseProduct>({
+export function ProductsCarouselWithHeader<T extends BaseProduct = BaseProduct>({
   title,
   products,
-}: ProductsCarouselWithHeaderProps<T>) => {
+}: ProductsCarouselWithHeaderProps<T>) {
   const isMounted = useIsMounted();
   const isMobile = useMedia('(max-width: 767px)');
   const isTabletOrDesktop = useMedia('(min-width: 768px)');
@@ -68,7 +69,7 @@ export const ProductsCarouselWithHeader = <T extends BaseProduct = BaseProduct>(
       <CarouselContent>
         {products.map(product => (
           <CarouselItem key={product.id} className='sm:basis-1/2 lg:basis-1/4'>
-            <ProductCard product={product} />
+            <ProductCard product={product} href={buildProductUrl(product)} />
           </CarouselItem>
         ))}
       </CarouselContent>
@@ -78,4 +79,4 @@ export const ProductsCarouselWithHeader = <T extends BaseProduct = BaseProduct>(
       </Show>
     </BaseCarousel>
   );
-};
+}

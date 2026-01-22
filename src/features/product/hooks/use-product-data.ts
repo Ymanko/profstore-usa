@@ -8,7 +8,7 @@ import {
 import { parseContentBlocks } from '@/shared/utils/parsers/parse-content-blocks';
 
 import type { JudgeMeReview } from '@/shared/actions/get-reviews';
-import type { ProductData } from '@/shared/queries/products/get-product';
+import type { ProductData } from '@/shared/queries/products/types';
 
 export function useProductData(product: ProductData['product'], reviews: JudgeMeReview[]) {
   const images = product?.images.edges.map(edge => edge.node) || [];

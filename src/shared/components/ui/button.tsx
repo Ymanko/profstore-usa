@@ -5,11 +5,11 @@ import * as React from 'react';
 import { cn } from '@/shared/lib/utils';
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 aria-invalid:border-destructive",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all duration-300 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 aria-invalid:border-destructive",
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+        default: 'bg-primary text-primary-foreground hover:bg-primary/70',
         destructive: 'bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20',
         outline: 'border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground ',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
@@ -24,6 +24,10 @@ const buttonVariants = cva(
         'icon-sm': 'size-8',
         'icon-lg': 'size-10',
       },
+      options: {
+        gradient:
+          'text-white bg-[length:200%_100%] bg-[position:0%_50%] bg-gradient-to-r from-[rgba(87,144,64,1)] via-[rgba(58,111,67,1)] to-[rgba(87,144,64,1)] hover:bg-[position:100%_50%] transition-[background-position] duration-300 ease-in-out',
+      },
     },
     defaultVariants: {
       variant: 'default',
@@ -36,6 +40,7 @@ function Button({
   className,
   variant,
   size,
+  options,
   asChild = false,
   ...props
 }: React.ComponentProps<'button'> &
@@ -44,7 +49,7 @@ function Button({
   }) {
   const Comp = asChild ? Slot : 'button';
 
-  return <Comp data-slot='button' className={cn(buttonVariants({ variant, size, className }))} {...props} />;
+  return <Comp data-slot='button' className={cn(buttonVariants({ variant, size, options, className }))} {...props} />;
 }
 
 export { Button, buttonVariants };
