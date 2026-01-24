@@ -6,8 +6,6 @@ import { ProductsCarouselWithHeader } from '@/shared/components/common/products-
 import { Section } from '@/shared/components/common/section';
 import { getRecommendedQueryOptions } from '@/shared/queries/home/reccomended/get-recommended';
 
-import type { FC } from 'react';
-
 export function Recommended() {
   const {
     data: { title, products },

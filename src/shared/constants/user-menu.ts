@@ -7,7 +7,7 @@ export const HEADER_USER_ACTIONS: Array<{
 }> = [
   { href: '/basket', icon: 'shopping-cart', label: 'Basket' },
   { href: '/comparison', icon: 'scales', label: 'Comparison' },
-  { href: '/favorites', icon: 'heart', label: 'Favorites' },
+  { href: '/profile/wishlist', icon: 'heart', label: 'Favorites' },
   { href: '/profile', icon: 'user', label: 'Sign in' },
 ];
 

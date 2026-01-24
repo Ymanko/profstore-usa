@@ -26,6 +26,7 @@ export function Header() {
               className='flex items-center xl:gap-x-7.5'
             />
           </nav>
+
           <SocialLinks className='hidden md:flex' />
           <TrainingLink />
           <Phone className='hidden md:flex md:items-center md:gap-2' />
