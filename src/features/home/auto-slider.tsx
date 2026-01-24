@@ -10,10 +10,10 @@ import { cn } from '@/shared/lib/utils';
 type AutoSliderProps<T> = {
   slides: T[];
   renderSlide: (item: T, index: number) => React.ReactNode;
-  className?: string; // Клас для обгортки самого слайдера
-  dotsContainerClassName?: string; // Клас для позиціонування контейнера точок
-  dotClassName?: string; // Базовий клас для кожної точки
-  activeDotClassName?: string; // Клас для активної точки
+  className?: string;
+  dotsContainerClassName?: string;
+  dotClassName?: string;
+  activeDotClassName?: string;
 };
 
 export function AutoSlider<T>({

@@ -30,11 +30,9 @@ import { getSubcategoryProductsInfiniteQueryOptions } from '@/shared/queries/col
 import { buildProductUrl } from '@/shared/utils/build-product-url';
 
 import type { Filter } from '@/shared/queries/collections/types';
-import type { FC } from 'react';
+import type { HandleProps } from '@/shared/types/common';
 
-export const CollectionProducts: FC<{
-  handle: string;
-}> = ({ handle }) => {
+export function CollectionProducts({ handle }: HandleProps) {
   const isMounted = useIsMounted();
   const { setMode, isGrid, isList } = useLayoutMode('grid');
   const { params, setParams, handlers } = useCollectionParams();
@@ -280,4 +278,4 @@ export const CollectionProducts: FC<{
       <News />
     </>
   );
-};
+}

@@ -8,7 +8,7 @@ export const HEADER_USER_ACTIONS: Array<{
   { href: '/basket', icon: 'shopping-cart', label: 'Basket' },
   { href: '/comparison', icon: 'scales', label: 'Comparison' },
   { href: '/favorites', icon: 'heart', label: 'Favorites' },
-  { href: '/sign-in', icon: 'user', label: 'Sign in' },
+  { href: '/profile', icon: 'user', label: 'Sign in' },
 ];
 
 export const NAV_ITEMS = [

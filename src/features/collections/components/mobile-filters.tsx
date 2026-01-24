@@ -4,9 +4,9 @@ import { useMedia } from 'react-use';
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/shared/components/ui/dropdown-menu';
 
-import type { FC, PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 
-export const MobileFilters: FC<PropsWithChildren> = ({ children }) => {
+export function MobileFilters({ children }: PropsWithChildren) {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const isMobile = useMedia('(max-width: 767px)');
 
@@ -43,4 +43,4 @@ export const MobileFilters: FC<PropsWithChildren> = ({ children }) => {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-};
+}

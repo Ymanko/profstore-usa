@@ -8,7 +8,7 @@ import { getRecommendedQueryOptions } from '@/shared/queries/home/reccomended/ge
 
 import type { FC } from 'react';
 
-export const Recommended: FC = () => {
+export function Recommended() {
   const {
     data: { title, products },
   } = useSuspenseQuery(getRecommendedQueryOptions);
@@ -18,4 +18,4 @@ export const Recommended: FC = () => {
       <ProductsCarouselWithHeader title={title} products={products} />
     </Section>
   );
-};
+}
