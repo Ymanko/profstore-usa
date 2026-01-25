@@ -1,46 +1,21 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { notFound } from 'next/navigation';
 
-import { PageContent } from '@/features/pages/page-content';
+import { ContentPage } from '@/features/warranty-service/content-page';
 import { PageWrapper } from '@/shared/components/common/page-wrapper';
 import { getQueryClient } from '@/shared/lib/tanstack/get-query-client';
-import { getPageQueryOptions, parsePageData } from '@/shared/queries/pages';
+import { getPageQueryOptions } from '@/shared/queries/pages';
 
-import type { Metadata } from 'next';
-
-const PAGE_HANDLE = 'about';
-
-export async function generateMetadata(): Promise<Metadata> {
-  const queryClient = getQueryClient();
-  const rawData = await queryClient.fetchQuery(getPageQueryOptions(PAGE_HANDLE));
-  const pageData = parsePageData(rawData);
-
-  if (!pageData) {
-    return {
-      title: 'Page not found',
-    };
-  }
-
-  return {
-    title: pageData.seo.title || pageData.title,
-    description: pageData.seo.description || undefined,
-  };
-}
+const PAGE_HANDLE = 'about-us';
 
 export default async function AboutPage() {
   const queryClient = getQueryClient();
-  const rawData = await queryClient.fetchQuery(getPageQueryOptions(PAGE_HANDLE));
-  const pageData = parsePageData(rawData);
-
-  if (!pageData) {
-    notFound();
-  }
+  await queryClient.ensureQueryData(getPageQueryOptions(PAGE_HANDLE));
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <PageWrapper>
-        <PageContent title={pageData.title} contentBlocks={pageData.contentBlocks} />
-      </PageWrapper>
-    </HydrationBoundary>
+    <PageWrapper>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <ContentPage handle={PAGE_HANDLE} />
+      </HydrationBoundary>
+    </PageWrapper>
   );
 }

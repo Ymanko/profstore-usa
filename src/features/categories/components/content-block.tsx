@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 
+import { BrandsCarousel } from '@/features/pages/components/brands-carousel';
 import { RichText } from '@/shared/components/common/rich-text';
 import { Show } from '@/shared/components/common/show';
 import { Typography } from '@/shared/components/ui/typography';
@@ -16,6 +17,7 @@ export function ContentBlock({
   poster,
   mediaPosition = 'right',
   richTextClassName,
+  logos,
 }: ContentBlockProps) {
   const isMediaLeft = mediaPosition === 'left';
   const isVideo = Array.isArray(media);
@@ -33,6 +35,11 @@ export function ContentBlock({
 
         <Show when={text}>
           <RichText schema={text || ''} className={cn(richTextClassName)} />
+        </Show>
+
+        {/* Brands Carousel */}
+        <Show when={logos && logos.length > 0}>
+          <BrandsCarousel logos={logos || []} />
         </Show>
       </div>
 

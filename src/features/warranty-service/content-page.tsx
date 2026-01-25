@@ -22,6 +22,7 @@ export function ContentPage({ handle }: HandleProps) {
           media={block.media}
           poster={block.poster}
           mediaPosition={block.mediaPosition}
+          logos={block.logos}
         />
       ))}
     </div>
