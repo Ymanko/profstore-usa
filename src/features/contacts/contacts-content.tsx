@@ -4,6 +4,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { Clock, Mail, MapPin, Phone } from 'lucide-react';
 import dynamic from 'next/dynamic';
 
+import { ContactForm } from '@/features/contacts/contact-form';
 import { NotFound } from '@/features/layout/not-found';
 import { List } from '@/shared/components/common/list';
 import { Show } from '@/shared/components/common/show';
@@ -82,6 +83,12 @@ export function ContactsContent({ handle }: HandleProps) {
           </div>
         </Show>
       </div>
+
+      {/* Divider */}
+      <div className='from-secondary/50 via-secondary to-secondary/50 my-12 h-px bg-gradient-to-r' />
+
+      {/* Contact Form */}
+      <ContactForm />
     </div>
   );
 }
