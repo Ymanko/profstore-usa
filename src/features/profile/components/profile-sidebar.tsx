@@ -17,7 +17,7 @@ export function ProfileSidebar({ className, ...props }: ComponentProps<'nav'>) {
   const pathname = usePathname();
 
   return (
-    <nav className={cn('bg-sidebar rounded-[10px] px-5 shadow-xs md:px-2.75', className)} {...props}>
+    <nav className={cn('bg-sidebar rounded-[10px] px-5 shadow-xs md:px-3 md:py-6', className)} {...props}>
       <ul className='space-y-0'>
         {PROFILE_NAV_ITEMS.map(item => (
           <li key={item.href} className='border-border border-b'>

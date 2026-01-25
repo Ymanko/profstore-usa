@@ -17,7 +17,7 @@ export default function ProfileLayout({ children }: LayoutProps) {
         )}
       >
         <ProfileTitle className='[grid-area:title]' />
-        <ProfileSidebar className='[grid-area:sidebar] md:w-52.5 lg:w-72' />
+        <ProfileSidebar className='h-fit [grid-area:sidebar] md:w-52.5 xl:w-86' />
         <div className='[grid-area:content]'>{children}</div>
       </div>
     </PageWrapper>

@@ -5,6 +5,7 @@ import { Montserrat, Inter } from 'next/font/google';
 import Providers from '@/app/providers';
 import { Footer } from '@/features/layout/footer';
 import { Header } from '@/features/layout/header';
+import { getCustomer } from '@/shared/actions/auth/get-customer';
 import { SvgSprite } from '@/shared/components/common/svg-sprite';
 import { getQueryClient } from '@/shared/lib/tanstack/get-query-client';
 import { cn } from '@/shared/lib/utils';
@@ -42,13 +43,13 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: LayoutProps) {
   const queryClient = getQueryClient();
-  await queryClient.ensureQueryData(getMenuItemsQueryOptions);
+  const [, customer] = await Promise.all([queryClient.ensureQueryData(getMenuItemsQueryOptions), getCustomer()]);
 
   return (
     <html lang='en'>
       <body className={cn('flex min-h-dvh flex-col antialiased', montserratFont.variable, interFont.variable)}>
         <SvgSprite />
-        <Providers>
+        <Providers initialCustomer={customer}>
           <HydrationBoundary state={dehydrate(queryClient)}>
             <Header />
             <main className='flex-1'>{children}</main>
