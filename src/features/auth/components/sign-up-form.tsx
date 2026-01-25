@@ -15,13 +15,10 @@ import { FormField, PasswordField } from '@/shared/components/ui/form';
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
 import { Typography } from '@/shared/components/ui/typography';
-import { useAuth } from '@/shared/providers/auth-provider';
-
 import type { SignUpFormValues } from '@/features/auth/schemas/auth-schemas';
 
 export function SignUpForm() {
   const router = useRouter();
-  const { setIsAuthenticated } = useAuth();
   const [serverError, setServerError] = useState<string | null>(null);
 
   const {
@@ -51,7 +48,6 @@ export function SignUpForm() {
       return { registerResult, loginResult };
     },
     onSuccess: () => {
-      setIsAuthenticated(true);
       router.push('/profile');
       router.refresh();
     },

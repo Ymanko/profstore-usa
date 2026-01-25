@@ -6,7 +6,6 @@ import { useState } from 'react';
 
 import { logout } from '@/shared/actions/auth/logout';
 import { cn } from '@/shared/lib/utils';
-import { useAuth } from '@/shared/providers/auth-provider';
 
 import type { ComponentProps } from 'react';
 
@@ -19,14 +18,11 @@ const PROFILE_NAV_ITEMS = [
 export function ProfileSidebar({ className, ...props }: ComponentProps<'nav'>) {
   const pathname = usePathname();
   const router = useRouter();
-  const { setIsAuthenticated, setCustomer } = useAuth();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
     await logout();
-    setIsAuthenticated(false);
-    setCustomer(null);
     router.push('/');
     router.refresh();
   };

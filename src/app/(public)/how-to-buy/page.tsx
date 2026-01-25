@@ -8,11 +8,11 @@ export const metadata: Metadata = {
   description: 'Some shop',
 };
 
-export default function ContactPage() {
+export default function HowToBuyPage() {
   return (
     <PageWrapper>
       <div className='container'>
-        <Typography variant='h1'>Contact Page</Typography>
+        <Typography variant='h1'>Delivery Page</Typography>
       </div>
     </PageWrapper>
   );

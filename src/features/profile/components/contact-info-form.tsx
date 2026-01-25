@@ -7,18 +7,21 @@ import { z } from 'zod';
 import { Button } from '@/shared/components/ui/button';
 import { FormField } from '@/shared/components/ui/form';
 import { Input } from '@/shared/components/ui/input';
+import { useAuth } from '@/shared/providers/auth-provider';
 
 const ContactInfoFormSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
-  email: z.email(),
-  dateOfBirth: z.string().nonempty('Date of birth is required'),
-  phone: z.string().nonempty('Phone number is required'),
+  email: z.string().email('Invalid email address'),
+  dateOfBirth: z.string().optional(),
+  phone: z.string().optional(),
 });
 
 export type ContactInfoFormType = z.infer<typeof ContactInfoFormSchema>;
 
 export function ContactInfoForm() {
+  const { customer } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -27,6 +30,13 @@ export function ContactInfoForm() {
     resolver: zodResolver(ContactInfoFormSchema),
     mode: 'onTouched',
     reValidateMode: 'onChange',
+    values: {
+      firstName: customer?.firstName || '',
+      lastName: customer?.lastName || '',
+      email: customer?.email || '',
+      phone: customer?.phone || '',
+      dateOfBirth: '',
+    },
   });
 
   function onSubmit(data: ContactInfoFormType) {

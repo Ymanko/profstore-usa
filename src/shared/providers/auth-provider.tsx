@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext } from 'react';
 
 import type { Customer } from '@/shared/queries/customer/types';
 import type { ReactNode } from 'react';
@@ -8,8 +8,6 @@ import type { ReactNode } from 'react';
 interface AuthContextValue {
   isAuthenticated: boolean;
   customer: Customer | null;
-  setCustomer: (customer: Customer | null) => void;
-  setIsAuthenticated: (value: boolean) => void;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -20,11 +18,12 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children, initialCustomer }: AuthProviderProps) {
-  const [customer, setCustomer] = useState<Customer | null>(initialCustomer);
-  const [isAuthenticated, setIsAuthenticated] = useState(!!initialCustomer);
+  // Customer data is managed by the server - use router.refresh() to update
+  const customer = initialCustomer;
+  const isAuthenticated = !!initialCustomer;
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, customer, setCustomer, setIsAuthenticated }}>
+    <AuthContext.Provider value={{ isAuthenticated, customer }}>
       {children}
     </AuthContext.Provider>
   );

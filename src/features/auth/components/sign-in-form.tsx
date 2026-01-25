@@ -13,14 +13,11 @@ import { Button } from '@/shared/components/ui/button';
 import { FormField, PasswordField } from '@/shared/components/ui/form';
 import { Input } from '@/shared/components/ui/input';
 import { Typography } from '@/shared/components/ui/typography';
-import { useAuth } from '@/shared/providers/auth-provider';
-
 import type { SignInFormValues } from '@/features/auth/schemas/auth-schemas';
 
 export function SignInForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { setIsAuthenticated } = useAuth();
   const [serverError, setServerError] = useState<string | null>(null);
 
   const {
@@ -39,7 +36,6 @@ export function SignInForm() {
     onSuccess: result => {
       if (!result.success) throw new Error(result.error || 'Login failed');
 
-      setIsAuthenticated(true);
       const redirectTo = searchParams.get('redirect') || '/profile';
       router.push(redirectTo);
       router.refresh();
