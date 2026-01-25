@@ -22,11 +22,7 @@ export function AuthProvider({ children, initialCustomer }: AuthProviderProps) {
   const customer = initialCustomer;
   const isAuthenticated = !!initialCustomer;
 
-  return (
-    <AuthContext.Provider value={{ isAuthenticated, customer }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ isAuthenticated, customer }}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

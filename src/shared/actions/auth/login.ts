@@ -1,7 +1,7 @@
 'use server';
 
-import { baseClient } from '@/shared/lib/graphql/base-client';
 import { setAuthCookie } from '@/shared/lib/auth/cookies';
+import { baseClient } from '@/shared/lib/graphql/base-client';
 import { CUSTOMER_ACCESS_TOKEN_CREATE } from '@/shared/queries/customer/query';
 
 import type { CustomerAccessTokenCreateData } from '@/shared/queries/customer/types';

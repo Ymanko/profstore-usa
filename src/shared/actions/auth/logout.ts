@@ -1,7 +1,7 @@
 'use server';
 
-import { baseClient } from '@/shared/lib/graphql/base-client';
 import { deleteAuthCookie, getAuthCookie } from '@/shared/lib/auth/cookies';
+import { baseClient } from '@/shared/lib/graphql/base-client';
 import { CUSTOMER_ACCESS_TOKEN_DELETE } from '@/shared/queries/customer/query';
 
 import type { CustomerAccessTokenDeleteData } from '@/shared/queries/customer/types';

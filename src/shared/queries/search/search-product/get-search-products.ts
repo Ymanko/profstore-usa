@@ -13,10 +13,23 @@ export const getSearchProductsInfiniteQueryOptions = (params: SearchProductsPara
   // Serialize collectionHandles for stable queryKey comparison
   // Use '__empty__' when array is empty (category selected but no subcategories)
   const collectionHandlesKey =
-    collectionHandles === undefined ? '__global__' : collectionHandles.length === 0 ? '__empty__' : collectionHandles.join(',');
+    collectionHandles === undefined
+      ? '__global__'
+      : collectionHandles.length === 0
+        ? '__empty__'
+        : collectionHandles.join(',');
 
   return infiniteQueryOptions({
-    queryKey: ['search-products', query, first, collectionHandlesKey, inDescription, searchQuery],
+    queryKey: [
+      'search-products',
+      query,
+      first,
+      collectionHandlesKey,
+      inDescription,
+      searchQuery,
+      collectionHandles,
+      collectionHandles?.length,
+    ],
     queryFn: async ({ pageParam }) => {
       // If collectionHandles is empty array, return empty results
       // This happens when category is selected but has no subcategories

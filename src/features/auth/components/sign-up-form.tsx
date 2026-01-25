@@ -13,8 +13,8 @@ import { register as registerAction } from '@/shared/actions/auth/register';
 import { Button } from '@/shared/components/ui/button';
 import { FormField, PasswordField } from '@/shared/components/ui/form';
 import { Input } from '@/shared/components/ui/input';
-import { Label } from '@/shared/components/ui/label';
 import { Typography } from '@/shared/components/ui/typography';
+
 import type { SignUpFormValues } from '@/features/auth/schemas/auth-schemas';
 
 export function SignUpForm() {
