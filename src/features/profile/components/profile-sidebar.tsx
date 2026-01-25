@@ -1,9 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useState } from 'react';
 
+import { logout } from '@/shared/actions/auth/logout';
 import { cn } from '@/shared/lib/utils';
+import { useAuth } from '@/shared/providers/auth-provider';
 
 import type { ComponentProps } from 'react';
 
@@ -15,6 +18,18 @@ const PROFILE_NAV_ITEMS = [
 
 export function ProfileSidebar({ className, ...props }: ComponentProps<'nav'>) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { setIsAuthenticated, setCustomer } = useAuth();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    await logout();
+    setIsAuthenticated(false);
+    setCustomer(null);
+    router.push('/');
+    router.refresh();
+  };
 
   return (
     <nav className={cn('bg-sidebar rounded-[10px] px-5 shadow-xs md:px-3 md:py-6', className)} {...props}>
@@ -38,7 +53,13 @@ export function ProfileSidebar({ className, ...props }: ComponentProps<'nav'>) {
         </li>
 
         <li>
-          <SidebarButton className='text-muted-foreground hover:text-muted-foreground/60'>Exit</SidebarButton>
+          <SidebarButton
+            className='text-muted-foreground hover:text-muted-foreground/60'
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+          >
+            {isLoggingOut ? 'Exiting...' : 'Exit'}
+          </SidebarButton>
         </li>
       </ul>
     </nav>

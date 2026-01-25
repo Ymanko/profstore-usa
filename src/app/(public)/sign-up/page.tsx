@@ -16,6 +16,7 @@ export default function SignUpPage() {
         <Typography variant='h1' className='mb-8'>
           Create Account
         </Typography>
+
         <SignUpForm />
       </div>
     </PageWrapper>

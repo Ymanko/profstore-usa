@@ -1,4 +1,5 @@
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
+import { notFound } from 'next/navigation';
 
 import { ProductDetails } from '@/features/product/product-details';
 import { getGlobalBenefitsQueryOptions } from '@/shared/queries/global/get-global-benefits';
@@ -14,8 +15,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const { product } = await params;
   const queryClient = new QueryClient();
 
-  await queryClient.ensureQueryData(getProductQueryOptions(product));
+  const productData = await queryClient.fetchQuery(getProductQueryOptions(product));
   await queryClient.ensureQueryData(getGlobalBenefitsQueryOptions);
+
+  if (!productData) {
+    notFound();
+  }
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
