@@ -69,5 +69,19 @@ export const CONTENT_BLOCK_FIELDS_FRAGMENT = `
         }
       }
     }
+    references(first: 20) {
+      edges {
+        node {
+          ... on MediaImage {
+            image {
+              url
+              altText
+              width
+              height
+            }
+          }
+        }
+      }
+    }
   }
 `;

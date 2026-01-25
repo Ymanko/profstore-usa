@@ -8,7 +8,7 @@ import { getPageQueryOptions, parsePageData } from '@/shared/queries/pages';
 
 import type { Metadata } from 'next';
 
-const PAGE_HANDLE = 'delivery';
+const PAGE_HANDLE = 'about';
 
 export async function generateMetadata(): Promise<Metadata> {
   const queryClient = getQueryClient();
@@ -27,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function DeliveryPage() {
+export default async function AboutPage() {
   const queryClient = getQueryClient();
   const rawData = await queryClient.fetchQuery(getPageQueryOptions(PAGE_HANDLE));
   const pageData = parsePageData(rawData);
