@@ -11,24 +11,15 @@ export const getSearchProductsInfiniteQueryOptions = (params: SearchProductsPara
   const searchQuery = buildSearchQuery(params);
 
   // Serialize collectionHandles for stable queryKey comparison
-  // Use different values for undefined (global search) vs [] (no results)
+  // Use '__empty__' when array is empty (category selected but no subcategories)
   const collectionHandlesKey =
-    collectionHandles === undefined ? '__global__' : collectionHandles.join(',') || '__empty__';
+    collectionHandles === undefined ? '__global__' : collectionHandles.length === 0 ? '__empty__' : collectionHandles.join(',');
 
   return infiniteQueryOptions({
-    queryKey: [
-      'search-products',
-      query,
-      first,
-      collectionHandlesKey,
-      inDescription,
-      collectionHandles,
-      collectionHandles?.length,
-      searchQuery,
-    ],
+    queryKey: ['search-products', query, first, collectionHandlesKey, inDescription, searchQuery],
     queryFn: async ({ pageParam }) => {
-      // If collectionHandles is empty array, return empty results without API call
-      // This happens when category is selected but "include subcategories" is OFF
+      // If collectionHandles is empty array, return empty results
+      // This happens when category is selected but has no subcategories
       if (collectionHandles !== undefined && collectionHandles.length === 0) {
         return {
           products: {
@@ -72,14 +63,9 @@ function buildSearchQuery(params: SearchProductsParams): string {
 
   // Collection filter
   // If collectionHandles is undefined - no filter (global search)
-  // If collectionHandles is empty array - filter by non-existent collection (no results)
   // If collectionHandles has items - filter by those collections
-  if (collectionHandles !== undefined) {
-    if (collectionHandles.length === 0) {
-      // Empty array = category selected but "include subcategories" OFF
-      // Use non-existent collection to return no results
-      parts.push('collection:"__no_results__"');
-    } else if (collectionHandles.length === 1) {
+  if (collectionHandles !== undefined && collectionHandles.length > 0) {
+    if (collectionHandles.length === 1) {
       parts.push(`collection:"${collectionHandles[0]}"`);
     } else {
       const collectionFilters = collectionHandles.map(h => `collection:"${h}"`).join(' OR ');

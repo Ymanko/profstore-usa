@@ -18,7 +18,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const productData = await queryClient.fetchQuery(getProductQueryOptions(product));
   await queryClient.ensureQueryData(getGlobalBenefitsQueryOptions);
 
-  if (!productData) {
+  // fetchQuery returns raw data without select transformation
+  // Check for product existence directly
+  if (!productData?.product) {
     notFound();
   }
 

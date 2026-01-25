@@ -8,7 +8,6 @@ import { Checkbox } from '@/shared/components/ui/checkbox';
 import { Input } from '@/shared/components/ui/input';
 import { Label } from '@/shared/components/ui/label';
 import { NativeSelect, NativeSelectOption } from '@/shared/components/ui/native-select';
-import { cn } from '@/shared/lib/utils';
 import { getCategoriesQueryOptions } from '@/shared/queries/home/categories/get-categories';
 import { getCollectionsWithParentQueryOptions } from '@/shared/queries/search/collections-with-parent/get-collections-with-parent';
 
@@ -63,40 +62,19 @@ export function SearchCriteriaForm() {
         </NativeSelect>
       </div>
 
-      <div className='grid gap-4 md:grid-cols-2 md:gap-5 xl:flex xl:flex-wrap'>
-        <div className='flex items-center gap-2'>
-          <Checkbox
-            id='search-description'
-            {...register('inDescription')}
-            onCheckedChange={checked => setValue('inDescription', checked === true)}
-            className='size-5.5'
-          />
-          <Label
-            htmlFor='search-description'
-            className='font-montserrat cursor-pointer text-[17px] leading-4.25 font-light'
-          >
-            Search in product description
-          </Label>
-        </div>
-
-        <div className='flex items-center gap-2'>
-          <Checkbox
-            id='search-subcategories'
-            {...register('includeSubcategories')}
-            onCheckedChange={checked => setValue('includeSubcategories', checked === true)}
-            disabled={!selectedCategory}
-            className='size-5.5'
-          />
-          <Label
-            htmlFor='search-subcategories'
-            className={cn(
-              'font-montserrat cursor-pointer text-[17px] leading-4.25 font-light',
-              !selectedCategory ? 'text-muted-foreground' : '',
-            )}
-          >
-            Search in subcategories
-          </Label>
-        </div>
+      <div className='flex items-center gap-2'>
+        <Checkbox
+          id='search-description'
+          {...register('inDescription')}
+          onCheckedChange={checked => setValue('inDescription', checked === true)}
+          className='size-5.5'
+        />
+        <Label
+          htmlFor='search-description'
+          className='font-montserrat cursor-pointer text-[17px] leading-4.25 font-light'
+        >
+          Search in product description
+        </Label>
       </div>
 
       <Button type='submit' options='gradient' size='lg' className='mt-1 h-13.75 w-40.5 text-xl font-medium md:mt-2.5'>

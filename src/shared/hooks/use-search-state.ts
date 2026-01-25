@@ -21,6 +21,12 @@ export function useSearchState() {
     timeoutRef.current = setTimeout(() => setIsFocus(false), SEARCH_BLUR_DELAY_MS);
   };
 
+  const cancelBlur = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+  };
+
   const toggleCatalog = () => {
     setIsCatalogOpen(prev => !prev);
     setIsFocus(false);
@@ -50,6 +56,7 @@ export function useSearchState() {
     isCatalogOpen,
     handleFocus,
     handleBlur,
+    cancelBlur,
     toggleCatalog,
     closeCatalog,
     closeSearch,

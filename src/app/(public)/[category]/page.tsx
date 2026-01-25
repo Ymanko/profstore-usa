@@ -10,7 +10,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
 
   const categoryData = await queryClient.fetchQuery(getCategoryQueryOptions(category));
 
-  if (!categoryData) {
+  // fetchQuery returns raw data without select transformation
+  // Check for metaobject existence directly
+  if (!categoryData?.metaobject) {
     notFound();
   }
 
