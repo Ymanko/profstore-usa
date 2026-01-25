@@ -64,7 +64,12 @@ export function ProductDetails({ handle }: HandleProps) {
 
         {/* Gallery & Product Info */}
         <div className='grid gap-12.5 md:gap-8.75 xl:grid-cols-16 xl:gap-5'>
-          <Gallery className='xl:col-span-10' items={images} />
+          <Gallery
+            className='xl:col-span-10'
+            items={images}
+            productId={product?.id || ''}
+            variantId={product?.variants?.edges[0]?.node?.id}
+          />
 
           <div className='space-y-6 xl:col-span-6'>
             {/* Price & Benefits */}

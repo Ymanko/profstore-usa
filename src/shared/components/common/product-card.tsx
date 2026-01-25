@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { AddToFavoritesBtn } from '@/shared/components/common/add-to favorites-btn';
 import { Icon } from '@/shared/components/common/icon';
 import { Show } from '@/shared/components/common/show';
+import { WishlistBtn } from '@/shared/components/common/wishlist-btn';
 import { Typography } from '@/shared/components/ui/typography';
 import { cn } from '@/shared/lib/utils';
 import { calculateDiscountPercentage } from '@/shared/utils/calculate-discount-percentage';
@@ -19,20 +19,18 @@ interface ProductCardProps extends ComponentProps<'div'> {
   showDiscountBadge?: boolean;
   href?: LinkProps['href'];
   onAddToCart?: (productId: string) => void;
-  onAddToFavorites?: (productId: string) => void;
 }
 
 export function ProductCard({
+  className,
   product,
   view = 'grid',
   variant = 'default',
   showDiscountBadge = false,
   href = '#',
   onAddToCart,
-  onAddToFavorites,
-  className,
 }: ProductCardProps) {
-  const { id, title, featuredImage, availableForSale, priceRange, compareAtPriceRange } = product;
+  const { id, title, featuredImage, availableForSale, priceRange, compareAtPriceRange, variants } = product;
 
   const currentPrice = parseFloat(compareAtPriceRange?.minVariantPrice.amount);
   const previousPrice = parseFloat(priceRange?.minVariantPrice.amount);
@@ -41,6 +39,9 @@ export function ProductCard({
   const isListView = view === 'list';
   const isDiscountVariant = variant === 'discount';
   const discountPercentage = hasDiscount ? calculateDiscountPercentage(previousPrice, currentPrice) : 0;
+
+  // Get first variant ID for wishlist
+  const firstVariantId = variants?.edges[0]?.node.id;
 
   return (
     <div
@@ -71,10 +72,7 @@ export function ProductCard({
           <DiscountBadge percentage={discountPercentage} />
         </Show>
 
-        <AddToFavoritesBtn
-          className='absolute top-0 right-0 z-20'
-          onClick={() => (onAddToFavorites ? onAddToFavorites(id) : null)}
-        />
+        <WishlistBtn className='absolute top-0 right-0 z-20' productId={id} variantId={firstVariantId} />
       </div>
 
       <div className={cn('flex flex-col', isListView ? 'flex-1' : 'space-y-2.5 border-t pt-3.75')}>

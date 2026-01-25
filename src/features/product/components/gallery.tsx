@@ -11,8 +11,8 @@ import { GalleryItem } from '@/features/product/gallery-item';
 import { useGallery } from '@/features/product/hooks/use-gallery';
 import { useGalleryImages } from '@/features/product/hooks/use-gallery-images';
 import { useZoomImage } from '@/features/product/hooks/use-zoom-image';
-import { AddToFavoritesBtn } from '@/shared/components/common/add-to favorites-btn';
 import { Show } from '@/shared/components/common/show';
+import { WishlistBtn } from '@/shared/components/common/wishlist-btn';
 import { useIsMounted } from '@/shared/hooks/use-is-mounted';
 import { cn } from '@/shared/lib/utils';
 
@@ -21,9 +21,11 @@ import type { ComponentPropsWithoutRef } from 'react';
 
 interface GalleryProps extends ComponentPropsWithoutRef<'div'> {
   items: GalleryImage[];
+  productId: string;
+  variantId?: string;
 }
 
-export function Gallery({ items, className, ...props }: GalleryProps) {
+export function Gallery({ items, productId, variantId, className, ...props }: GalleryProps) {
   const isMobile = useMedia('(max-width: 767px)', false);
   const isMounted = useIsMounted();
   const images = useGalleryImages(items);
@@ -73,7 +75,7 @@ export function Gallery({ items, className, ...props }: GalleryProps) {
         {!isMobile && <ControlButton disabled={!canGoNext} onClick={handleNext} />}
 
         <div className='absolute top-2.5 right-2.5 z-20 grid gap-y-3.5 md:top-5 md:right-5'>
-          <AddToFavoritesBtn className='bg-surface/50' />
+          <WishlistBtn className='bg-surface/50' productId={productId} variantId={variantId} />
           <CompareButton className='bg-surface/50' />
         </div>
       </div>

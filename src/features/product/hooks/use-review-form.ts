@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { createReview } from '@/shared/actions/create-review';
+import { createReview } from '@/shared/actions/review/create-review';
 import { getProductReviewsQueryOptions } from '@/shared/queries/reviews/get-product-reviews';
 
 import type { ProductIdProps } from '@/shared/types/common';

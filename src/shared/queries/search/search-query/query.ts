@@ -25,6 +25,13 @@ export const SEARCH_QUERY = `
               }
             }
           }
+          variants(first: 1) {
+            edges {
+              node {
+                id
+              }
+            }
+          }
           collections(first: 1) {
             edges {
               node {

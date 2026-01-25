@@ -27,6 +27,13 @@ export const GET_POPULAR_PRODUCTS = `
               url
               altText
             }
+            variants(first: 1) {
+              edges {
+                node {
+                  id
+                }
+              }
+            }
             metafields(identifiers: [
               {namespace: "custom", key: "short_description"},
               {namespace: "custom", key: "custom_product_image"}

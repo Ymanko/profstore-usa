@@ -7,7 +7,7 @@ import {
 } from '@/features/product/utils/helpers';
 import { parseContentBlocks } from '@/shared/utils/parsers/parse-content-blocks';
 
-import type { JudgeMeReview } from '@/shared/actions/get-reviews';
+import type { JudgeMeReview } from '@/shared/actions/review/get-reviews';
 import type { ProductData } from '@/shared/queries/products/types';
 
 export function useProductData(product: ProductData['product'], reviews: JudgeMeReview[]) {

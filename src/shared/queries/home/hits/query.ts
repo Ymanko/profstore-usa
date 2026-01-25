@@ -27,6 +27,13 @@ export const GET_SALE_HITS = `
               url
               altText
             }
+            variants(first: 1) {
+              edges {
+                node {
+                  id
+                }
+              }
+            }
             collections(first: 1) {
               edges {
                 node {
