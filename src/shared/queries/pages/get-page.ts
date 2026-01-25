@@ -2,9 +2,11 @@ import { queryOptions } from '@tanstack/react-query';
 
 import { STALE_TIME } from '@/shared/constants/stale-time';
 import { serverGraphqlFetcher } from '@/shared/lib/graphql/server-graphql-fetcher';
+import { parseStoreContact } from '@/shared/queries/contacts/get-store-contact';
 import { GET_PAGE } from '@/shared/queries/pages/query';
 import { parseContentBlocks } from '@/shared/utils/parsers/parse-content-blocks';
 
+import type { StoreContact } from '@/shared/queries/contacts/types';
 import type { PageData } from '@/shared/queries/pages/types';
 import type { ContentBlock } from '@/shared/utils/parsers/parse-content-blocks';
 
@@ -17,6 +19,12 @@ export interface ParsedPageData {
     description: string | null;
   };
   contentBlocks: ContentBlock[];
+  contact: StoreContact | null;
+}
+
+export async function getPage(handle: string): Promise<ParsedPageData | null> {
+  const data = await serverGraphqlFetcher<PageData>(GET_PAGE, { handle }, { tags: ['page', handle] });
+  return parsePageData(data);
 }
 
 export const getPageQueryOptions = (handle: string) => {
@@ -41,10 +49,13 @@ export function parsePageData(data: PageData): ParsedPageData | null {
     return null;
   }
 
-  const { id, title, handle, seo, content } = data.page;
+  const { id, title, handle, seo, content, contact } = data.page;
 
   // Parse content blocks from metafield
-  const contentBlocks = parseContentBlocks(content?.references as any);
+  const contentBlocks = parseContentBlocks(content?.references as Parameters<typeof parseContentBlocks>[0]);
+
+  // Parse contact from metafield
+  const parsedContact = contact?.reference?.fields ? parseStoreContact(contact.reference.fields) : null;
 
   return {
     id,
@@ -55,5 +66,6 @@ export function parsePageData(data: PageData): ParsedPageData | null {
       description: seo?.description || null,
     },
     contentBlocks,
+    contact: parsedContact,
   };
 }

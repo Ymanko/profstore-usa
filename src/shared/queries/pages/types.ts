@@ -1,3 +1,4 @@
+import type { StoreContactField } from '@/shared/queries/contacts/types';
 import type { ContentMetaobjectField } from '@/shared/utils/parsers/parse-content-blocks';
 
 export type PageData = {
@@ -17,6 +18,11 @@ export type PageData = {
             fields?: ContentMetaobjectField[];
           };
         }>;
+      } | null;
+    } | null;
+    contact?: {
+      reference?: {
+        fields: StoreContactField[];
       } | null;
     } | null;
   } | null;

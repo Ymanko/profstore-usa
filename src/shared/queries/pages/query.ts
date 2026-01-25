@@ -21,6 +21,35 @@ export const GET_PAGE = `
           }
         }
       }
+      contact: metafield(namespace: "custom", key: "contact") {
+        reference {
+          ... on Metaobject {
+            fields {
+              key
+              value
+              references(first: 10) {
+                edges {
+                  node {
+                    ... on Metaobject {
+                      fields {
+                        key
+                        value
+                        reference {
+                          ... on MediaImage {
+                            image {
+                              url
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 `;

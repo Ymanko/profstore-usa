@@ -16,7 +16,7 @@ export const NAV_ITEMS = [
   { label: 'Delivery and payment', href: '/delivery' },
   { label: 'Contacts', href: '/contacts' },
   { label: 'About', href: '/about' },
-  { label: 'Producers', href: '/producers' },
-  { label: 'Shares', href: '/shares' },
+  // { label: 'Producers', href: '/producers' },
+  // { label: 'Shares', href: '/shares' },
   { label: 'Warranty and service', href: '/warranty-service' },
 ];
