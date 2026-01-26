@@ -68,7 +68,7 @@ export function MobileMenu({ contact }: MobileMenuProps) {
                   href={social.url || '#'}
                   target='_blank'
                   rel='noopener noreferrer'
-                  className='hover:opacity-80 transition-opacity'
+                  className='transition-opacity hover:opacity-80'
                   title={social.title || undefined}
                 >
                   {social.icon && (
