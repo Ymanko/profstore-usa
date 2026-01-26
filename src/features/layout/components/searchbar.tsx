@@ -40,10 +40,7 @@ export function Searchbar() {
       />
 
       {isFocus && searchValue.trim() && (
-        <CommandList
-          className='border-border animate-in fade-in-0 absolute top-14 left-0 z-50 w-full rounded-lg border bg-white pb-1 shadow-xs duration-150'
-          onMouseDown={e => e.preventDefault()}
-        >
+        <CommandList className='border-border animate-in fade-in-0 absolute top-14 left-0 z-50 w-full rounded-lg border bg-white pb-1 shadow-xs duration-150'>
           <Show
             when={!isLoadingSearch}
             fallback={

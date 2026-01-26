@@ -8,8 +8,6 @@ import { useUpdateEffect } from 'react-use';
 import { Input } from '@/shared/components/ui/input';
 import { Typography } from '@/shared/components/ui/typography';
 
-import type { FC } from 'react';
-
 interface PriceRangeFilterProps {
   baseMin: number;
   baseMax: number;
@@ -18,13 +16,7 @@ interface PriceRangeFilterProps {
   onPriceChange?: (min: number, max: number) => void;
 }
 
-export const PriceRangeFilter: FC<PriceRangeFilterProps> = ({
-  baseMin,
-  baseMax,
-  currentMin,
-  currentMax,
-  onPriceChange,
-}) => {
+export function PriceRangeFilter({ baseMin, baseMax, currentMin, currentMax, onPriceChange }: PriceRangeFilterProps) {
   // Local state to track current values from slider
   const [minValue, setMinValue] = useState(currentMin ?? baseMin);
   const [maxValue, setMaxValue] = useState(currentMax ?? baseMax);
@@ -100,4 +92,4 @@ export const PriceRangeFilter: FC<PriceRangeFilterProps> = ({
       />
     </div>
   );
-};
+}

@@ -4,15 +4,12 @@ import { Star } from 'lucide-react';
 
 import { useReviewForm } from '@/features/product/hooks/use-review-form';
 import { Button } from '@/shared/components/ui/button';
+import { ErrorMessage, FormField } from '@/shared/components/ui/form';
 import { Input } from '@/shared/components/ui/input';
 import { Typography } from '@/shared/components/ui/typography';
 import { cn } from '@/shared/lib/utils';
 
-import type { ReviewFormType } from '@/features/product/hooks/use-review-form';
-import type { TypographyProps } from '@/shared/components/ui/typography';
 import type { ProductIdProps } from '@/shared/types/common';
-import type { PropsWithChildren } from 'react';
-import type { FieldErrors } from 'react-hook-form';
 
 export function ReviewForm({ productId, className }: ProductIdProps & { className?: string }) {
   const { form, hoverRating, setHoverRating, rating, setRating, mutation, onSubmit } = useReviewForm({ productId });
@@ -109,25 +106,4 @@ export function ReviewForm({ productId, className }: ProductIdProps & { classNam
       </div>
     </form>
   );
-}
-
-function FormField({
-  children,
-  label,
-  name,
-  errors,
-}: PropsWithChildren<{ label: string; name: keyof ReviewFormType; errors: FieldErrors<ReviewFormType> }>) {
-  const error = errors[name];
-
-  return (
-    <div className='space-y-2'>
-      <Typography className='text-sm font-medium'>{label}</Typography>
-      {children}
-      {error && <ErrorMessage>{error.message}</ErrorMessage>}
-    </div>
-  );
-}
-
-function ErrorMessage({ ...props }: TypographyProps) {
-  return <Typography className='text-sm text-rose-500' {...props} />;
 }

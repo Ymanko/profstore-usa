@@ -1,15 +1,37 @@
+'use client';
+
 import Link from 'next/link';
 import React from 'react';
 
 import { Icon } from '@/shared/components/common/icon';
 import { List } from '@/shared/components/common/list';
 import { Typography } from '@/shared/components/ui/typography';
-import { HEADER_USER_ACTIONS } from '@/shared/constants/user-menu';
+import { useAuth } from '@/shared/providers/auth-provider';
 
+import type { IconName } from '@/shared/types/icon-names';
 import type { ComponentProps } from 'react';
 
+const BASE_USER_ACTIONS: Array<{
+  href: string;
+  icon: IconName;
+  label: string;
+}> = [
+  { href: '/basket', icon: 'shopping-cart', label: 'Basket' },
+  { href: '/comparison', icon: 'scales', label: 'Comparison' },
+  { href: '/profile/wishlist', icon: 'heart', label: 'Favorites' },
+];
+
 export function UserActions({ className, ...props }: ComponentProps<'div'>) {
-  const firstItem = HEADER_USER_ACTIONS[0];
+  const { isAuthenticated, customer } = useAuth();
+
+  const accountAction = {
+    href: isAuthenticated ? '/profile' : '/sign-in',
+    icon: 'user' as IconName,
+    label: isAuthenticated && customer?.firstName ? customer.firstName : isAuthenticated ? 'Account' : 'Sign in',
+  };
+
+  const userActions = [...BASE_USER_ACTIONS, accountAction];
+  const firstItem = userActions[0];
 
   return (
     <div className={className} {...props}>
@@ -24,7 +46,7 @@ export function UserActions({ className, ...props }: ComponentProps<'div'>) {
       </Link>
 
       <List
-        data={HEADER_USER_ACTIONS}
+        data={userActions}
         renderItem={item => (
           <Link
             href={item.href}

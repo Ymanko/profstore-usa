@@ -28,6 +28,13 @@ export const GET_NEW_PRODUCTS = `
             url
             altText
           }
+          variants(first: 1) {
+            edges {
+              node {
+                id
+              }
+            }
+          }
           collections(first: 1) {
             edges {
               node {

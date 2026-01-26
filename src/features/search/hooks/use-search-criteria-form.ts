@@ -8,7 +8,6 @@ export interface SearchFormValues {
   category: string;
   subcategory: string;
   inDescription: boolean;
-  includeSubcategories: boolean;
 }
 
 export function useSearchCriteriaForm() {
@@ -21,7 +20,6 @@ export function useSearchCriteriaForm() {
       category: params.category,
       subcategory: params.subcategory,
       inDescription: params.inDescription,
-      includeSubcategories: params.includeSubcategories,
     },
   });
 
@@ -39,7 +37,6 @@ export function useSearchCriteriaForm() {
       category: data.category || '',
       subcategory: data.subcategory || '',
       inDescription: data.inDescription,
-      includeSubcategories: data.includeSubcategories,
     });
   };
 

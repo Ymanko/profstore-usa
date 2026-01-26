@@ -1,17 +1,23 @@
 import { Menu } from 'lucide-react';
-import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 import { MobileUserActions } from '@/features/layout/components/mobile-user-actions';
+import { Icon } from '@/shared/components/common/icon';
 import { List } from '@/shared/components/common/list';
-import { Phone } from '@/shared/components/common/phone';
 import { NavLink } from '@/shared/components/links/nav-link';
-import { SocialLinks } from '@/shared/components/links/social-links';
 import { TrainingLink } from '@/shared/components/links/training-link';
 import { Button } from '@/shared/components/ui/button';
 import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/shared/components/ui/sheet';
 import { NAV_ITEMS } from '@/shared/constants/user-menu';
 
-export function MobileMenu() {
+import type { StoreContact } from '@/shared/queries/contacts/types';
+
+interface MobileMenuProps {
+  contact: StoreContact | null;
+}
+
+export function MobileMenu({ contact }: MobileMenuProps) {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -44,9 +50,34 @@ export function MobileMenu() {
             />
           </nav>
 
-          <Phone className='flex items-center justify-center gap-x-3' />
+          {contact?.mainPhone && (
+            <Link
+              href={`tel:${contact.mainPhone.replace(/\D/g, '')}`}
+              className='text-primary-foreground hover:text-accent flex items-center justify-center gap-x-3 text-lg font-semibold transition-colors duration-300'
+            >
+              <Icon name='call-receive' className='size-5' />
+              {contact.mainPhone}
+            </Link>
+          )}
 
-          <SocialLinks className='mx-auto' size={40} />
+          {contact?.socials && contact.socials.length > 0 && (
+            <div className='mx-auto flex items-center gap-3'>
+              {contact.socials.map(social => (
+                <Link
+                  key={social.url}
+                  href={social.url || '#'}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='transition-opacity hover:opacity-80'
+                  title={social.title || undefined}
+                >
+                  {social.icon && (
+                    <Image src={social.icon} alt={social.title || ''} width={40} height={40} className='rounded-full' />
+                  )}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </SheetContent>
     </Sheet>

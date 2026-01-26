@@ -1,17 +1,21 @@
+import type { ImageProps } from '@/shared/types/content-block.types';
+
 export type ContentMetaobjectField = {
   key: string;
   value?: string | null;
   type: string;
   reference?: {
-    image?: {
-      url: string;
-      altText?: string | null;
-      width?: number | null;
-      height?: number | null;
-    } | null;
+    image?: ImageProps | null;
     sources?: Array<{
       url: string;
       mimeType: string;
+    }>;
+  } | null;
+  references?: {
+    edges: Array<{
+      node: {
+        image?: ImageProps | null;
+      };
     }>;
   } | null;
 };
@@ -20,18 +24,24 @@ export type ContentBlock = {
   id: string;
   title?: string | null;
   text?: string | null;
-  media?:
-    | { url: string; altText?: string | null; width?: number | null; height?: number | null }
-    | Array<{ url: string; mimeType: string }>
-    | null;
-  poster?: { url: string; altText?: string | null; width?: number | null; height?: number | null } | null;
+  media?: ImageProps | Array<{ url: string; mimeType: string }> | null;
+  poster?: ImageProps | null;
   mediaPosition?: string | null;
+  logos?: ImageProps[] | null;
 };
 
 export function parseContentMetaobject(fields: ContentMetaobjectField[]): Omit<ContentBlock, 'id'> {
   const getFieldValue = (key: string) => fields.find(f => f.key === key)?.value ?? null;
   const getFieldImage = (key: string) => fields.find(f => f.key === key)?.reference?.image ?? null;
   const getFieldVideo = (key: string) => fields.find(f => f.key === key)?.reference?.sources ?? null;
+  const getFieldImages = (key: string): ImageProps[] | null => {
+    const field = fields.find(f => f.key === key);
+    if (!field?.references?.edges?.length) return null;
+
+    return field.references.edges
+      .map(edge => edge.node.image)
+      .filter((img): img is ImageProps => img !== null && img !== undefined);
+  };
 
   return {
     title: getFieldValue('title'),
@@ -39,6 +49,7 @@ export function parseContentMetaobject(fields: ContentMetaobjectField[]): Omit<C
     media: getFieldImage('media') || getFieldVideo('media'),
     poster: getFieldImage('poster'),
     mediaPosition: getFieldValue('media_position'),
+    logos: getFieldImages('logos'),
   };
 }
 

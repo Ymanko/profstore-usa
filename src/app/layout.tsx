@@ -5,10 +5,12 @@ import { Montserrat, Inter } from 'next/font/google';
 import Providers from '@/app/providers';
 import { Footer } from '@/features/layout/footer';
 import { Header } from '@/features/layout/header';
+import { getCustomer } from '@/shared/actions/auth/get-customer';
 import { SvgSprite } from '@/shared/components/common/svg-sprite';
 import { getQueryClient } from '@/shared/lib/tanstack/get-query-client';
 import { cn } from '@/shared/lib/utils';
 import { getMenuItemsQueryOptions } from '@/shared/queries/menu/get-menu-items';
+import { getPage } from '@/shared/queries/pages/get-page';
 
 import type { LayoutProps } from '@/shared/types/common';
 import type { Metadata } from 'next';
@@ -42,17 +44,21 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: LayoutProps) {
   const queryClient = getQueryClient();
-  await queryClient.ensureQueryData(getMenuItemsQueryOptions);
+  const [, customer, contactPage] = await Promise.all([
+    queryClient.ensureQueryData(getMenuItemsQueryOptions),
+    getCustomer(),
+    getPage('contact'),
+  ]);
 
   return (
     <html lang='en'>
       <body className={cn('flex min-h-dvh flex-col antialiased', montserratFont.variable, interFont.variable)}>
         <SvgSprite />
-        <Providers>
+        <Providers initialCustomer={customer}>
           <HydrationBoundary state={dehydrate(queryClient)}>
-            <Header />
+            <Header contact={contactPage?.contact ?? null} />
             <main className='flex-1'>{children}</main>
-            <Footer />
+            <Footer contact={contactPage?.contact ?? null} />
           </HydrationBoundary>
         </Providers>
       </body>

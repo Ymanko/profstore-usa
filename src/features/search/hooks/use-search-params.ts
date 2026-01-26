@@ -5,7 +5,6 @@ export type SearchParams = {
   category: string;
   subcategory: string;
   inDescription: boolean;
-  includeSubcategories: boolean;
 };
 
 export function useSearchParams() {
@@ -15,7 +14,6 @@ export function useSearchParams() {
       category: parseAsString.withDefault(''),
       subcategory: parseAsString.withDefault(''),
       inDescription: parseAsBoolean.withDefault(false),
-      includeSubcategories: parseAsBoolean.withDefault(false),
     },
     {
       history: 'push',

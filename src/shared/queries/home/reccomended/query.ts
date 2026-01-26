@@ -27,6 +27,13 @@ export const GET_RECOMMENDED = `
               url
               altText
             }
+            variants(first: 1) {
+              edges {
+                node {
+                  id
+                }
+              }
+            }
           }
         }
       }

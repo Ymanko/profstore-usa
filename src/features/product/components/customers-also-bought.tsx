@@ -30,11 +30,6 @@ export function CustomersAlsoBought({ productId }: ProductIdProps) {
     | undefined;
   const isLoading = isLoadingComplementary || (isLoadingCollection && !complementaryProducts?.length);
 
-  // Debug
-  console.log('CustomersAlsoBought - complementary:', complementaryProducts);
-  console.log('CustomersAlsoBought - fallback (collection):', collectionProducts);
-  console.log('CustomersAlsoBought - using:', products);
-
   if (isLoading) return <ProductCardsSkeleton />;
   if (!products || products.length === 0) return null;
 

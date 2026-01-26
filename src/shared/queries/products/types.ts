@@ -33,6 +33,15 @@ export interface BaseProduct {
       currencyCode: string;
     };
   };
+  // Variants for wishlist and cart functionality
+  variants?: {
+    edges: Array<{
+      node: {
+        id: string;
+        title?: string;
+      };
+    }>;
+  };
   // Optional collection info for building product URL
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   collections?: any;

@@ -24,6 +24,13 @@ export const SEARCH_PRODUCTS_QUERY = `
               currencyCode
             }
           }
+          variants(first: 1) {
+            edges {
+              node {
+                id
+              }
+            }
+          }
           collections(first: 1) {
             edges {
               node {

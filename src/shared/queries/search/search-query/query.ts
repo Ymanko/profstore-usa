@@ -1,11 +1,12 @@
 export const SEARCH_QUERY = `
   query Search($query: String!) {
-    products(first: 3, query: $query) {
+    products(first: 5, query: $query) {
       edges {
         node {
           id
           title
           handle
+          availableForSale
           priceRange {
             minVariantPrice {
               amount
@@ -21,6 +22,13 @@ export const SEARCH_QUERY = `
               node {
                 url
                 altText
+              }
+            }
+          }
+          variants(first: 1) {
+            edges {
+              node {
+                id
               }
             }
           }
