@@ -43,14 +43,16 @@ export const getHomePageContentQueryOptions = queryOptions({
         case 'banner_slides':
           if (field.references?.edges) {
             result.bannerSlides = field.references.edges.map((edge: MetaobjectEdge) => {
+              console.log('RAW edge.node.fields:', edge.node.fields);
               const slideFields = parseMetaobjectFields(edge.node.fields);
+              console.log('PARSED slideFields:', slideFields);
               return {
                 image: (slideFields.image as string) || '',
                 imageAlt: (slideFields.imageAlt as string) || (slideFields.title as string) || '',
                 title: (slideFields.title as string) || '',
                 subtitle: (slideFields.subtitle as string) || '',
                 buttonText: (slideFields.button_text as string) || '',
-                buttonLink: (slideFields.button_link as string) || '',
+                buttonLink: (slideFields.button_url as string) || (slideFields.button_link as string) || '',
               };
             });
           }
