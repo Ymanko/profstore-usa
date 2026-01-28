@@ -28,7 +28,7 @@ export function FeatureSection({ title, items, className, cardClassName }: Featu
         data={items}
         renderItem={item => <FeatureCard item={item} className={cardClassName} />}
         keyExtractor={(_, index) => String(index)}
-        className={cn('grid gap-6 md:grid-cols-2 lg:grid-cols-3', className)}
+        className={cn('grid gap-6 md:grid-cols-2', className)}
       />
     </section>
   );
@@ -41,22 +41,20 @@ interface FeatureCardProps {
 
 export function FeatureCard({ item, className }: FeatureCardProps) {
   return (
-    <div className={cn('flex items-center gap-5', className)}>
+    <div className={cn('flex h-full items-center gap-5', className)}>
       <Show when={item.icon}>
-        <div className='flex justify-center'>
-          <Image
-            src={item.icon!}
-            alt={item.title || ''}
-            width={60}
-            height={60}
-            className='object-contain object-center'
-          />
-        </div>
+        <Image
+          src={item.icon!}
+          alt={item.title || ''}
+          width={60}
+          height={60}
+          className='shrink-0 object-contain object-center'
+        />
       </Show>
 
       <div className='space-y-2'>
         <Show when={item.title}>
-          <Typography variant='h3' className='text-xl font-bold'>
+          <Typography variant='h3' className='font-bold text-wrap'>
             {item.title}
           </Typography>
         </Show>
@@ -87,7 +85,7 @@ export function FaqSection({ title, items }: FaqSectionProps) {
         <Accordion type='single' collapsible defaultValue='item-0' className='space-y-2'>
           {items.map((item, index) => (
             <AccordionItem key={index} value={`item-${index}`}>
-              <AccordionTrigger>{item.question}</AccordionTrigger>
+              <AccordionTrigger className='items-center'>{item.question}</AccordionTrigger>
               <AccordionContent>
                 <Typography>{item.answer}</Typography>
               </AccordionContent>

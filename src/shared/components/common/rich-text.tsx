@@ -15,7 +15,7 @@ export function RichText({ schema, className, ...props }: RichTextSchema) {
   return (
     <div
       className={cn(
-        'prose prose-base text-foreground max-w-none',
+        'prose prose-base text-foreground max-w-none overflow-hidden wrap-break-word',
         // Text styles
         'prose-h2:mt-0',
         'prose-h3:mt-0 prose-h3:font-bold',

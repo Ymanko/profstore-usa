@@ -26,7 +26,7 @@ export function TrainingContent({ handle }: HandleProps) {
   const { training } = page;
 
   return (
-    <div className='container space-y-16 py-8'>
+    <div className='container space-y-10 pt-3 pb-25 md:pt-4'>
       {/* Hero / Content Blocks */}
       <Show when={training.contentBlocks?.length > 0}>
         <div className='space-y-12'>
@@ -46,33 +46,34 @@ export function TrainingContent({ handle }: HandleProps) {
 
       {/* How It Works Section */}
       <Show when={training.howItWorks?.length > 0}>
-        <FeatureSection title={training.howItWorksTitle} items={training.howItWorks} />
+        <FeatureSection className='md:grid-cols-3' title={training.howItWorksTitle} items={training.howItWorks} />
       </Show>
 
       {/* Modules Section */}
       <Show when={training.modules?.length > 0}>
         <FeatureSection
-          className='grid-cols-1 md:grid-cols-2 lg:grid-cols-2'
           cardClassName='bg-secondary/15 rounded-lg p-5 xl:px-7.5 xl:py-8'
           title={training.modulesTitle}
           items={training.modules}
         />
       </Show>
 
-      {/* Logos Section */}
+      {/* Logos Section - full width background */}
       <Show when={training.logos?.length > 0}>
-        <div className='space-y-12'>
-          {training.logos.map(block => (
-            <ContentBlock
-              key={block.id}
-              title={block.title}
-              text={block.text}
-              media={block.media}
-              poster={block.poster}
-              mediaPosition={block.mediaPosition}
-              logos={block.logos}
-            />
-          ))}
+        <div className='bg-brand-section-bg relative left-1/2 w-screen -translate-x-1/2 py-10'>
+          <div className='container space-y-5'>
+            {training.logos.map(block => (
+              <ContentBlock
+                key={block.id}
+                title={block.title}
+                text={block.text}
+                media={block.media}
+                poster={block.poster}
+                mediaPosition={block.mediaPosition}
+                logos={block.logos}
+              />
+            ))}
+          </div>
         </div>
       </Show>
 
