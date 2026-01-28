@@ -5,6 +5,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { ContentBlock } from '@/features/categories/components/content-block';
 import { NotFound } from '@/features/layout/not-found';
 import { FaqSection, FeatureSection } from '@/features/training/components/exceptions';
+import { VideoPlayer } from '@/features/training/components/video-player';
 import { Show } from '@/shared/components/common/show';
 import { Typography } from '@/shared/components/ui/typography';
 import { getTrainingPageQueryOptions } from '@/shared/queries/pages';
@@ -77,22 +78,7 @@ export function TrainingContent({ handle }: HandleProps) {
 
       {/* Video Section */}
       <Show when={training.video}>
-        <section className='space-y-6'>
-          <div className='relative mx-auto max-w-5xl'>
-            <video className='h-auto w-full rounded-lg' controls poster={training.videoPoster || undefined}>
-              <source src={training.video!} type='video/mp4' />
-              Your browser does not support the video tag.
-            </video>
-
-            <Show when={training.videoTitle}>
-              <div className='absolute bottom-10 w-full bg-black/30 px-4 py-5'>
-                <Typography variant='h2' className='text-center text-2xl text-wrap text-white'>
-                  {training.videoTitle}
-                </Typography>
-              </div>
-            </Show>
-          </div>
-        </section>
+        <VideoPlayer src={training.video!} poster={training.videoPoster} title={training.videoTitle} />
       </Show>
 
       {/* FAQ Section */}
