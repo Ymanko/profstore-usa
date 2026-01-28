@@ -1,11 +1,15 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { updateCustomer } from '@/shared/actions/auth/update-customer';
+import { verifyPassword } from '@/shared/actions/auth/verify-password';
 import { Button } from '@/shared/components/ui/button';
 import { PasswordField } from '@/shared/components/ui/form';
+import { useAuth } from '@/shared/providers/auth-provider';
 
 const ChangePasswordFormSchema = z
   .object({
@@ -26,9 +30,13 @@ const ChangePasswordFormSchema = z
 export type ChangePasswordFormType = z.infer<typeof ChangePasswordFormSchema>;
 
 export function ChangePasswordForm() {
+  const { customer } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, touchedFields },
   } = useForm<ChangePasswordFormType>({
     resolver: zodResolver(ChangePasswordFormSchema),
@@ -37,9 +45,43 @@ export function ChangePasswordForm() {
     criteriaMode: 'all',
   });
 
-  function onSubmit(data: ChangePasswordFormType) {
-    // TODO: call customerUpdate server action with password
-    console.log('Change password:', data);
+  async function onSubmit(data: ChangePasswordFormType) {
+    if (!customer?.email) {
+      alert('Unable to verify identity. Please try logging in again.');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // Verify old password first
+      const isValidPassword = await verifyPassword({
+        email: customer.email,
+        password: data.oldPassword,
+      });
+
+      if (!isValidPassword) {
+        alert('Current password is incorrect');
+        setIsLoading(false);
+        return;
+      }
+
+      // Update to new password
+      const result = await updateCustomer({
+        password: data.newPassword,
+      });
+
+      if (result.success) {
+        alert('Password changed successfully!');
+        reset();
+      } else {
+        alert(result.error || 'Failed to change password');
+      }
+    } catch {
+      alert('An unexpected error occurred');
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -67,8 +109,8 @@ export function ChangePasswordForm() {
           isTouched={touchedFields.confirmPassword}
         />
 
-        <Button type='submit' options='gradient' size='lg' className='mt-8 px-10'>
-          Change password
+        <Button type='submit' options='gradient' size='lg' className='mt-8 px-10' disabled={isLoading}>
+          {isLoading ? 'Changing...' : 'Change password'}
         </Button>
       </div>
     </form>
