@@ -85,7 +85,7 @@ export function ContactsContent({ handle }: HandleProps) {
       </div>
 
       {/* Divider */}
-      <div className='from-secondary/50 via-secondary to-secondary/50 my-12 h-px bg-gradient-to-r' />
+      <div className='md:bg-accent my-6 h-0.75 md:my-12' />
 
       {/* Contact Form */}
       <ContactForm />

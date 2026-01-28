@@ -49,7 +49,7 @@ export function ContactForm() {
         Contact form
       </Typography>
 
-      <div className='grid gap-6 lg:grid-cols-2'>
+      <div className='grid gap-6 md:grid-cols-2'>
         <div className='space-y-5'>
           <FormField label='Your Name' name='name' errors={errors}>
             <Input {...register('name')} placeholder='Your Name' />
@@ -60,19 +60,19 @@ export function ContactForm() {
           </FormField>
         </div>
 
-        <FormField label='Message' name='message' errors={errors}>
-          <textarea
-            {...register('message')}
-            placeholder='Message'
-            rows={5}
-            className={cn(
-              'border-input w-full rounded-md border bg-transparent px-3 py-2 text-base outline-none md:text-sm',
-              'placeholder:text-muted-foreground shadow-xs transition-[color,box-shadow]',
-              'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
-              'h-full min-h-32 resize-none',
-            )}
-          />
-        </FormField>
+        <div>
+          <FormField label='Message' name='message' errors={errors}>
+            <textarea
+              {...register('message')}
+              placeholder='Message'
+              className={cn(
+                'border-input h-full min-h-29.5 w-full rounded-md border bg-transparent px-3 py-2 text-base outline-none',
+                'placeholder:text-muted-foreground shadow-xs transition-[color,box-shadow]',
+                'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
+              )}
+            />
+          </FormField>
+        </div>
       </div>
 
       <div className='mt-8 flex justify-center'>
