@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { sendContactForm } from '@/shared/actions/contact/send-contact-form';
@@ -16,9 +16,9 @@ import { cn } from '@/shared/lib/utils';
 
 const contactFormSchema = z.object({
   name: z.string().min(1, 'Name is required'),
-  email: z.string().email('Invalid email address'),
+  email: z.email('Invalid email address'),
   phone: z.string().optional(),
-  subject: z.string().optional(),
+  subject: z.string().min(1, 'Subject is required'),
   message: z.string().min(10, 'Message must be at least 10 characters'),
   privacyPolicy: z.boolean().refine(val => val === true, 'You must agree to the Privacy Policy'),
 });
@@ -32,8 +32,7 @@ export function ContactForm() {
     register,
     handleSubmit,
     reset,
-    setValue,
-    watch,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
@@ -41,8 +40,6 @@ export function ContactForm() {
       privacyPolicy: false,
     },
   });
-
-  const privacyPolicyChecked = watch('privacyPolicy');
 
   const onSubmit = async (data: ContactFormValues) => {
     const result = await sendContactForm({
@@ -111,19 +108,21 @@ export function ContactForm() {
       </div>
 
       <div className='mt-6'>
-        <label className='flex cursor-pointer items-start gap-3'>
-          <Checkbox
-            checked={privacyPolicyChecked}
-            onCheckedChange={checked => setValue('privacyPolicy', checked === true, { shouldValidate: true })}
-            className='mt-0.5'
-          />
-          <span className='text-muted-foreground text-sm'>
-            I agree to the{' '}
-            <Link href='/privacy-policy' className='text-primary underline hover:no-underline'>
-              Privacy Policy
-            </Link>
-          </span>
-        </label>
+        <Controller
+          name='privacyPolicy'
+          control={control}
+          render={({ field }) => (
+            <label className='flex cursor-pointer items-start gap-3'>
+              <Checkbox checked={field.value} onCheckedChange={field.onChange} className='mt-0.5' />
+              <span className='text-muted-foreground text-sm'>
+                I agree to the{' '}
+                <Link href='/privacy-policy' className='text-primary underline hover:no-underline'>
+                  Privacy Policy
+                </Link>
+              </span>
+            </label>
+          )}
+        />
         {errors.privacyPolicy && <p className='text-destructive mt-1 text-sm'>{errors.privacyPolicy.message}</p>}
       </div>
 

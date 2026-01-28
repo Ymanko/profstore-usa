@@ -68,7 +68,10 @@ function SidebarButton({ className, ...props }: ComponentProps<'button'>) {
   return (
     <button
       type='button'
-      className={cn('block w-full py-4 text-left text-base transition-colors disabled:cursor-not-allowed disabled:opacity-50', className)}
+      className={cn(
+        'block w-full py-4 text-left text-base transition-colors disabled:cursor-not-allowed disabled:opacity-50',
+        className,
+      )}
       {...props}
     />
   );

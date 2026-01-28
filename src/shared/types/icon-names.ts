@@ -22,4 +22,4 @@ export type IconName =
   | 'socials-viber'
   | 'user'
   | 'vector'
-  | 'view-grid'
+  | 'view-grid';
