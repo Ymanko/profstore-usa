@@ -19,6 +19,7 @@ interface ProductCardProps extends ComponentProps<'div'> {
   showDiscountBadge?: boolean;
   href?: LinkProps['href'];
   onAddToCart?: (productId: string) => void;
+  onRemove?: () => void;
 }
 
 export function ProductCard({
@@ -29,6 +30,7 @@ export function ProductCard({
   showDiscountBadge = false,
   href = '#',
   onAddToCart,
+  onRemove,
 }: ProductCardProps) {
   const { id, title, featuredImage, availableForSale, priceRange, compareAtPriceRange, variants } = product;
 
@@ -72,7 +74,9 @@ export function ProductCard({
           <DiscountBadge percentage={discountPercentage} />
         </Show>
 
-        <WishlistBtn className='absolute top-0 right-0 z-20' productId={id} variantId={firstVariantId} />
+        <Show when={onRemove} fallback={<WishlistBtn className='absolute top-0 right-0 z-20' productId={id} variantId={firstVariantId} />}>
+          <RemoveButton onClick={onRemove} />
+        </Show>
       </div>
 
       <div className={cn('flex flex-col', isListView ? 'flex-1' : 'space-y-2.5 border-t pt-3.75')}>
@@ -178,5 +182,18 @@ function AvailabilityIndicator({ isAvailable }: { isAvailable: boolean }) {
         {isAvailable ? 'In stock' : 'Out of stock'}
       </Typography>
     </div>
+  );
+}
+
+function RemoveButton({ onClick }: { onClick?: () => void }) {
+  return (
+    <button
+      type='button'
+      onClick={onClick}
+      className='absolute top-0 right-0 z-20 flex size-10 items-center justify-center rounded-lg text-rose-500 transition-colors duration-200 hover:text-rose-700'
+      aria-label='Remove from wishlist'
+    >
+      <Icon name='close' width={18} height={18} />
+    </button>
   );
 }
