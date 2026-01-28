@@ -74,7 +74,10 @@ export function ProductCard({
           <DiscountBadge percentage={discountPercentage} />
         </Show>
 
-        <Show when={onRemove} fallback={<WishlistBtn className='absolute top-0 right-0 z-20' productId={id} variantId={firstVariantId} />}>
+        <Show
+          when={onRemove}
+          fallback={<WishlistBtn className='absolute top-0 right-0 z-20' productId={id} variantId={firstVariantId} />}
+        >
           <RemoveButton onClick={onRemove} />
         </Show>
       </div>

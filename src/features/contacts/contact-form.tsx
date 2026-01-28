@@ -1,10 +1,14 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import Link from 'next/link';
+import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { sendContactForm } from '@/shared/actions/contact/send-contact-form';
 import { Button } from '@/shared/components/ui/button';
+import { Checkbox } from '@/shared/components/ui/checkbox';
 import { FormField } from '@/shared/components/ui/form';
 import { Input } from '@/shared/components/ui/input';
 import { Typography } from '@/shared/components/ui/typography';
@@ -12,29 +16,49 @@ import { cn } from '@/shared/lib/utils';
 
 const contactFormSchema = z.object({
   name: z.string().min(1, 'Name is required'),
-  email: z.string().email('Invalid email address'),
+  email: z.email('Invalid email address'),
+  phone: z.string().optional(),
+  subject: z.string().min(1, 'Subject is required'),
   message: z.string().min(10, 'Message must be at least 10 characters'),
+  privacyPolicy: z.boolean().refine(val => val === true, 'You must agree to the Privacy Policy'),
 });
 
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
 export function ContactForm() {
+  const [isSuccess, setIsSuccess] = useState(false);
+
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    control,
+    formState: { errors, isSubmitting },
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
+    defaultValues: {
+      privacyPolicy: false,
+    },
   });
 
   const onSubmit = async (data: ContactFormValues) => {
-    // TODO: Implement contact form submission
-    console.log('Contact form:', data);
-    reset();
+    const result = await sendContactForm({
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      subject: data.subject,
+      message: data.message,
+    });
+
+    if (result.success) {
+      setIsSuccess(true);
+      reset();
+    } else {
+      alert(result.error || 'Failed to send message');
+    }
   };
 
-  if (isSubmitSuccessful) {
+  if (isSuccess) {
     return (
       <div className='rounded-xl border p-6 text-center'>
         <Typography className='text-secondary text-lg font-bold'>Thank you for your message!</Typography>
@@ -55,8 +79,16 @@ export function ContactForm() {
             <Input {...register('name')} placeholder='Your Name' />
           </FormField>
 
-          <FormField label='E-Mail for communication' name='email' errors={errors}>
+          <FormField label='E-Mail' name='email' errors={errors}>
             <Input {...register('email')} type='email' placeholder='E-Mail' />
+          </FormField>
+
+          <FormField label='Phone' name='phone' errors={errors}>
+            <Input {...register('phone')} type='tel' placeholder='+10000000000' />
+          </FormField>
+
+          <FormField label='Subject' name='subject' errors={errors}>
+            <Input {...register('subject')} placeholder='Subject' />
           </FormField>
         </div>
 
@@ -73,6 +105,25 @@ export function ContactForm() {
             />
           </FormField>
         </div>
+      </div>
+
+      <div className='mt-6'>
+        <Controller
+          name='privacyPolicy'
+          control={control}
+          render={({ field }) => (
+            <label className='flex cursor-pointer items-start gap-3'>
+              <Checkbox checked={field.value} onCheckedChange={field.onChange} className='mt-0.5' />
+              <span className='text-muted-foreground text-sm'>
+                I agree to the{' '}
+                <Link href='/privacy-policy' className='text-primary underline hover:no-underline'>
+                  Privacy Policy
+                </Link>
+              </span>
+            </label>
+          )}
+        />
+        {errors.privacyPolicy && <p className='text-destructive mt-1 text-sm'>{errors.privacyPolicy.message}</p>}
       </div>
 
       <div className='mt-8 flex justify-center'>

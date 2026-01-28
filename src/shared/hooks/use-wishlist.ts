@@ -16,10 +16,7 @@ export function useWishlist() {
   const wishlistProductIds = useMemo(() => new Set(wishlistItems.map(item => item.id)), [wishlistItems]);
 
   // Create a Set of variant IDs for O(1) lookup
-  const wishlistVariantIds = useMemo(
-    () => new Set(wishlistItems.map(item => item.variant.id)),
-    [wishlistItems],
-  );
+  const wishlistVariantIds = useMemo(() => new Set(wishlistItems.map(item => item.variant.id)), [wishlistItems]);
 
   const isInWishlist = (productId: string) => {
     // Check by numeric ID (iWish format)
