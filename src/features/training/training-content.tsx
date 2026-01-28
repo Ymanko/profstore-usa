@@ -26,7 +26,7 @@ export function TrainingContent({ handle }: HandleProps) {
   const { training } = page;
 
   return (
-    <div className='container space-y-10 pt-3 pb-25 md:pt-4'>
+    <div className='container space-y-10 pt-3 md:pt-4'>
       {/* Hero / Content Blocks */}
       <Show when={training.contentBlocks?.length > 0}>
         <div className='space-y-12'>

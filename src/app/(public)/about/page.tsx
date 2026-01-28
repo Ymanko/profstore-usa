@@ -12,7 +12,7 @@ export default async function AboutPage() {
   await queryClient.ensureQueryData(getPageQueryOptions(PAGE_HANDLE));
 
   return (
-    <PageWrapper>
+    <PageWrapper className='pb-25 xl:pb-50'>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <ContentPage handle={PAGE_HANDLE} />
       </HydrationBoundary>
