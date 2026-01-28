@@ -12,7 +12,7 @@ export default async function TrainingPage() {
   await queryClient.ensureQueryData(getTrainingPageQueryOptions(HANDLE));
 
   return (
-    <PageWrapper>
+    <PageWrapper className='pb-25 xl:pb-50'>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <TrainingContent handle={HANDLE} />
       </HydrationBoundary>

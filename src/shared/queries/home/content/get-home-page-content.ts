@@ -44,13 +44,14 @@ export const getHomePageContentQueryOptions = queryOptions({
           if (field.references?.edges) {
             result.bannerSlides = field.references.edges.map((edge: MetaobjectEdge) => {
               const slideFields = parseMetaobjectFields(edge.node.fields);
+
               return {
                 image: (slideFields.image as string) || '',
                 imageAlt: (slideFields.imageAlt as string) || (slideFields.title as string) || '',
                 title: (slideFields.title as string) || '',
                 subtitle: (slideFields.subtitle as string) || '',
                 buttonText: (slideFields.button_text as string) || '',
-                buttonLink: (slideFields.button_link as string) || '',
+                buttonLink: (slideFields.button_url as string) || (slideFields.button_link as string) || '',
               };
             });
           }

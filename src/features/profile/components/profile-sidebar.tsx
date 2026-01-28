@@ -45,7 +45,9 @@ export function ProfileSidebar({ className, ...props }: ComponentProps<'nav'>) {
         ))}
 
         <li className='border-border border-b'>
-          <SidebarButton className='text-destructive hover:text-destructive/60'>Delete my account</SidebarButton>
+          <SidebarButton className='text-destructive hover:text-destructive/60' disabled>
+            Delete my account
+          </SidebarButton>
         </li>
 
         <li>
@@ -66,7 +68,7 @@ function SidebarButton({ className, ...props }: ComponentProps<'button'>) {
   return (
     <button
       type='button'
-      className={cn('block w-full py-4 text-left text-base transition-colors', className)}
+      className={cn('block w-full py-4 text-left text-base transition-colors disabled:cursor-not-allowed disabled:opacity-50', className)}
       {...props}
     />
   );

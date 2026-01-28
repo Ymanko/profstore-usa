@@ -7,7 +7,7 @@ import type { LayoutProps } from '@/shared/types/common';
 
 export default function ProfileLayout({ children }: LayoutProps) {
   return (
-    <PageWrapper>
+    <PageWrapper className='pb-25 xl:pb-50'>
       <div
         className={cn(
           'container grid gap-5 md:grid-cols-[auto_1fr] md:gap-5.5',

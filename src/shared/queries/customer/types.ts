@@ -73,3 +73,28 @@ export interface Customer {
 export interface CustomerData {
   customer: Customer | null;
 }
+
+export interface CustomerResetData {
+  customerReset: {
+    customer: {
+      id: string;
+      email: string;
+    } | null;
+    customerAccessToken: CustomerAccessToken | null;
+    customerUserErrors: CustomerUserError[];
+  };
+}
+
+export interface CustomerUpdateData {
+  customerUpdate: {
+    customer: {
+      id: string;
+      email: string | null;
+      firstName: string | null;
+      lastName: string | null;
+      phone: string | null;
+    } | null;
+    customerAccessToken: CustomerAccessToken | null;
+    customerUserErrors: CustomerUserError[];
+  };
+}

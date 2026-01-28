@@ -11,6 +11,7 @@ export type IconName =
   | 'close'
   | 'equipment'
   | 'heart'
+  | 'layer'
   | 'menu'
   | 'mortarboard'
   | 'scales'
@@ -21,4 +22,4 @@ export type IconName =
   | 'socials-viber'
   | 'user'
   | 'vector'
-  | 'view-grid';
+  | 'view-grid'

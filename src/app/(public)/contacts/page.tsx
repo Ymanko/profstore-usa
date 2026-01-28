@@ -19,7 +19,7 @@ export default async function ContactsPage() {
   await queryClient.ensureQueryData(getPageQueryOptions(PAGE_HANDLE));
 
   return (
-    <PageWrapper>
+    <PageWrapper className='pb-25 xl:pb-50'>
       <HydrationBoundary state={dehydrate(queryClient)}>
         <ContactsContent handle={PAGE_HANDLE} />
       </HydrationBoundary>
