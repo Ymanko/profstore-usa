@@ -1,3 +1,5 @@
+import { Suspense } from 'react';
+
 import { SignInForm } from '@/features/auth/components/sign-in-form';
 import { PageWrapper } from '@/shared/components/common/page-wrapper';
 import { Typography } from '@/shared/components/ui/typography';
@@ -17,7 +19,9 @@ export default function SignInPage() {
           Sign In
         </Typography>
 
-        <SignInForm />
+        <Suspense fallback={<div>Loading...</div>}>
+          <SignInForm />
+        </Suspense>
       </div>
     </PageWrapper>
   );
