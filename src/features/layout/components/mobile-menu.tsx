@@ -30,8 +30,10 @@ export function MobileMenu({ contact }: MobileMenuProps) {
       <SheetContent className='bg-primary' side='left'>
         <SheetHeader className='flex-row items-center justify-between pl-14'>
           <SheetTitle className='sr-only'>Mobile Menu</SheetTitle>
-          <TrainingLink className='mx-auto' />
-          <MobileUserActions />
+          <SheetClose asChild>
+            <TrainingLink className='mx-auto' />
+          </SheetClose>
+          <MobileUserActions closeSheetOnClick />
         </SheetHeader>
 
         <div className='grid flex-1 auto-rows-min gap-14.5 px-4'>
