@@ -39,8 +39,8 @@ export function ContactsContent({ handle }: HandleProps) {
         Contacts
       </Typography>
 
-      <div className='grid gap-8 lg:grid-cols-2'>
-        <div className='space-y-6'>
+      <div className='grid gap-8 lg:grid-cols-16'>
+        <div className='space-y-6 lg:col-span-5'>
           <Show when={contact?.address}>
             <ContactItem icon={<MapPin className='size-5' />}>
               <Typography>{contact.address}</Typography>
@@ -77,8 +77,10 @@ export function ContactsContent({ handle }: HandleProps) {
           </Show>
         </div>
 
+        <div className='hidden lg:col-span-2 lg:block' />
+
         <Show when={hasCoordinates}>
-          <div className='h-80 lg:h-auto lg:min-h-96'>
+          <div className='h-80 overflow-hidden rounded-lg lg:col-span-9 lg:h-auto lg:min-h-122.5'>
             <Map latitude={contact.latitude!} longitude={contact.longitude!} markerTitle={contact.title || undefined} />
           </div>
         </Show>

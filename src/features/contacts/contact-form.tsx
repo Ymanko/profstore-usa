@@ -86,13 +86,13 @@ export function ContactForm() {
           <FormField label='Phone' name='phone' errors={errors}>
             <Input {...register('phone')} type='tel' placeholder='+10000000000' />
           </FormField>
+        </div>
 
+        <div className='space-y-5'>
           <FormField label='Subject' name='subject' errors={errors}>
             <Input {...register('subject')} placeholder='Subject' />
           </FormField>
-        </div>
 
-        <div>
           <FormField label='Message' name='message' errors={errors}>
             <textarea
               {...register('message')}
