@@ -55,3 +55,21 @@ export interface SearchProductsResponse {
     };
   };
 }
+
+export interface SearchCollectionProductsResponse {
+  collection: {
+    id: string;
+    products: {
+      edges: Array<{
+        node: SearchProductNode;
+        cursor: string;
+      }>;
+      pageInfo: {
+        hasNextPage: boolean;
+        hasPreviousPage: boolean;
+        startCursor: string | null;
+        endCursor: string | null;
+      };
+    };
+  } | null;
+}
