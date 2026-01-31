@@ -2,22 +2,17 @@
 
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { Clock, Mail, MapPin, Phone } from 'lucide-react';
-import dynamic from 'next/dynamic';
 
 import { ContactForm } from '@/features/contacts/contact-form';
 import { NotFound } from '@/features/layout/not-found';
 import { List } from '@/shared/components/common/list';
+import Map from '@/shared/components/common/map';
 import { Show } from '@/shared/components/common/show';
 import { Typography } from '@/shared/components/ui/typography';
 import { getPageQueryOptions } from '@/shared/queries/pages';
 
 import type { HandleProps } from '@/shared/types/common';
 import type { ReactNode } from 'react';
-
-const Map = dynamic(() => import('@/shared/components/common/map'), {
-  ssr: false,
-  loading: () => <div className='bg-muted h-full w-full animate-pulse rounded-lg' />,
-});
 
 export function ContactsContent({ handle }: HandleProps) {
   const { data: page } = useSuspenseQuery(getPageQueryOptions(handle));

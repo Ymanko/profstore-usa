@@ -2,10 +2,7 @@ import { infiniteQueryOptions } from '@tanstack/react-query';
 
 import { STALE_TIME } from '@/shared/constants/stale-time';
 import { serverGraphqlFetcher } from '@/shared/lib/graphql/server-graphql-fetcher';
-import {
-  SEARCH_COLLECTION_PRODUCTS_QUERY,
-  SEARCH_PRODUCTS_QUERY,
-} from '@/shared/queries/search/search-product/query';
+import { SEARCH_COLLECTION_PRODUCTS_QUERY, SEARCH_PRODUCTS_QUERY } from '@/shared/queries/search/search-product/query';
 
 import type {
   SearchCollectionProductsResponse,
@@ -33,8 +30,7 @@ export const getSearchProductsInfiniteQueryOptions = (params: SearchProductsPara
   // - Single collection handle: search within that collection
   // - Multiple handles: search globally and filter client-side
   // - No handles: global search
-  const singleCollectionHandle =
-    collectionHandles?.length === 1 ? collectionHandles[0] : undefined;
+  const singleCollectionHandle = collectionHandles?.length === 1 ? collectionHandles[0] : undefined;
 
   // Serialize collectionHandles for stable queryKey comparison
   const collectionHandlesKey =
@@ -52,6 +48,8 @@ export const getSearchProductsInfiniteQueryOptions = (params: SearchProductsPara
       collectionHandlesKey,
       inDescription,
       singleCollectionHandle,
+      collectionHandles,
+      collectionHandles?.length,
     ],
     queryFn: async ({ pageParam }): Promise<NormalizedResponse> => {
       // If collectionHandles is empty array, return empty results
@@ -127,7 +125,7 @@ export const getSearchProductsInfiniteQueryOptions = (params: SearchProductsPara
       }
 
       // Multiple collections or global search
-      let searchQuery = query || '*';
+      const searchQuery = query || '*';
 
       // For multiple collections, we need to filter results client-side
       // because Shopify's search doesn't support OR logic for collections well
@@ -141,9 +139,7 @@ export const getSearchProductsInfiniteQueryOptions = (params: SearchProductsPara
       if (collectionHandles && collectionHandles.length > 1) {
         const filteredEdges = response.products.edges.filter(edge => {
           const productCollections = edge.node.collections.edges;
-          return productCollections.some(col =>
-            collectionHandles.includes(col.node.handle),
-          );
+          return productCollections.some(col => collectionHandles.includes(col.node.handle));
         });
 
         return {
